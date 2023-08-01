@@ -31,8 +31,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void _printBtnPressed() {
+  bool _helloWorld = false;
+  void _btnPressed() {
     setState(() {
+      _helloWorld = !_helloWorld;
       print('Button Pressed');
     });
   }
@@ -52,7 +54,8 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(bottom: 4.0),
+              padding:
+                  const EdgeInsets.only(bottom: 4.0),
               child: Container(
                 padding: const EdgeInsets.all(5.0),
                 decoration: BoxDecoration(
@@ -60,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: Text(
-                  'A simple text',
+                  _helloWorld ? 'Hello World' : 'A simple text',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: screenSize.width * 0.05,
@@ -82,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     elevation: 5,
                   ),
-                  onPressed: _printBtnPressed,
+                  onPressed: _btnPressed,
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text(
