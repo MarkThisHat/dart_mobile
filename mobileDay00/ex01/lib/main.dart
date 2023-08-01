@@ -4,6 +4,14 @@ void main() {
   runApp(const MyApp());
 }
 
+double min(double a, double b) {
+  if (a < b) {
+    return (a);
+  } else {
+    return (b);
+  }
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -11,13 +19,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Day 00 exercises',
       theme: ThemeData(
         colorScheme:
             ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 0, 0, 0)),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Day 00 exercises'),
+      home: const MyHomePage(title: 'Hello World'),
     );
   }
 }
@@ -41,7 +49,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final Size screenSize = MediaQuery.of(context).size;
+    double minDimension = min(
+        MediaQuery.of(context).size.width, MediaQuery.of(context).size.height);
     const Color customGreen = Color.fromARGB(255, 98, 98, 0);
 
     return Scaffold(
@@ -71,13 +80,13 @@ class _MyHomePageState extends State<MyHomePage> {
                               : 'hello world!')),
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: screenSize.width * 0.07,
+                    fontSize: minDimension * 0.08,
                   ),
                 ),
               ),
             ),
             SizedBox(
-              width: screenSize.width * 0.2,
+              width: minDimension * 0.25,
               child: AspectRatio(
                 aspectRatio: 3 / 1,
                 child: ElevatedButton(
@@ -95,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     fit: BoxFit.scaleDown,
                     child: Text(
                       'Click me',
-                      style: TextStyle(fontSize: screenSize.width * 0.05),
+                      style: TextStyle(fontSize: minDimension * 0.05),
                       maxLines: 1,
                     ),
                   ),

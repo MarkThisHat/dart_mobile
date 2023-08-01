@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
             ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 0, 0, 0)),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Simplicity'),
+      home: const MyHomePage(title: 'Calculator'),
     );
   }
 }
@@ -39,9 +39,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void _printBtnPressed() {
+  int _clickCount = 0;
+
+  void _btnPressed() {
     setState(() {
-      print('Button Pressed');
+      -_clickCount++;
     });
   }
 
@@ -52,10 +54,18 @@ class _MyHomePageState extends State<MyHomePage> {
     const Color customGreen = Color.fromARGB(255, 98, 98, 0);
 
     return Scaffold(
-/*      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),*/
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 65, 105, 225),
+        title: Text(
+          widget.title,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: minDimension * 0.05,
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -69,7 +79,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: Text(
-                  'A simple text',
+                  _clickCount == 0
+                      ? 'A simple text'
+                      : (_clickCount == 1
+                          ? 'Hello World!'
+                          : (_clickCount % 2 == 0
+                              ? 'A simple text'
+                              : 'hello world!')),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: minDimension * 0.08,
@@ -91,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     elevation: 5,
                   ),
-                  onPressed: _printBtnPressed,
+                  onPressed: _btnPressed,
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text(
