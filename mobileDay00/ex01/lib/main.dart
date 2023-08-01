@@ -31,11 +31,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool _helloWorld = false;
+  int _clickCount = 0;
+
   void _btnPressed() {
     setState(() {
-      _helloWorld = !_helloWorld;
-      print('Button Pressed');
+      -_clickCount++;
     });
   }
 
@@ -54,8 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
-              padding:
-                  const EdgeInsets.only(bottom: 4.0),
+              padding: const EdgeInsets.only(bottom: 4.0),
               child: Container(
                 padding: const EdgeInsets.all(5.0),
                 decoration: BoxDecoration(
@@ -63,7 +62,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: Text(
-                  _helloWorld ? 'Hello World' : 'A simple text',
+                  _clickCount == 0
+                      ? 'A simple text'
+                      : (_clickCount == 1
+                          ? 'Hello World!'
+                          : (_clickCount % 2 == 0
+                              ? 'A simple text'
+                              : 'hello world!')),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: screenSize.width * 0.05,
