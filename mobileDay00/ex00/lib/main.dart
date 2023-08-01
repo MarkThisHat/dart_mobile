@@ -14,10 +14,10 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme:
-            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 0, 0, 0)),
+            ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 0, 0, 0)),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Day 00 exercises'),
     );
   }
 }
@@ -39,6 +39,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
+    const Color customGreen = Color.fromARGB(255, 98, 98, 0);
+
     return Scaffold(
 /*      appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -54,32 +57,42 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Container(
                 padding: const EdgeInsets.all(8.0), // Padding for the text
                 decoration: BoxDecoration(
-                  color:
-                      const Color.fromARGB(255, 98, 98, 0), // Background color
+                  color: customGreen, // Background color
                   borderRadius: BorderRadius.circular(8.0), // Border radius
                 ),
-                child: const Text(
+                child: Text(
                   'A simple text',
                   style: TextStyle(
                     color: Colors.white, // Text color
-                    fontSize: 24, // Text size
+                    fontSize: screenSize.width * 0.05,
                   ),
                 ),
               ),
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey[100], // background color
-                foregroundColor:
-                    const Color.fromARGB(255, 98, 98, 0), // text color
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16), // border radius
-                  //        side: BorderSide(color: Colors.grey[600]!), // border color
+            SizedBox(
+              width: screenSize.width * 0.2,
+              child: AspectRatio(
+                aspectRatio: 3 / 1,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey[100], // background color
+                    foregroundColor: customGreen, // text color
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16), // border radius
+                    ),
+                    elevation: 5, // shading
+                  ),
+                  onPressed: _printBtnPressed,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      'Click me',
+                      style: TextStyle(fontSize: screenSize.width * 0.05),
+                      maxLines: 1,
+                    ),
+                  ),
                 ),
-                elevation: 5, // shading
               ),
-              onPressed: _printBtnPressed,
-              child: const Text('Click me'),
             ),
           ],
         ),
