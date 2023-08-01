@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               : 'hello world!')),
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: screenSize.width * 0.05,
+                    fontSize: screenSize.width * 0.07,
                   ),
                 ),
               ),
@@ -86,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     foregroundColor: customGreen,
                     padding: const EdgeInsets.all(10.0),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(240),
                     ),
                     elevation: 5,
                   ),
