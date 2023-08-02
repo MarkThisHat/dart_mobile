@@ -51,6 +51,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     double minDimension = min(
         MediaQuery.of(context).size.width, MediaQuery.of(context).size.height);
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
     const Color backgroundGray = Color.fromARGB(255, 55, 71, 79);
     const Color customGray = Color.fromARGB(255, 96, 125, 139);
     const Color customDarkGray = Color.fromARGB(255, 44, 58, 65);
@@ -73,43 +75,61 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: <Widget>[
             Container(
-              height: minDimension * 0.3,
+              height: isLandscape ? minDimension * 0.33 : minDimension * 0.90,
               color: backgroundGray,
-              child: Center(
-                child: Text(
-                  '0',
-                  style: TextStyle(
-                    fontSize: minDimension * 0.1,
-                    color: customGray,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(7.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Text(
+                        '0',
+                        style: TextStyle(
+                          fontSize: isLandscape
+                              ? minDimension * 0.07
+                              : minDimension * 0.10,
+                          color: customGray,
+                        ),
+                      ),
+                      Text(
+                        '2',
+                        style: TextStyle(
+                          fontSize: isLandscape
+                              ? minDimension * 0.07
+                              : minDimension * 0.10,
+                          color: customGray,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
             Expanded(
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: GridView.count(
-                  crossAxisCount: 5,
-                  children: List.generate(20, (index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextButton(
-                        onPressed: () {},
-                        style: TextButton.styleFrom(
-                          foregroundColor: customDarkGray, 
-                          backgroundColor: customGray,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(0),
-                          ),
-                        ),
-                        child: Text(
-                          '${index + 1}',
-                          style: TextStyle(fontSize: minDimension * 0.05),
+              child: GridView.count(
+                crossAxisCount: 5,
+                children: List.generate(20, (index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(0.1),
+                    child: OutlinedButton(
+                      onPressed: () {},
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: customDarkGray,
+                        backgroundColor: customGray,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0),
                         ),
                       ),
-                    );
-                  }),
-                ),
+                      child: Text(
+                        '${index + 1}',
+                        style: TextStyle(fontSize: minDimension * 0.05),
+                      ),
+                    ),
+                  );
+                }),
               ),
             ),
           ],
