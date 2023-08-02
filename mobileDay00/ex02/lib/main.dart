@@ -53,10 +53,9 @@ class _MyHomePageState extends State<MyHomePage> {
         MediaQuery.of(context).size.width, MediaQuery.of(context).size.height);
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
+    double buttonHeight = isLandscape ? 38.8 : 101.7;
     const Color backgroundGray = Color.fromARGB(255, 55, 71, 79);
     const Color customGray = Color.fromARGB(255, 96, 125, 139);
-    const Color customDarkGray = Color.fromARGB(255, 44, 58, 65);
-    const Color customRed = Color.fromARGB(255, 155, 59, 63);
 
     return Scaffold(
       appBar: AppBar(
@@ -95,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       Text(
-                        '2',
+                        '0',
                         style: TextStyle(
                           fontSize: isLandscape
                               ? minDimension * 0.07
@@ -111,29 +110,61 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           Expanded(
             flex: 1,
-            child: GridView.count(
-              crossAxisCount: 5,
-              children: List.generate(20, (index) {
-                return OutlinedButton(
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: customDarkGray,
-                    backgroundColor: customGray,
-                    side: const BorderSide(color: Colors.white, width: 0.1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(0),
-                    ),
-                  ),
-                  child: Text(
-                    '${index + 1}',
-                    style: TextStyle(fontSize: minDimension * 0.05),
-                  ),
-                );
-              }),
+            child: Column(
+              children: <Widget>[
+                buttonRow(['7', '8', '9', 'C', 'AC'], buttonHeight),
+                buttonRow(['4', '5', '6', '+', '-'], buttonHeight),
+                buttonRow(['1', '2', '3', '*', '/'], buttonHeight),
+                buttonRow(['0', '.', '00', '='], buttonHeight, isLastRow: true),
+              ],
             ),
           ),
         ],
       ),
     );
   }
+}
+
+Widget buttonRow(List<String> values, double buttonHeight,
+    {bool isLastRow = false}) {
+  const Color customDarkGray = Color.fromARGB(255, 44, 58, 65);
+  const Color customGray = Color.fromARGB(255, 96, 125, 139);
+  const Color customRed = Color.fromARGB(255, 155, 59, 63);
+
+  return Row(
+    children: values.asMap().entries.map((entry) {
+      int index = entry.key;
+      String value = entry.value;
+      Color buttonColor;
+
+      if (int.tryParse(value) != null || value == '.') {
+        buttonColor = customDarkGray;
+      } else if (RegExp(r'[a-zA-Z]').hasMatch(value)) {
+        buttonColor = customRed;
+      } else {
+        buttonColor = Colors.white;
+      }
+
+      return Expanded(
+        flex: isLastRow && index == values.length - 1 ? 2 : 1,
+        child: Padding(
+          padding: const EdgeInsets.all(0.07),
+          child: GestureDetector(
+            onTap: () {
+              print('button pressed: $value');
+            },
+            child: Container(
+              height: buttonHeight,
+              color: customGray,
+              alignment: Alignment.center,
+              child: Text(
+                value,
+                style: TextStyle(color: buttonColor, fontSize: 24.0),
+              ),
+            ),
+          ),
+        ),
+      );
+    }).toList(),
+  );
 }
