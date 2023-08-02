@@ -71,11 +71,11 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         centerTitle: true,
       ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: isLandscape ? minDimension * 0.33 : minDimension * 0.90,
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: Container(
               color: backgroundGray,
               child: Align(
                 alignment: Alignment.centerRight,
@@ -108,30 +108,31 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 5,
-                children: List.generate(20, (index) {
-                  return OutlinedButton(
-                    onPressed: () {},
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: customDarkGray,
-                      backgroundColor: customGray,
-                      side: const BorderSide(color: Colors.white, width: 0.1),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(0),
-                      ),
+          ),
+          Expanded(
+            flex: 1,
+            child: GridView.count(
+              crossAxisCount: 5,
+              children: List.generate(20, (index) {
+                return OutlinedButton(
+                  onPressed: () {},
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: customDarkGray,
+                    backgroundColor: customGray,
+                    side: const BorderSide(color: Colors.white, width: 0.1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(0),
                     ),
-                    child: Text(
-                      '${index + 1}',
-                      style: TextStyle(fontSize: minDimension * 0.05),
-                    ),
-                  );
-                }),
-              ),
+                  ),
+                  child: Text(
+                    '${index + 1}',
+                    style: TextStyle(fontSize: minDimension * 0.05),
+                  ),
+                );
+              }),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
