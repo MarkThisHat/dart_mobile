@@ -51,11 +51,14 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     double minDimension = min(
         MediaQuery.of(context).size.width, MediaQuery.of(context).size.height);
-    const Color customGreen = Color.fromARGB(255, 98, 98, 0);
+    const Color backgroundGray = Color.fromARGB(255, 55, 71, 79);
+    const Color customGray = Color.fromARGB(255, 96, 125, 139);
+    const Color customDarkGray = Color.fromARGB(255, 44, 58, 65);
+    const Color customRed = Color.fromARGB(255, 155, 59, 63);
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 65, 105, 225),
+        backgroundColor: customGray,
         title: Text(
           widget.title,
           textAlign: TextAlign.center,
@@ -68,54 +71,44 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(bottom: 4.0),
-              child: Container(
-                padding: const EdgeInsets.all(5.0),
-                decoration: BoxDecoration(
-                  color: customGreen,
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
+            Container(
+              height: minDimension * 0.3,
+              color: backgroundGray,
+              child: Center(
                 child: Text(
-                  _clickCount == 0
-                      ? 'A simple text'
-                      : (_clickCount == 1
-                          ? 'Hello World!'
-                          : (_clickCount % 2 == 0
-                              ? 'A simple text'
-                              : 'hello world!')),
+                  '0',
                   style: TextStyle(
-                    color: Colors.white,
-                    fontSize: minDimension * 0.08,
+                    fontSize: minDimension * 0.1,
+                    color: customGray,
                   ),
                 ),
               ),
             ),
-            SizedBox(
-              width: minDimension * 0.25,
+            Expanded(
               child: AspectRatio(
-                aspectRatio: 3 / 1,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey[100],
-                    foregroundColor: customGreen,
-                    padding: const EdgeInsets.all(10.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(240),
-                    ),
-                    elevation: 5,
-                  ),
-                  onPressed: _btnPressed,
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      'Click me',
-                      style: TextStyle(fontSize: minDimension * 0.05),
-                      maxLines: 1,
-                    ),
-                  ),
+                aspectRatio: 1,
+                child: GridView.count(
+                  crossAxisCount: 5,
+                  children: List.generate(20, (index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextButton(
+                        onPressed: () {},
+                        style: TextButton.styleFrom(
+                          foregroundColor: customDarkGray, 
+                          backgroundColor: customGray,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
+                        child: Text(
+                          '${index + 1}',
+                          style: TextStyle(fontSize: minDimension * 0.05),
+                        ),
+                      ),
+                    );
+                  }),
                 ),
               ),
             ),
