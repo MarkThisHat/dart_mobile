@@ -149,18 +149,21 @@ Widget buttonRow(List<String> values, double buttonHeight,
         flex: isLastRow && index == values.length - 1 ? 2 : 1,
         child: Padding(
           padding: const EdgeInsets.all(0.07),
-          child: GestureDetector(
-            onTap: () {
-              print('button pressed: $value');
-            },
-            child: Container(
-              height: buttonHeight,
-              color: customGray,
-              alignment: Alignment.center,
-              child: Text(
-                value,
-                style: TextStyle(color: buttonColor, fontSize: 24.0),
-              ),
+          child: Material(
+            child: InkWell(
+              onTap: () {
+                print('button pressed: $value');
+              },
+              splashColor: Colors.black.withOpacity(0.3),
+              child: Container(
+                height: buttonHeight,
+                color: customGray,
+                alignment: Alignment.center,
+                child: Text(
+                  value,
+                  style: TextStyle(color: buttonColor, fontSize: 24.0),
+                ),
+              ), // optional: you can customize splash color
             ),
           ),
         ),
