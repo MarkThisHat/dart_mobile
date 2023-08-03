@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:math_expressions/math_expressions.dart';
 import 'buttons.dart';
 import 'text.dart';
 
@@ -48,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
           }
         }
       } else if (value == '=') {
-        text2 += 'hehe';
+        text2 = processOutput(text1);
       } else {
         text1 = processInput(text1, value);
       }
@@ -195,4 +196,34 @@ String processInput(String text, String value) {
     }
   }
   return (text);
+}
+
+String processOutput(text) {
+  if (int.tryParse(lastCharacter(text)) == null) {
+    return ("Uncomplete expression");
+  }
+
+  Parser p = Parser();
+  Expression exp = p.parse(text);
+
+  ContextModel cm = ContextModel();
+  try {
+    double result = exp.evaluate(EvaluationType.REAL, cm);
+
+    if (result.isInfinite) {
+      return ("Can't divide by zero");
+    }
+
+    String output = result.truncateToDouble() == result
+        ? result.truncate().toString()
+        : result.toString();
+
+    return (output);
+  } catch (e) {
+    if (e is Exception) {
+      return ("Error: Invalid expression");
+    } else {
+      return ("Error: ${e.toString()}");
+    }
+  }
 }
