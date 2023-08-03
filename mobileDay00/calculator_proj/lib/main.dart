@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
+import 'buttons.dart';
+import 'dart:math';
 
 void main() {
   runApp(const MyApp());
-}
-
-double min(double a, double b) {
-  if (a < b) {
-    return (a);
-  } else {
-    return (b);
-  }
 }
 
 class MyApp extends StatelessWidget {
@@ -103,10 +97,19 @@ class _MyHomePageState extends State<MyHomePage> {
             flex: 1,
             child: Column(
               children: <Widget>[
-                buttonRow(['7', '8', '9', 'C', 'AC'], buttonHeight),
-                buttonRow(['4', '5', '6', '+', '-'], buttonHeight),
-                buttonRow(['1', '2', '3', '*', '/'], buttonHeight),
-                buttonRow(['0', '.', '00', '='], buttonHeight, isLastRow: true),
+                ButtonRow(
+                    values: const ['7', '8', '9', 'C', 'AC'],
+                    btnHeight: buttonHeight),
+                ButtonRow(
+                    values: const ['4', '5', '6', '+', '-'],
+                    btnHeight: buttonHeight),
+                ButtonRow(
+                    values: const ['1', '2', '3', '*', '/'],
+                    btnHeight: buttonHeight),
+                ButtonRow(
+                    values: const ['0', '.', '00', '='],
+                    btnHeight: buttonHeight,
+                    isLastRow: true),
               ],
             ),
           ),
@@ -114,51 +117,4 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-}
-
-Widget buttonRow(List<String> values, double buttonHeight,
-    {bool isLastRow = false}) {
-  const Color customDarkGray = Color.fromARGB(255, 44, 58, 65);
-  const Color customGray = Color.fromARGB(255, 96, 125, 139);
-  const Color customRed = Color.fromARGB(255, 155, 59, 63);
-
-  return Row(
-    children: values.asMap().entries.map((entry) {
-      int index = entry.key;
-      String value = entry.value;
-      Color buttonColor;
-
-      if (int.tryParse(value) != null || value == '.') {
-        buttonColor = customDarkGray;
-      } else if (RegExp(r'[a-zA-Z]').hasMatch(value)) {
-        buttonColor = customRed;
-      } else {
-        buttonColor = Colors.white;
-      }
-
-      return Expanded(
-        flex: isLastRow && index == values.length - 1 ? 2 : 1,
-        child: Padding(
-          padding: const EdgeInsets.all(0.07),
-          child: Material(
-            child: InkWell(
-              onTap: () {
-                print('button pressed: $value');
-              },
-              splashColor: Colors.black.withOpacity(0.3),
-              child: Container(
-                height: buttonHeight,
-                color: customGray,
-                alignment: Alignment.center,
-                child: Text(
-                  value,
-                  style: TextStyle(color: buttonColor, fontSize: 24.0),
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-    }).toList(),
-  );
 }
