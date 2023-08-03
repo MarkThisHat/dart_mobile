@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'buttons.dart';
+import 'text.dart';
 import 'dart:math';
 
 void main() {
@@ -32,6 +33,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String text1 = '0';
+  String text2 = '0';
+
+  void updateText(String value) {
+    setState(() {
+      text1 = text2;
+      text2 = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double minDimension = min(
@@ -69,23 +80,19 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      Text(
-                        '0',
-                        style: TextStyle(
-                          fontSize: isLandscape
-                              ? minDimension * 0.07
-                              : minDimension * 0.10,
-                          color: customGray,
-                        ),
+                      CalculatorText(
+                        value: text1,
+                        fontSize: isLandscape
+                            ? minDimension * 0.07
+                            : minDimension * 0.10,
+                        color: customGray,
                       ),
-                      Text(
-                        '0',
-                        style: TextStyle(
-                          fontSize: isLandscape
-                              ? minDimension * 0.07
-                              : minDimension * 0.10,
-                          color: customGray,
-                        ),
+                      CalculatorText(
+                        value: text2,
+                        fontSize: isLandscape
+                            ? minDimension * 0.07
+                            : minDimension * 0.10,
+                        color: customGray,
                       ),
                     ],
                   ),
@@ -99,16 +106,20 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 ButtonRow(
                     values: const ['7', '8', '9', 'C', 'AC'],
+                    onValueUpdate: updateText,
                     btnHeight: buttonHeight),
                 ButtonRow(
                     values: const ['4', '5', '6', '+', '-'],
+                    onValueUpdate: updateText,
                     btnHeight: buttonHeight),
                 ButtonRow(
                     values: const ['1', '2', '3', '*', '/'],
+                    onValueUpdate: updateText,
                     btnHeight: buttonHeight),
                 ButtonRow(
                     values: const ['0', '.', '00', '='],
                     btnHeight: buttonHeight,
+                    onValueUpdate: updateText,
                     isLastRow: true),
               ],
             ),

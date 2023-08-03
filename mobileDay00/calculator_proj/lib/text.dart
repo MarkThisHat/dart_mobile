@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
 
 class CalculatorText extends StatelessWidget {
-  final String text;
-  final double minorDimension;
-  final bool isLandscape;
+  final String value;
+  final double fontSize;
   final Color color;
 
   const CalculatorText({
-    Key? key,
-    required this.text,
-    required this.minorDimension,
-    required this.isLandscape,
+    super.key,
+    required this.value,
+    required this.fontSize,
     required this.color,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      text,
+      value,
       style: TextStyle(
-        fontSize: isLandscape ? minorDimension * 0.07 : minorDimension * 0.10,
+        fontSize: fontSize,
         color: color,
       ),
     );

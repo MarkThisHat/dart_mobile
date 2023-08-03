@@ -4,12 +4,14 @@ class ButtonRow extends StatelessWidget {
   final List<String> values;
   final double btnHeight;
   final bool isLastRow;
+  final ValueChanged<String> onValueUpdate;
 
   const ButtonRow(
       {super.key,
       required this.values,
       required this.btnHeight,
-      this.isLastRow = false});
+      this.isLastRow = false,
+      required this.onValueUpdate});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class ButtonRow extends StatelessWidget {
             child: Material(
               child: InkWell(
                 onTap: () {
-                  print('button pressed: $value');
+                  onValueUpdate(value);
                 },
                 splashColor: Colors.black.withOpacity(0.3),
                 child: Container(
