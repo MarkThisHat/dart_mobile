@@ -8,8 +8,8 @@ double min(double a, double b) {
   }
 }
 
-String lastCharacter(String text) {
-  return (text.split('').last);
+bool isNumeric(String str) {
+  return (double.tryParse(str) != null);
 }
 
 bool isCharacterOperator(String text) {
@@ -23,6 +23,10 @@ bool containsDecimalInLastNumber(String text) {
   List<String> splitText = text.split(RegExp(r'[-+*/]'));
 
   return (splitText.last.contains('.'));
+}
+
+String lastCharacter(String text) {
+  return (text.split('').last);
 }
 
 String processInput(String text, String value) {
@@ -57,12 +61,10 @@ String processInput(String text, String value) {
 
 String processOutput(text) {
   if (int.tryParse(lastCharacter(text)) == null) {
-    return ("Complete the expression");
+    return ("Uncomplete expression");
   }
-
   Parser p = Parser();
   Expression exp = p.parse(text);
-
   ContextModel cm = ContextModel();
   try {
     double result = exp.evaluate(EvaluationType.REAL, cm);
@@ -70,11 +72,9 @@ String processOutput(text) {
     if (result.isInfinite) {
       return ("Can't divide by zero");
     }
-
     String output = result.truncateToDouble() == result
         ? result.truncate().toString()
         : result.toString();
-
     return (output);
   } catch (e) {
     if (e is Exception) {

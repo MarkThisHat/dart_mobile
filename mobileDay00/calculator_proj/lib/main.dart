@@ -93,19 +93,25 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      CalculatorText(
-                        value: text1,
-                        fontSize: isLandscape
-                            ? minDimension * 0.07
-                            : minDimension * 0.10,
-                        color: customGray,
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: CalculatorText(
+                          value: text1,
+                          fontSize: isLandscape
+                              ? minDimension * 0.07
+                              : minDimension * 0.10,
+                          color: customGray,
+                        ),
                       ),
-                      CalculatorText(
-                        value: text2,
-                        fontSize: isLandscape
-                            ? minDimension * 0.07
-                            : minDimension * 0.10,
-                        color: customGray,
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: CalculatorText(
+                          value: text2,
+                          fontSize: isLandscape
+                              ? minDimension * 0.07
+                              : minDimension * 0.10,
+                          color: isNumeric(text2) ? customGray : Colors.red,
+                        ),
                       ),
                     ],
                   ),
