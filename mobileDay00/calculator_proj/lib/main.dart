@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'buttons.dart';
 import 'text.dart';
-import 'dart:math';
 
 void main() {
   runApp(const MyApp());
@@ -34,12 +33,25 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String text1 = '0';
-  String text2 = '0';
+  String text2 = '';
 
   void updateText(String value) {
     setState(() {
-      text1 = text2;
-      text2 = value;
+      if (value == 'AC') {
+        text1 = '0';
+        text2 = '';
+      } else if (value == 'C') {
+        if (text1 != '0') {
+          text1 = text1.substring(0, text1.length - 1);
+          if (text1.isEmpty) {
+            text1 = '0';
+          }
+        }
+      } else if (value == '=') {
+        text2 += 'hehe';
+      } else {
+        text1 = processInput(text1, value);
+      }
     });
   }
 
@@ -128,4 +140,59 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+}
+
+double min(double a, double b) {
+  if (a < b) {
+    return (a);
+  } else {
+    return (b);
+  }
+}
+
+String lastCharacter(String text) {
+  return (text.split('').last);
+}
+
+bool isCharacterOperator(String text) {
+  String lastChar = lastCharacter(text);
+  List<String> operators = ['+', '-', '*', '/'];
+
+  return (operators.contains(lastChar));
+}
+
+bool containsDecimalInLastNumber(String text) {
+  List<String> splitText = text.split(RegExp(r'[-+*/]'));
+
+  return (splitText.last.contains('.'));
+}
+
+String processInput(String text, String value) {
+  if (text.length > 15) return (text);
+
+  if (int.tryParse(value) != null) {
+    if (text == '0') {
+      return (value);
+    } else {
+      return (text += value);
+    }
+  }
+  if (value == '.') {
+    if (lastCharacter(text) != '.' &&
+        !containsDecimalInLastNumber(text) &&
+        (int.tryParse(lastCharacter(text)) != null)) {
+      return (text += value);
+    }
+  }
+  if (isCharacterOperator(value)) {
+    if (!isCharacterOperator(lastCharacter(text)) &&
+        lastCharacter(text) != '.') {
+      return (text += value);
+    } else if (value == '-' &&
+        lastCharacter(text) != '-' &&
+        lastCharacter(text) != '.') {
+      return (text += value);
+    }
+  }
+  return (text);
 }
