@@ -60,10 +60,14 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
+  String? getCoordinates(bool gpsEnabled) {
+    return (null);
+  }
+
   Widget _buildSearchField(Color color) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: _buildSearchTextField(color),
       ),
     );
@@ -83,10 +87,6 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
-String? getCoordinates(bool gpsEnabled) {
-  return ('Geolocation');
-}
-
 InputDecoration _buildTextFieldDecoration(Color color) {
   return InputDecoration(
     hintText: "Search location...",
@@ -94,6 +94,7 @@ InputDecoration _buildTextFieldDecoration(Color color) {
     filled: false,
     enabledBorder: _outlineInputBorder(color.withOpacity(0.5)),
     focusedBorder: _outlineInputBorder(color),
+    prefixIcon: Icon(Icons.search, color: color.withOpacity(0.5)),
   );
 }
 

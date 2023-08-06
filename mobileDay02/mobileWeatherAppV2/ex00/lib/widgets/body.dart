@@ -9,27 +9,42 @@ class BodyTabBarView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
-    TextStyle textStyle =
-        TextStyle(fontSize: 28.0, color: theme.colorScheme.onBackground);
+    ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      color: theme.colorScheme.background,
+      color: colorScheme.background,
       child: TabBarView(
         controller: tabController,
         children: [
-          _buildTabContent('Currently', displayText, textStyle),
-          _buildTabContent('Today', displayText, textStyle),
-          _buildTabContent('Weekly', displayText, textStyle),
+          _buildTabContent('Currently', displayText, colorScheme),
+          _buildTabContent('Today', displayText, colorScheme),
+          _buildTabContent('Weekly', displayText, colorScheme),
         ],
       ),
     );
   }
 
-  Widget _buildTabContent(String label, String? displayText, TextStyle style) {
+  Widget _buildTabContent(
+      String label, String? displayText, ColorScheme scheme) {
+    TextStyle style = TextStyle(fontSize: 28.0, color: scheme.onBackground);
+    TextStyle errorStyle = TextStyle(fontSize: 20.0, color: scheme.error);
+
+    if (displayText != null) {
+      return (_buildTabContentCenter(label, displayText, style));
+    } else {
+      return (_buildTabContentCenter(label, displayText, errorStyle));
+    }
+  }
+
+  Center _buildTabContentCenter(
+      String label, String? displayText, TextStyle style) {
+    String showText = displayText != null
+        ? '$label\n$displayText'
+        : 'Geolocation is not available, please enable it in your App settings';
+
     return Center(
       child: Text(
-        '$label\n$displayText',
+        showText,
         style: style,
         textAlign: TextAlign.center,
       ),
