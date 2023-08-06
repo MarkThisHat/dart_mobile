@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import '../services/gps.dart';
+import 'geobutton.dart';
+import 'searchbar.dart';
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final Function(String?) updateText;
   final TextEditingController searchController;
 
-  const TopBar(
-      {super.key,
-      required this.title,
-      required this.updateText,
-      required this.searchController});
+  const TopBar({
+    super.key,
+    required this.title,
+    required this.updateText,
+    required this.searchController,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +26,16 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
       title: Row(
         children: [
           _buildTitle(scheme.onPrimary),
-          _buildSearchField(scheme.onPrimary),
-          _buildGeoLocationButton(scheme.onPrimary),
-          const SizedBox(width: 16.0),
+          SearchField(
+            controller: searchController,
+            updateText: updateText,
+            color: scheme.onPrimary,
+          ),
+          GeoLocationButton(
+            updateText: updateText,
+            color: scheme.onPrimary,
+          ),
+          const SizedBox(width: 8.0),
         ],
       ),
     );
@@ -48,72 +57,4 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
       ),
     );
   }
-
-  Widget _buildGeoLocationButton(Color color) {
-    return IconButton(
-      icon: Icon(Icons.location_on, color: color),
-      onPressed: () async {
-        String? coordinates = await getCoordinates();
-        updateText(coordinates);
-      },
-    );
-  }
-
-  Future<String?> getCoordinates() async {
-    final gpsService = GpsService();
-
-    if (!await gpsService.isLocationServiceEnabled()) {
-      await gpsService.requestLocationService();
-    }
-    PermissionStatus permission = await gpsService.getLocationPermission();
-    if (permission == PermissionStatus.granted) {
-      LocationData? locationData = await gpsService.getCurrentLocation();
-      if (locationData != null) {
-        return '${locationData.latitude}, ${locationData.longitude}';
-      }
-    }
-    return null;
-  }
-
-  Widget _buildSearchField(Color color) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: _buildSearchTextField(color),
-      ),
-    );
-  }
-
-  Widget _buildSearchTextField(Color color) {
-    return TextField(
-      controller: searchController,
-      onSubmitted: (value) {
-        updateText(value);
-        searchController.clear();
-      },
-      cursorColor: color,
-      decoration: _buildTextFieldDecoration(color),
-      style: TextStyle(fontSize: 16.0, color: color),
-    );
-  }
-}
-
-InputDecoration _buildTextFieldDecoration(Color color) {
-  return InputDecoration(
-    hintText: "Search location...",
-    hintStyle: TextStyle(fontSize: 16.0, color: color.withOpacity(0.5)),
-    filled: false,
-    enabledBorder: _outlineInputBorder(color.withOpacity(0.5)),
-    focusedBorder: _outlineInputBorder(color),
-    prefixIcon: Icon(Icons.search, color: color.withOpacity(0.5)),
-  );
-}
-
-OutlineInputBorder _outlineInputBorder(Color color) {
-  return OutlineInputBorder(
-    borderRadius: BorderRadius.circular(8),
-    borderSide: BorderSide(
-      color: color,
-    ),
-  );
 }
