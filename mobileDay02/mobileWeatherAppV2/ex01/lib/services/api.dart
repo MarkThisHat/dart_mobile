@@ -12,8 +12,8 @@ Future<List<Map<String, dynamic>>?> searchLocationByName(String searchTerm,
 
   if (response.statusCode == 200) {
     final jsonResponse = json.decode(response.body);
-    if (jsonResponse != null) {
-      return jsonResponse;
+    if (jsonResponse != null && jsonResponse is List) {
+      return jsonResponse.cast<Map<String, dynamic>>();
     }
   } else {
     print('Failed to fetch locations. Error: ${response.body}');

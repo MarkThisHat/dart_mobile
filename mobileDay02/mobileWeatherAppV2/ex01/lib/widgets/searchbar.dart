@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
+import '../services/api.dart';
+import 'dart:async';
 
-class SearchField extends StatelessWidget {
+class SearchField extends StatefulWidget {
   final TextEditingController controller;
   final Function(String) updateText;
   final Color color;
@@ -13,19 +16,50 @@ class SearchField extends StatelessWidget {
   });
 
   @override
+  SearchFieldState createState() => SearchFieldState();
+}
+
+class SearchFieldState extends State<SearchField> {
+  final BehaviorSubject<String> _searchSubject = BehaviorSubject<String>();
+  StreamSubscription<List<Map<String, dynamic>>?>? _subscription;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _subscription = _searchSubject
+        .debounceTime(const Duration(milliseconds: 300))
+        .distinct()
+        .switchMap((query) => (query.isEmpty
+            ? Stream.value(null)
+            : searchLocationByName(query).asStream()))
+        .listen((locations) {
+      if (locations != null) {
+        print(locations);
+      } else {
+        print('No locations');
+      }
+    });
+
+    widget.controller.addListener(() {
+      _searchSubject.add(widget.controller.text);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: TextField(
-          controller: controller,
+          controller: widget.controller,
           onSubmitted: (value) {
-            updateText(value);
-            controller.clear();
+            widget.updateText(value);
+            widget.controller.clear();
           },
-          cursorColor: color,
-          decoration: _buildTextFieldDecoration(color),
-          style: TextStyle(fontSize: 16.0, color: color),
+          cursorColor: widget.color,
+          decoration: _buildTextFieldDecoration(widget.color),
+          style: TextStyle(fontSize: 16.0, color: widget.color),
         ),
       ),
     );
@@ -49,5 +83,12 @@ class SearchField extends StatelessWidget {
         color: color,
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _searchSubject.close();
+    _subscription?.cancel();
+    super.dispose();
   }
 }
