@@ -12,21 +12,24 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: theme.colorScheme.primary,
       elevation: 5.0,
-      titleSpacing: 0.0, // This makes the row use the full width of the AppBar.
+      titleSpacing: 0.0,
       title: Row(
         children: [
           _buildTitle(theme),
           _buildSearchField(theme),
           _buildGeoLocationButton(theme),
-          const SizedBox(width: 8.0),
+          const SizedBox(width: 16.0),
         ],
       ),
     );
   }
 
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
   Widget _buildTitle(ThemeData theme) {
     return Padding(
-      padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+      padding: const EdgeInsets.only(left: 24.0, right: 24.0),
       child: Text(
         title,
         style: TextStyle(
@@ -41,9 +44,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   Widget _buildGeoLocationButton(ThemeData theme) {
     return IconButton(
       icon: Icon(Icons.location_on, color: theme.colorScheme.onPrimary),
-      onPressed: () {
-        //TODO: implement geolocation
-      },
+      onPressed: () {},
     );
   }
 
@@ -84,7 +85,4 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
       ),
     );
   }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
