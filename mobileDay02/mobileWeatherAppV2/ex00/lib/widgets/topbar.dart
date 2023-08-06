@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/gps.dart';
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -49,19 +50,29 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   Widget _buildGeoLocationButton(Color color) {
-    String? coordinates;
-
     return IconButton(
       icon: Icon(Icons.location_on, color: color),
-      onPressed: () {
-        coordinates = getCoordinates(true);
+      onPressed: () async {
+        String? coordinates = await getCoordinates();
         updateText(coordinates);
       },
     );
   }
 
-  String? getCoordinates(bool gpsEnabled) {
-    return (null);
+  Future<String?> getCoordinates() async {
+    final gpsService = GpsService();
+
+    if (!await gpsService.isLocationServiceEnabled()) {
+      await gpsService.requestLocationService();
+    }
+    PermissionStatus permission = await gpsService.getLocationPermission();
+    if (permission == PermissionStatus.granted) {
+      LocationData? locationData = await gpsService.getCurrentLocation();
+      if (locationData != null) {
+        return '${locationData.latitude}, ${locationData.longitude}';
+      }
+    }
+    return null;
   }
 
   Widget _buildSearchField(Color color) {
