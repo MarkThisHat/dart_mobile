@@ -15,8 +15,6 @@ class BodyTabBarView extends StatefulWidget {
 }
 
 class BodyTabBarViewState extends State<BodyTabBarView> {
-  List<Map<String, dynamic>>? searchResults;
-
   @override
   Widget build(BuildContext context) {
     ColorScheme colorScheme = Theme.of(context).colorScheme;
@@ -59,11 +57,5 @@ class BodyTabBarViewState extends State<BodyTabBarView> {
         textAlign: TextAlign.center,
       ),
     );
-  }
-
-  void handleSearchResults(List<Map<String, dynamic>> results) {
-    setState(() {
-      searchResults = results;
-    });
   }
 }
