@@ -28,22 +28,22 @@ class LocationRow extends StatelessWidget {
   }
 
   Text _styledText(String text, String match) {
-    if (text.toLowerCase().contains(match.toLowerCase())) {
-      final parts = text.split(match);
-      return Text.rich(
-        TextSpan(
-          children: <TextSpan>[
-            TextSpan(text: parts.first),
-            TextSpan(
-                text: match,
-                style: const TextStyle(fontWeight: FontWeight.bold)),
-            TextSpan(text: parts.last),
-          ],
-        ),
-      );
-    } else {
-      return Text(text);
-    }
+    int matchLength = match.length;
+
+    String actualMatch = text.substring(0, matchLength);
+    String afterMatch =
+        text.length > matchLength ? text.substring(matchLength) : '';
+
+    return Text.rich(
+      TextSpan(
+        children: <TextSpan>[
+          TextSpan(
+              text: actualMatch,
+              style: const TextStyle(fontWeight: FontWeight.bold)),
+          TextSpan(text: afterMatch),
+        ],
+      ),
+    );
   }
 }
 

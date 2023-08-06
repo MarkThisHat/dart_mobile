@@ -15,7 +15,6 @@ Future<List<Map<String, dynamic>>?> searchLocationByName(String searchTerm,
     if (jsonResponse is Map<String, dynamic> &&
         jsonResponse.containsKey('results')) {
       final results = jsonResponse['results'];
-
       if (results is List) {
         return List<Map<String, dynamic>>.from(results);
       }
