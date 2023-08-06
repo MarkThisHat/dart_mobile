@@ -7,13 +7,18 @@ Future<List<Map<String, dynamic>>?> searchLocationByName(String searchTerm,
   const baseUrl = 'https://geocoding-api.open-meteo.com/v1/search';
   final url = Uri.parse(
       '$baseUrl?name=$searchTerm&count=$count&format=$format&language=$language');
-
   final response = await http.get(url);
 
   if (response.statusCode == 200) {
-    final jsonResponse = json.decode(response.body);
-    if (jsonResponse != null && jsonResponse is List) {
-      return jsonResponse.cast<Map<String, dynamic>>();
+    final jsonResponse = jsonDecode(response.body);
+
+    if (jsonResponse is Map<String, dynamic> &&
+        jsonResponse.containsKey('results')) {
+      final results = jsonResponse['results'];
+
+      if (results is List) {
+        return List<Map<String, dynamic>>.from(results);
+      }
     }
   } else {
     print('Failed to fetch locations. Error: ${response.body}');

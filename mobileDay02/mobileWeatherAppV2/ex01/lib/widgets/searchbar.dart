@@ -28,13 +28,14 @@ class SearchFieldState extends State<SearchField> {
     super.initState();
 
     _subscription = _searchSubject
-        .debounceTime(const Duration(milliseconds: 300))
+        .debounceTime(const Duration(milliseconds: 3000))
         .distinct()
         .switchMap((query) => (query.isEmpty
             ? Stream.value(null)
             : searchLocationByName(query).asStream()))
         .listen((locations) {
       if (locations != null) {
+        print('locatie:');
         print(locations);
       } else {
         print('No locations');
