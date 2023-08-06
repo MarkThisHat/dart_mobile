@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 
-class BodyTabBarView extends StatelessWidget {
+class BodyTabBarView extends StatefulWidget {
   final TabController tabController;
   final String? displayText;
 
-  const BodyTabBarView(
-      {super.key, required this.tabController, required this.displayText});
+  const BodyTabBarView({
+    Key? key,
+    required this.tabController,
+    required this.displayText,
+  }) : super(key: key);
+
+  @override
+  BodyTabBarViewState createState() => BodyTabBarViewState();
+}
+
+class BodyTabBarViewState extends State<BodyTabBarView> {
+  List<Map<String, dynamic>>? searchResults;
 
   @override
   Widget build(BuildContext context) {
@@ -14,11 +24,11 @@ class BodyTabBarView extends StatelessWidget {
     return Container(
       color: colorScheme.background,
       child: TabBarView(
-        controller: tabController,
+        controller: widget.tabController,
         children: [
-          _buildTabContent('Currently', displayText, colorScheme),
-          _buildTabContent('Today', displayText, colorScheme),
-          _buildTabContent('Weekly', displayText, colorScheme),
+          _buildTabContent('Currently', widget.displayText, colorScheme),
+          _buildTabContent('Today', widget.displayText, colorScheme),
+          _buildTabContent('Weekly', widget.displayText, colorScheme),
         ],
       ),
     );
@@ -49,5 +59,11 @@ class BodyTabBarView extends StatelessWidget {
         textAlign: TextAlign.center,
       ),
     );
+  }
+
+  void handleSearchResults(List<Map<String, dynamic>> results) {
+    setState(() {
+      searchResults = results;
+    });
   }
 }

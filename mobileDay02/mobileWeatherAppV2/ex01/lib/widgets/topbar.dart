@@ -6,12 +6,14 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final Function(String?) updateText;
   final TextEditingController searchController;
+  final ValueChanged<List<Map<String, dynamic>>> onSearchResults;
 
   const TopBar({
     super.key,
     required this.title,
     required this.updateText,
     required this.searchController,
+    required this.onSearchResults,
   });
 
   @override
@@ -30,6 +32,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
             controller: searchController,
             updateText: updateText,
             color: scheme.onPrimary,
+            onSearchResults: onSearchResults,
           ),
           GeoLocationButton(
             updateText: updateText,

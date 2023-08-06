@@ -35,6 +35,7 @@ class _MainPageState extends State<MainPage>
     with SingleTickerProviderStateMixin {
   late TabController _controller;
   final searchController = TextEditingController();
+  List<Map<String, dynamic>> searchResults = [];
   String? displayText = '';
 
   @override
@@ -44,10 +45,26 @@ class _MainPageState extends State<MainPage>
         title: widget.title,
         updateText: updateText,
         searchController: searchController,
+        onSearchResults: (results) {
+          setState(() {
+            searchResults = results;
+          });
+        },
       ),
-      body: BodyTabBarView(
-        tabController: _controller,
-        displayText: displayText,
+      body: Stack(
+        children: [
+          BodyTabBarView(
+            tabController: _controller,
+            displayText: displayText,
+          ),
+          if (searchResults.isNotEmpty)
+            Positioned(
+              top: 10, // adjust as needed
+              left: 10,
+              right: 10,
+              child: ListViewOverlay(searchResults: searchResults),
+            ),
+        ],
       ),
       bottomNavigationBar: FootBar(controller: _controller),
     );

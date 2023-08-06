@@ -7,12 +7,14 @@ class SearchField extends StatefulWidget {
   final TextEditingController controller;
   final Function(String) updateText;
   final Color color;
+  final ValueChanged<List<Map<String, dynamic>>> onSearchResults;
 
   const SearchField({
     super.key,
     required this.controller,
     required this.updateText,
     required this.color,
+    required this.onSearchResults,
   });
 
   @override
@@ -22,6 +24,7 @@ class SearchField extends StatefulWidget {
 class SearchFieldState extends State<SearchField> {
   final BehaviorSubject<String> _searchSubject = BehaviorSubject<String>();
   StreamSubscription<List<Map<String, dynamic>>?>? _subscription;
+  List<Map<String, dynamic>> _locations = [];
 
   @override
   void initState() {
@@ -35,11 +38,11 @@ class SearchFieldState extends State<SearchField> {
             : searchLocationByName(query).asStream()))
         .listen((locations) {
       if (locations != null) {
-        print('locatie:');
-        print(locations);
+        _locations = locations;
       } else {
-        print('No locations');
+        _locations = [];
       }
+      widget.onSearchResults(_locations);
     });
 
     widget.controller.addListener(() {
