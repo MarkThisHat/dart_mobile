@@ -50,11 +50,13 @@ class LocationRow extends StatelessWidget {
 class LocationTable extends StatelessWidget {
   final List<Map<String, dynamic>> locations;
   final String query;
+  final void Function(Map<String, dynamic>) onItemTap;
 
   const LocationTable({
     super.key,
     required this.locations,
     required this.query,
+    required this.onItemTap,
   });
 
   @override
@@ -63,11 +65,14 @@ class LocationTable extends StatelessWidget {
       itemCount: locations.length,
       itemBuilder: (context, index) {
         final location = locations[index];
-        return LocationRow(
-          name: location['name'],
-          region: location['admin1'] ?? 'N/A',
-          country: location['country'],
-          query: query,
+        return GestureDetector(
+          onTap: () => onItemTap(location),
+          child: LocationRow(
+            name: location['name'],
+            region: location['admin1'] ?? 'N/A',
+            country: location['country'],
+            query: query,
+          ),
         );
       },
     );

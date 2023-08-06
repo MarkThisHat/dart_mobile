@@ -4,11 +4,13 @@ import 'searchrow.dart';
 class ListViewOverlay extends StatelessWidget {
   final List<Map<String, dynamic>> searchResults;
   final String currentSearchTerm;
+  final void Function(Map<String, dynamic>) onItemTap;
 
   const ListViewOverlay({
     super.key,
     required this.searchResults,
     required this.currentSearchTerm,
+    required this.onItemTap,
   });
 
   @override
@@ -19,6 +21,7 @@ class ListViewOverlay extends StatelessWidget {
       child: LocationTable(
         locations: searchResults,
         query: currentSearchTerm,
+        onItemTap: onItemTap,
       ),
     );
   }

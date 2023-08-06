@@ -65,6 +65,7 @@ class _MainPageState extends State<MainPage>
               child: ListViewOverlay(
                 searchResults: searchResults,
                 currentSearchTerm: searchController.text,
+                onItemTap: (location) => handleSubmission(location: location),
               ),
             ),
         ],
@@ -90,5 +91,22 @@ class _MainPageState extends State<MainPage>
     setState(() {
       displayText = newValue;
     });
+  }
+
+  void handleSubmission({String? value, Map<String, dynamic>? location}) {
+    if (location != null &&
+        location.containsKey('latitude') &&
+        location.containsKey('longitude')) {
+      String latLong = "${location['latitude']} , ${location['longitude']}";
+      updateText(latLong);
+    } else if (value != null) {
+      updateText(value);
+    }
+
+    setState(() {
+      searchResults = [];
+    });
+
+    searchController.clear();
   }
 }
