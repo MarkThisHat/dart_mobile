@@ -31,7 +31,7 @@ class SearchFieldState extends State<SearchField> {
     super.initState();
 
     _subscription = _searchSubject
-        .debounceTime(const Duration(milliseconds: 3000))
+        .debounceTime(const Duration(milliseconds: 1000))
         .distinct()
         .switchMap((query) => (query.isEmpty
             ? Stream.value(null)
@@ -57,10 +57,7 @@ class SearchFieldState extends State<SearchField> {
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: TextField(
           controller: widget.controller,
-          onSubmitted: (value) {
-            widget.updateText(value);
-            widget.controller.clear();
-          },
+          onSubmitted: _handleSubmission,
           cursorColor: widget.color,
           decoration: _buildTextFieldDecoration(widget.color),
           style: TextStyle(fontSize: 16.0, color: widget.color),
@@ -94,5 +91,18 @@ class SearchFieldState extends State<SearchField> {
     _searchSubject.close();
     _subscription?.cancel();
     super.dispose();
+  }
+
+  void _handleSubmission(String value) {
+    if (_locations.isNotEmpty &&
+        _locations[0].containsKey('latitude') &&
+        _locations[0].containsKey('longitude')) {
+      String latLon =
+          "${_locations[0]['latitude']} , ${_locations[0]['longitude']}";
+      widget.updateText(latLon);
+    } else {
+      widget.updateText(value);
+    }
+    widget.controller.clear();
   }
 }

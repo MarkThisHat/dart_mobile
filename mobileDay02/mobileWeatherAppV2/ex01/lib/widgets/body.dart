@@ -5,10 +5,10 @@ class BodyTabBarView extends StatefulWidget {
   final String? displayText;
 
   const BodyTabBarView({
-    Key? key,
+    super.key,
     required this.tabController,
     required this.displayText,
-  }) : super(key: key);
+  });
 
   @override
   BodyTabBarViewState createState() => BodyTabBarViewState();

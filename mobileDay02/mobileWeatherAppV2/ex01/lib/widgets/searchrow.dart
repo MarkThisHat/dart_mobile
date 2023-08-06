@@ -7,12 +7,12 @@ class LocationRow extends StatelessWidget {
   final String query;
 
   const LocationRow({
-    Key? key,
+    super.key,
     required this.name,
     required this.region,
     required this.country,
     required this.query,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -52,10 +52,10 @@ class LocationTable extends StatelessWidget {
   final String query;
 
   const LocationTable({
-    Key? key,
+    super.key,
     required this.locations,
     required this.query,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

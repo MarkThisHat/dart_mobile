@@ -20,8 +20,6 @@ Future<List<Map<String, dynamic>>?> searchLocationByName(String searchTerm,
         return List<Map<String, dynamic>>.from(results);
       }
     }
-  } else {
-    print('Failed to fetch locations. Error: ${response.body}');
   }
   return null;
 }
