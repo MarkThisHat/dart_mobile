@@ -96,13 +96,22 @@ class SearchFieldState extends State<SearchField> {
   }
 
   void _handleSubmission(String value) {
-    if (_locations.isNotEmpty &&
-        _locations[0].containsKey('latitude') &&
-        _locations[0].containsKey('longitude')) {
-      widget.onLocationSelected(_locations[0]);
-    } else {
-      widget.onLocationSelected(null);
-    }
+    searchLocationByName(value).then((locations) {
+      if (locations != null &&
+          locations.isNotEmpty &&
+          locations[0].containsKey('latitude') &&
+          locations[0].containsKey('longitude')) {
+        _locations = locations;
+        widget.onLocationSelected(_locations[0]);
+        widget.updateText(
+            "${_locations[0]['latitude']} , ${_locations[0]['longitude']}",
+            DisplayTextState.valid);
+      } else {
+        widget.onLocationSelected(null);
+        widget.updateText(value, DisplayTextState.submissionError);
+      }
+    });
+
     widget.controller.clear();
   }
 }

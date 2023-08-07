@@ -64,16 +64,15 @@ class BodyTabBarViewState extends State<BodyTabBarView> {
 
   String _getDisplayText(
       String label, String? displayText, DisplayTextState displayState) {
-    {
-      switch (displayState) {
-        case DisplayTextState.valid:
-          return '$label\n$displayText';
-        case DisplayTextState.geolocationError:
-          return displayText ??
-              'Geolocation is not available, please enable it in your App settings';
-        default:
-          return 'An error ocurred.';
-      }
+    switch (displayState) {
+      case DisplayTextState.valid:
+        return '$label\n$displayText';
+      case DisplayTextState.geolocationError:
+        return 'Geolocation is not available. Please enable it in your App settings.';
+      case DisplayTextState.submissionError:
+        return 'Couldn\'t locate $displayText.';
+      default:
+        return 'An error ocurred.';
     }
   }
 }

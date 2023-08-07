@@ -62,9 +62,9 @@ class _MainPageState extends State<MainPage>
           ),
           if (searchResults.isNotEmpty)
             Positioned(
-              top: 10, // adjust
-              left: 10,
-              right: 10,
+              top: 0, // adjust
+              left: 144,
+              right: 60,
               child: ListViewOverlay(
                 searchResults: searchResults,
                 currentSearchTerm: searchController.text,
