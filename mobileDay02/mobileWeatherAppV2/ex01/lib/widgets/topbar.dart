@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'geobutton.dart';
 import 'searchbar.dart';
+import 'widgets.dart';
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final Function(String?) updateText;
+  final UpdateTextCallback updateText;
   final TextEditingController searchController;
   final ValueChanged<List<Map<String, dynamic>>> onSearchResults;
+  final ValueChanged<Map<String, dynamic>?> onLocationSelected;
 
-  const TopBar({
-    super.key,
-    required this.title,
-    required this.updateText,
-    required this.searchController,
-    required this.onSearchResults,
-  });
+  const TopBar(
+      {super.key,
+      required this.title,
+      required this.updateText,
+      required this.searchController,
+      required this.onSearchResults,
+      required this.onLocationSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
             updateText: updateText,
             color: scheme.onPrimary,
             onSearchResults: onSearchResults,
+            onLocationSelected: onLocationSelected,
           ),
           GeoLocationButton(
             updateText: updateText,

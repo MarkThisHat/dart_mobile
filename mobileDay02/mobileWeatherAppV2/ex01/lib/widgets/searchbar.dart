@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import '../services/api.dart';
+import 'widgets.dart';
 import 'dart:async';
 
 class SearchField extends StatefulWidget {
   final TextEditingController controller;
-  final Function(String) updateText;
+  final UpdateTextCallback updateText;
   final Color color;
   final ValueChanged<List<Map<String, dynamic>>> onSearchResults;
+  final ValueChanged<Map<String, dynamic>?> onLocationSelected;
 
-  const SearchField({
-    super.key,
-    required this.controller,
-    required this.updateText,
-    required this.color,
-    required this.onSearchResults,
-  });
+  const SearchField(
+      {super.key,
+      required this.controller,
+      required this.updateText,
+      required this.color,
+      required this.onSearchResults,
+      required this.onLocationSelected});
 
   @override
   SearchFieldState createState() => SearchFieldState();
@@ -97,11 +99,9 @@ class SearchFieldState extends State<SearchField> {
     if (_locations.isNotEmpty &&
         _locations[0].containsKey('latitude') &&
         _locations[0].containsKey('longitude')) {
-      String latLon =
-          "${_locations[0]['latitude']} , ${_locations[0]['longitude']}";
-      widget.updateText(latLon);
+      widget.onLocationSelected(_locations[0]);
     } else {
-      widget.updateText(value);
+      widget.onLocationSelected(null);
     }
     widget.controller.clear();
   }

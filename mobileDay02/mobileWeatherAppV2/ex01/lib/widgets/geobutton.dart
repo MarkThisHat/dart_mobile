@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../services/gps.dart';
+import 'widgets.dart';
 
 class GeoLocationButton extends StatelessWidget {
-  final Function(String?) updateText;
+  final UpdateTextCallback updateText;
   final Color color;
 
   const GeoLocationButton({
@@ -17,7 +18,12 @@ class GeoLocationButton extends StatelessWidget {
       icon: Icon(Icons.location_on, color: color),
       onPressed: () async {
         String? coordinates = await getCoordinates();
-        updateText(coordinates);
+        updateText(
+          coordinates,
+          coordinates != null
+              ? DisplayTextState.valid
+              : DisplayTextState.geolocationError,
+        );
       },
     );
   }

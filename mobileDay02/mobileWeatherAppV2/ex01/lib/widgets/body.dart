@@ -1,14 +1,16 @@
+import 'package:ex01/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class BodyTabBarView extends StatefulWidget {
   final TabController tabController;
   final String? displayText;
+  final DisplayTextState displayTextState;
 
-  const BodyTabBarView({
-    super.key,
-    required this.tabController,
-    required this.displayText,
-  });
+  const BodyTabBarView(
+      {super.key,
+      required this.tabController,
+      required this.displayText,
+      required this.displayTextState});
 
   @override
   BodyTabBarViewState createState() => BodyTabBarViewState();
@@ -24,32 +26,33 @@ class BodyTabBarViewState extends State<BodyTabBarView> {
       child: TabBarView(
         controller: widget.tabController,
         children: [
-          _buildTabContent('Currently', widget.displayText, colorScheme),
-          _buildTabContent('Today', widget.displayText, colorScheme),
-          _buildTabContent('Weekly', widget.displayText, colorScheme),
+          _buildTabContent('Currently', widget.displayText, colorScheme,
+              widget.displayTextState),
+          _buildTabContent('Today', widget.displayText, colorScheme,
+              widget.displayTextState),
+          _buildTabContent('Weekly', widget.displayText, colorScheme,
+              widget.displayTextState),
         ],
       ),
     );
   }
 
-  Widget _buildTabContent(
-      String label, String? displayText, ColorScheme scheme) {
+  Widget _buildTabContent(String label, String? displayText, ColorScheme scheme,
+      DisplayTextState displayState) {
     TextStyle style = TextStyle(fontSize: 28.0, color: scheme.onBackground);
     TextStyle errorStyle = TextStyle(fontSize: 20.0, color: scheme.error);
 
     if (displayText != null) {
-      return (_buildTabContentCenter(label, displayText, style));
+      return (_buildTabContentCenter(label, displayText, style, displayState));
     } else {
-      return (_buildTabContentCenter(label, displayText, errorStyle));
+      return (_buildTabContentCenter(
+          label, displayText, errorStyle, displayState));
     }
   }
 
-  Center _buildTabContentCenter(
-      String label, String? displayText, TextStyle style) {
-    String showText = displayText != null
-        ? '$label\n$displayText'
-        : 'Geolocation is not available, please enable it in your App settings';
-
+  Center _buildTabContentCenter(String label, String? displayText,
+      TextStyle style, DisplayTextState displayState) {
+    String showText = _getDisplayText(label, displayText, displayState);
     return Center(
       child: Text(
         showText,
@@ -57,5 +60,20 @@ class BodyTabBarViewState extends State<BodyTabBarView> {
         textAlign: TextAlign.center,
       ),
     );
+  }
+
+  String _getDisplayText(
+      String label, String? displayText, DisplayTextState displayState) {
+    {
+      switch (displayState) {
+        case DisplayTextState.valid:
+          return '$label\n$displayText';
+        case DisplayTextState.geolocationError:
+          return displayText ??
+              'Geolocation is not available, please enable it in your App settings';
+        default:
+          return 'An error ocurred.';
+      }
+    }
   }
 }

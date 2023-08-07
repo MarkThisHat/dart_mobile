@@ -12,7 +12,7 @@ class WeatherApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Day 01 exercises',
+      title: 'Day 02 exercises',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
         useMaterial3: true,
@@ -37,6 +37,7 @@ class _MainPageState extends State<MainPage>
   final searchController = TextEditingController();
   List<Map<String, dynamic>> searchResults = [];
   String? displayText = '';
+  DisplayTextState displayState = DisplayTextState.valid;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +46,7 @@ class _MainPageState extends State<MainPage>
         title: widget.title,
         updateText: updateText,
         searchController: searchController,
+        onLocationSelected: handleLocationSelection,
         onSearchResults: (results) {
           setState(() {
             searchResults = results;
@@ -56,6 +58,7 @@ class _MainPageState extends State<MainPage>
           BodyTabBarView(
             tabController: _controller,
             displayText: displayText,
+            displayTextState: displayState,
           ),
           if (searchResults.isNotEmpty)
             Positioned(
@@ -65,7 +68,7 @@ class _MainPageState extends State<MainPage>
               child: ListViewOverlay(
                 searchResults: searchResults,
                 currentSearchTerm: searchController.text,
-                onItemTap: (location) => handleSubmission(location: location),
+                onItemTap: handleLocationSelection,
               ),
             ),
         ],
@@ -87,26 +90,24 @@ class _MainPageState extends State<MainPage>
     super.dispose();
   }
 
-  void updateText(String? newValue) {
+  void updateText(String? newValue, DisplayTextState newState) {
     setState(() {
       displayText = newValue;
+      displayState = newState;
     });
   }
 
-  void handleSubmission({String? value, Map<String, dynamic>? location}) {
+  void handleLocationSelection(Map<String, dynamic>? location) {
     if (location != null &&
         location.containsKey('latitude') &&
         location.containsKey('longitude')) {
       String latLong = "${location['latitude']} , ${location['longitude']}";
-      updateText(latLong);
-    } else if (value != null) {
-      updateText(value);
+      updateText(latLong, DisplayTextState.valid);
+    } else {
+      updateText('No search result', DisplayTextState.submissionError);
     }
-
     setState(() {
       searchResults = [];
     });
-
-    searchController.clear();
   }
 }

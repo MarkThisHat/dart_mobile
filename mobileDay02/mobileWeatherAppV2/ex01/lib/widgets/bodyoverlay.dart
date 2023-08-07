@@ -15,9 +15,12 @@ class ListViewOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return Container(
       height: 300,
-      color: Colors.white.withOpacity(0.9), // semi-transparent background
+      color: colorScheme.primaryContainer
+          .withOpacity(0.9), // semi-transparent background
       child: LocationTable(
         locations: searchResults,
         query: currentSearchTerm,
