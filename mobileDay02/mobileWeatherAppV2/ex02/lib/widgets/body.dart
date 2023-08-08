@@ -26,9 +26,11 @@ class BodyTabBarViewState extends State<BodyTabBarView> {
     List<String> segments =
         (showText ?? "").split('|').where((s) => s.isNotEmpty).toList();
 
-    if (showText != null && segments.length != 6) {
+    if (showText != null &&
+        textState != DisplayTextState.initial &&
+        segments.length != 6) {
       textState = DisplayTextState.parsingError;
-    } else {
+    } else if (segments.length > 3) {
       locationInfo = _pickLocation(segments);
     }
     return Container(
@@ -72,6 +74,8 @@ class BodyTabBarViewState extends State<BodyTabBarView> {
   String _getDisplayText(
       String label, String? displayText, DisplayTextState displayState) {
     switch (displayState) {
+      case DisplayTextState.initial:
+        return 'Welcome to Weather App V2';
       case DisplayTextState.valid:
         return '$label\n$displayText';
       case DisplayTextState.geolocationError:

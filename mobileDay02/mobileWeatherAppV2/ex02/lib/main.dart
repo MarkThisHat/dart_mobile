@@ -37,7 +37,7 @@ class _MainPageState extends State<MainPage>
   final searchController = TextEditingController();
   List<Map<String, dynamic>> searchResults = [];
   String? displayText = '';
-  DisplayTextState displayState = DisplayTextState.valid;
+  DisplayTextState displayState = DisplayTextState.initial;
 
   @override
   Widget build(BuildContext context) {

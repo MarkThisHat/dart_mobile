@@ -8,6 +8,7 @@ export '../services/api.dart';
 typedef UpdateTextCallback = void Function(String?, DisplayTextState);
 
 enum DisplayTextState {
+  initial,
   geolocationError,
   apiError,
   submissionError,
