@@ -74,9 +74,9 @@ String? parseWeatherData(
   list[5] = _getWeeklyInfo(weather['daily']);
 
   /*print('Location: $location');
-  print('API response: $weather');*/
+  print('API response: $weather');
 
-  print(list.join('\n'));
+  print(list.join('\n'));*/
   return list.join('|');
 }
 

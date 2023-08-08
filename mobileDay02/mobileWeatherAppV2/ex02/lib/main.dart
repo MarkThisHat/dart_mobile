@@ -101,19 +101,15 @@ class _MainPageState extends State<MainPage>
         if (weatherData == null) {
           newState = DisplayTextState.apiError;
         } else {
-          parseWeatherData(location, weatherData);
+          displayText = parseWeatherData(location, weatherData);
         }
       }
-      setState(() {
-        //displayText = TODO(weatherdata);
-        //displayState = TODO(weatherdata);
-      });
-    } else {
-      setState(() {
-        displayText = newValue;
-        displayState = newState;
-      });
+      print('pog $displayText');
     }
+    setState(() {
+      displayText = newValue;
+      displayState = newState;
+    });
   }
 
   void handleLocationSelection(Map<String, dynamic>? location) async {
@@ -121,7 +117,7 @@ class _MainPageState extends State<MainPage>
         location.containsKey('latitude') &&
         location.containsKey('longitude')) {
       String params =
-          "${location['latitude']},${location['longitude']},${location['name']},${location['country']},${location['admin1']}";
+          "vsf ${location['latitude']},${location['longitude']},${location['name']},${location['country']},${location['admin1']}";
       updateText(params, DisplayTextState.valid);
     } else {
       updateText('', DisplayTextState.submissionError);

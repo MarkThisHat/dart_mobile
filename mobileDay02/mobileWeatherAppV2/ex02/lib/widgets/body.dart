@@ -20,7 +20,7 @@ class BodyTabBarViewState extends State<BodyTabBarView> {
   @override
   Widget build(BuildContext context) {
     ColorScheme colorScheme = Theme.of(context).colorScheme;
-
+    print('displaytext: ${widget.displayText}');
     return Container(
       color: colorScheme.background,
       child: TabBarView(
