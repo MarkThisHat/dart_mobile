@@ -43,7 +43,6 @@ class _MainPageState extends State<MainPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(
-//        title: Icon(),
         updateText: updateText,
         searchController: searchController,
         onLocationSelected: handleLocationSelection,
