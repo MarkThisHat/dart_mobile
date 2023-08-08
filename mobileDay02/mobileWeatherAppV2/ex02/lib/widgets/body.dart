@@ -38,30 +38,23 @@ class BodyTabBarViewState extends State<BodyTabBarView> {
       child: TabBarView(
         controller: widget.tabController,
         children: [
-          _buildTabContent(locationInfo, showText, colorScheme, textState),
-          _buildTabContent(locationInfo, showText, colorScheme, textState),
-          _buildTabContent(locationInfo, showText, colorScheme, textState),
+          _buildTabContent(locationInfo),
+          _buildTabContent(locationInfo),
+          _buildTabContent(locationInfo),
         ],
       ),
     );
   }
 
-  Widget _buildTabContent(String label, String? displayText, ColorScheme scheme,
-      DisplayTextState displayState) {
-    TextStyle style = TextStyle(fontSize: 28.0, color: scheme.onBackground);
+  Widget _buildTabContent(String label) {
+    ColorScheme scheme = Theme.of(context).colorScheme;
+    TextStyle baseStyle = TextStyle(fontSize: 28.0, color: scheme.onBackground);
     TextStyle errorStyle = TextStyle(fontSize: 20.0, color: scheme.error);
+    TextStyle style = widget.displayText != null ? baseStyle : errorStyle;
 
-    if (displayText != null) {
-      return (_buildTabContentCenter(label, displayText, style, displayState));
-    } else {
-      return (_buildTabContentCenter(
-          label, displayText, errorStyle, displayState));
-    }
-  }
+    String showText =
+        _getDisplayText(label, widget.displayText, widget.displayTextState);
 
-  Center _buildTabContentCenter(String label, String? displayText,
-      TextStyle style, DisplayTextState displayState) {
-    String showText = _getDisplayText(label, displayText, displayState);
     return Center(
       child: Text(
         showText,
@@ -70,25 +63,25 @@ class BodyTabBarViewState extends State<BodyTabBarView> {
       ),
     );
   }
+}
 
-  String _getDisplayText(
-      String label, String? displayText, DisplayTextState displayState) {
-    switch (displayState) {
-      case DisplayTextState.initial:
-        return 'Welcome to Weather App V2';
-      case DisplayTextState.valid:
-        return '$label\n$displayText';
-      case DisplayTextState.geolocationError:
-        return 'Geolocation is not available. Please enable it in your App settings.';
-      case DisplayTextState.apiError:
-        return 'Could not fetch weather information online';
-      case DisplayTextState.parsingError:
-        return 'Received incomplete data from API';
-      case DisplayTextState.submissionError:
-        return 'Couldn\'t locate $displayText.';
-      default:
-        return 'An error ocurred.';
-    }
+String _getDisplayText(
+    String label, String? displayText, DisplayTextState displayState) {
+  switch (displayState) {
+    case DisplayTextState.initial:
+      return 'Welcome to Weather App V2';
+    case DisplayTextState.valid:
+      return '$label\n$displayText';
+    case DisplayTextState.geolocationError:
+      return 'Geolocation is not available. Please enable it in your App settings.';
+    case DisplayTextState.apiError:
+      return 'Could not fetch weather information online';
+    case DisplayTextState.parsingError:
+      return 'Received incomplete data from API';
+    case DisplayTextState.submissionError:
+      return 'Couldn\'t locate $displayText.';
+    default:
+      return 'An error ocurred.';
   }
 }
 

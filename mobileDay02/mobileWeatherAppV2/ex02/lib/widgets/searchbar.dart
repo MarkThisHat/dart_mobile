@@ -34,10 +34,14 @@ class SearchFieldState extends State<SearchField> {
     _subscription = _searchSubject
         .debounceTime(const Duration(milliseconds: 1000))
         .distinct()
-        .switchMap((query) => (query.isEmpty
-            ? Stream.value(null)
-            : searchLocationByName(query).asStream()))
-        .listen((locations) {
+        .switchMap((query) {
+      if (query.length < 2) {
+        return Stream.value(null);
+      }
+      return query.isEmpty
+          ? Stream.value(null)
+          : searchLocationByName(query).asStream();
+    }).listen((locations) {
       if (locations != null) {
         _locations = locations;
       } else {
