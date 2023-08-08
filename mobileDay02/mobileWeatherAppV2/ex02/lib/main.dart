@@ -100,8 +100,9 @@ class _MainPageState extends State<MainPage>
             await fetchWeather(location.dblLat!, location.dblLon!);
         if (weatherData == null) {
           newState = DisplayTextState.apiError;
+        } else {
+          parseWeatherData(location, weatherData);
         }
-        parseWeatherData(location, weatherData);
       }
       setState(() {
         //displayText = TODO(weatherdata);
