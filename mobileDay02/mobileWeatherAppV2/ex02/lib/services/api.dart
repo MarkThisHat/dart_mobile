@@ -22,3 +22,33 @@ Future<List<Map<String, dynamic>>?> searchLocationByName(String searchTerm,
   }
   return null;
 }
+
+Future<Map<String, dynamic>> fetchWeather(
+    double latitude, double longitude) async {
+  // Base URL for the API
+  const baseUrl = 'https://api.open-meteo.com/v1/forecast';
+
+  // Parameters required for the request
+  var queryParams = {
+    'latitude': latitude.toString(),
+    'longitude': longitude.toString(),
+    'current_weather': 'true',
+    'hourly': 'temperature_2m,weathercode,windspeed_10m',
+    'daily': 'temperature_2m_max,temperature_2m_min,weathercode',
+    'timezone':
+        'auto' // This makes sure that timestamps match the location's timezone
+  };
+
+  // Constructing the full URL
+  final uri = Uri.parse(baseUrl).replace(queryParameters: queryParams);
+  print('Request: $uri');
+  // Making the GET request
+  final response = await http.get(uri);
+
+  // Decoding the response
+  if (response.statusCode == 200) {
+    return json.decode(response.body);
+  } else {
+    throw Exception('Failed to fetch weather data');
+  }
+}

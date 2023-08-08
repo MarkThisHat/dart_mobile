@@ -38,7 +38,7 @@ class GeoLocationButton extends StatelessWidget {
     if (permission == PermissionStatus.granted) {
       LocationData? locationData = await gpsService.getCurrentLocation();
       if (locationData != null) {
-        return '${locationData.latitude}, ${locationData.longitude}';
+        return '${locationData.latitude},${locationData.longitude}';
       }
     }
     return null;

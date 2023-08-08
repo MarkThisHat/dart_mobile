@@ -62,7 +62,7 @@ class _MainPageState extends State<MainPage>
           ),
           if (searchResults.isNotEmpty)
             Positioned(
-              top: 0, // adjust
+              top: 0,
               left: 144,
               right: 60,
               child: ListViewOverlay(
@@ -90,24 +90,61 @@ class _MainPageState extends State<MainPage>
     super.dispose();
   }
 
-  void updateText(String? newValue, DisplayTextState newState) {
-    setState(() {
-      displayText = newValue;
-      displayState = newState;
-    });
+  Future<void> updateText(String? newValue, DisplayTextState newState) async {
+    WeatherLocation location;
+
+    if (newValue != null && newValue.split(',').length > 2) {
+      location = convertToWeatherLocation(newValue.split(','));
+      if (location.dblLat != null && location.dblLon != null) {
+        Map<String, dynamic> weatherData =
+            await fetchWeather(location.dblLat!, location.dblLon!);
+        print(weatherData);
+      }
+      setState(() {
+        //displayText = TODO(weatherdata);
+        //displayState = TODO(weatherdata);
+      });
+    } else {
+      setState(() {
+        displayText = newValue;
+        displayState = newState;
+      });
+    }
   }
 
-  void handleLocationSelection(Map<String, dynamic>? location) {
+  void handleLocationSelection(Map<String, dynamic>? location) async {
     if (location != null &&
         location.containsKey('latitude') &&
         location.containsKey('longitude')) {
-      String latLong = "${location['latitude']} , ${location['longitude']}";
-      updateText(latLong, DisplayTextState.valid);
+      String params =
+          "${location['latitude']},${location['longitude']},${location['name']},${location['country']},${location['admin1']}";
+      updateText(params, DisplayTextState.valid);
     } else {
-      updateText('No search result', DisplayTextState.submissionError);
+      updateText('', DisplayTextState.submissionError);
     }
     setState(() {
       searchResults = [];
     });
+  }
+
+  WeatherLocation convertToWeatherLocation(List<String?> values) {
+    double? doubleLat;
+    double? doubleLon;
+
+    try {
+      doubleLat = double.parse(values[0]!);
+      doubleLon = double.parse(values[1]!);
+    } catch (_) {
+      doubleLat = null;
+      doubleLon = null;
+    }
+    return WeatherLocation(
+        latitude: values[0]!,
+        longitude: values[1]!,
+        cityName: values.length > 2 ? values[2] : null,
+        country: values.length > 3 ? values[3] : null,
+        region: values.length > 4 ? values[4] : null,
+        dblLat: doubleLat,
+        dblLon: doubleLon);
   }
 }

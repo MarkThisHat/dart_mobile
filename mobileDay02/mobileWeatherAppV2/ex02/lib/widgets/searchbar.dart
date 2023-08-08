@@ -104,7 +104,7 @@ class SearchFieldState extends State<SearchField> {
         _locations = locations;
         widget.onLocationSelected(_locations[0]);
         widget.updateText(
-            "${_locations[0]['latitude']} , ${_locations[0]['longitude']}",
+            "${_locations[0]['latitude']},${_locations[0]['longitude']},${_locations[0]['name']},${_locations[0]['country']},${_locations[0]['admin1']}",
             DisplayTextState.valid);
       } else {
         widget.onLocationSelected(null);
