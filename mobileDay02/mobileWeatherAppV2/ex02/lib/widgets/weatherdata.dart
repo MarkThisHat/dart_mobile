@@ -46,7 +46,7 @@ WeatherLocation convertToWeatherLocation(List<String?> values) {
 
 String? parseWeatherData(
     WeatherLocation location, Map<String, dynamic> weather) {
-  int n = 5;
+  int n = 6;
   List<String> list = List<String>.filled(n, '');
 
   if (location.cityName != null) {
@@ -71,11 +71,13 @@ String? parseWeatherData(
 
   list[4] = _getTodayInfo(weather['hourly']);
 
+  list[5] = _getWeeklyInfo(weather['daily']);
+
   /*print('Location: $location');
   print('API response: $weather');*/
 
   print(list.join('\n'));
-  return null;
+  return list.join('|');
 }
 
 String _getCurrentInfo(Map<String, dynamic> current) {
@@ -116,6 +118,25 @@ String _getTodayInfo(Map<String, dynamic> today) {
   }
 
   return infoList.join(';');
+}
+
+String _getWeeklyInfo(Map<String, dynamic> weekly) {
+  List<String> weeklyInfo = [];
+
+  for (int i = 0; i < (weekly['time'] as List<dynamic>).length; i++) {
+    String date = (weekly['time'][i] as String);
+
+    String maxTemp =
+        weekly['temperature_2m_max'][i]?.toString() ?? 'Unknown Max Temp';
+    String minTemp =
+        weekly['temperature_2m_min'][i]?.toString() ?? 'Unknown Min Temp';
+
+    String weatherDesc = _getWeatherDescription(weekly['weathercode'][i]);
+
+    weeklyInfo.add('$date,$minTemp,$maxTemp,$weatherDesc');
+  }
+
+  return weeklyInfo.join(';');
 }
 
 String _getWeatherDescription(dynamic weatherCodeValue) {
