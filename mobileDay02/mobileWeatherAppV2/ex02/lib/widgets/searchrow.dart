@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class LocationRow extends StatelessWidget {
@@ -37,7 +39,7 @@ class LocationRow extends StatelessWidget {
     ]);
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(32, 4, 4, 4),
+      padding: const EdgeInsets.fromLTRB(8, 4, 4, 4),
       child: DefaultTextStyle(
         style: TextStyle(
           color: scheme.onPrimaryContainer,
@@ -84,26 +86,29 @@ class LocationTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      itemCount: locations.length,
-      itemBuilder: (context, index) {
-        final location = locations[index];
-        return GestureDetector(
-          onTap: () => onItemTap(location),
-          child: SizedBox(
-            height: 48,
-            child: LocationRow(
-              name: location['name'],
-              region: location['admin1'] ?? 'N/A',
-              country: location['country'],
-              query: query,
+    return Container(
+      color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.80),
+      child: ListView.separated(
+        itemCount: locations.length,
+        itemBuilder: (context, index) {
+          final location = locations[index];
+          return GestureDetector(
+            onTap: () => onItemTap(location),
+            child: SizedBox(
+              height: 48,
+              child: LocationRow(
+                name: location['name'],
+                region: location['admin1'] ?? 'N/A',
+                country: location['country'],
+                query: query,
+              ),
             ),
-          ),
-        );
-      },
-      separatorBuilder: (context, index) => Divider(
-        height: 1,
-        color: Theme.of(context).colorScheme.onPrimaryContainer,
+          );
+        },
+        separatorBuilder: (context, index) => Divider(
+          height: 1,
+          color: Theme.of(context).colorScheme.onPrimaryContainer,
+        ),
       ),
     );
   }

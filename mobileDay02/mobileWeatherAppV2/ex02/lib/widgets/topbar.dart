@@ -4,7 +4,6 @@ import 'searchbar.dart';
 import 'widgets.dart';
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
-  final String title;
   final UpdateTextCallback updateText;
   final TextEditingController searchController;
   final ValueChanged<List<Map<String, dynamic>>> onSearchResults;
@@ -12,7 +11,6 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
 
   const TopBar(
       {super.key,
-      required this.title,
       required this.updateText,
       required this.searchController,
       required this.onSearchResults,
@@ -29,7 +27,6 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
       titleSpacing: 0.0,
       title: Row(
         children: [
-          _buildTitle(scheme.onPrimary),
           SearchField(
             controller: searchController,
             updateText: updateText,
@@ -49,18 +46,4 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-
-  Widget _buildTitle(Color color) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 24.0, right: 24.0),
-      child: Text(
-        title,
-        style: TextStyle(
-          fontSize: 20.0,
-          fontWeight: FontWeight.bold,
-          color: color,
-        ),
-      ),
-    );
-  }
 }

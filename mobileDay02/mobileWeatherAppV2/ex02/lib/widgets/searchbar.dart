@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import '../services/api.dart';
 import 'widgets.dart';
 import 'dart:async';
 
@@ -73,18 +72,18 @@ class SearchFieldState extends State<SearchField> {
       hintText: "Search location...",
       hintStyle: TextStyle(fontSize: 16.0, color: color.withOpacity(0.5)),
       filled: false,
-      enabledBorder: _outlineInputBorder(color.withOpacity(0.5)),
-      focusedBorder: _outlineInputBorder(color),
-      prefixIcon: Icon(Icons.search, color: color.withOpacity(0.5)),
+      enabledBorder: InputBorder.none,
+      focusedBorder: InputBorder.none,
+      prefixIcon: Icon(Icons.search, color: color),
+      border: _outlineInputBorder(color),
     );
   }
 
   OutlineInputBorder _outlineInputBorder(Color color) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(
-        color: color,
-      ),
+      borderSide: BorderSide.none,
+      gapPadding: 0,
     );
   }
 

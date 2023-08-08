@@ -43,7 +43,7 @@ class _MainPageState extends State<MainPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(
-        title: widget.title,
+//        title: Icon(),
         updateText: updateText,
         searchController: searchController,
         onLocationSelected: handleLocationSelection,
@@ -63,8 +63,8 @@ class _MainPageState extends State<MainPage>
           if (searchResults.isNotEmpty)
             Positioned(
               top: 0,
-              left: 144,
-              right: 60,
+              left: 48,
+              right: 48,
               child: ListViewOverlay(
                 searchResults: searchResults,
                 currentSearchTerm: searchController.text,
