@@ -20,18 +20,25 @@ class BodyTabBarViewState extends State<BodyTabBarView> {
   @override
   Widget build(BuildContext context) {
     ColorScheme colorScheme = Theme.of(context).colorScheme;
-    print('displaytext: ${widget.displayText}');
+    String? showText = widget.displayText;
+    DisplayTextState textState = widget.displayTextState;
+    String locationInfo = '';
+    List<String> segments =
+        (showText ?? "").split('|').where((s) => s.isNotEmpty).toList();
+
+    if (showText != null && segments.length != 6) {
+      textState = DisplayTextState.parsingError;
+    } else {
+      locationInfo = _pickLocation(segments);
+    }
     return Container(
       color: colorScheme.background,
       child: TabBarView(
         controller: widget.tabController,
         children: [
-          _buildTabContent('Currently', widget.displayText, colorScheme,
-              widget.displayTextState),
-          _buildTabContent('Today', widget.displayText, colorScheme,
-              widget.displayTextState),
-          _buildTabContent('Weekly', widget.displayText, colorScheme,
-              widget.displayTextState),
+          _buildTabContent(locationInfo, showText, colorScheme, textState),
+          _buildTabContent(locationInfo, showText, colorScheme, textState),
+          _buildTabContent(locationInfo, showText, colorScheme, textState),
         ],
       ),
     );
@@ -71,10 +78,16 @@ class BodyTabBarViewState extends State<BodyTabBarView> {
         return 'Geolocation is not available. Please enable it in your App settings.';
       case DisplayTextState.apiError:
         return 'Could not fetch weather information online';
+      case DisplayTextState.parsingError:
+        return 'Received incomplete data from API';
       case DisplayTextState.submissionError:
         return 'Couldn\'t locate $displayText.';
       default:
         return 'An error ocurred.';
     }
   }
+}
+
+String _pickLocation(List<String> segments) {
+  return "${segments[0]}\n${segments[1]}\n${segments[2]}";
 }

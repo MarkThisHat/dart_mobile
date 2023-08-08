@@ -37,7 +37,6 @@ Future<Map<String, dynamic>?> fetchWeather(
   };
 
   final uri = Uri.parse(baseUrl).replace(queryParameters: queryParams);
-  print('Request: $uri');
 
   final response = await http.get(uri);
 

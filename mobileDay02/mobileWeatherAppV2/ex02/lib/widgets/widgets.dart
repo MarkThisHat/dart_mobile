@@ -11,5 +11,6 @@ enum DisplayTextState {
   geolocationError,
   apiError,
   submissionError,
+  parsingError,
   valid,
 }
