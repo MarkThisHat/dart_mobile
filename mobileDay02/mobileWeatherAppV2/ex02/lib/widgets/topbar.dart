@@ -37,6 +37,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
           GeoLocationButton(
             updateText: updateText,
             color: scheme.onPrimary,
+            onLocationSelected: onLocationSelected,
           ),
           const SizedBox(width: 8.0),
         ],

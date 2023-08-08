@@ -3,32 +3,41 @@ import '../services/gps.dart';
 import 'widgets.dart';
 
 class GeoLocationButton extends StatelessWidget {
+  final Function(Map<String, dynamic>?) onLocationSelected;
   final UpdateTextCallback updateText;
   final Color color;
 
-  const GeoLocationButton({
-    super.key,
-    required this.updateText,
-    required this.color,
-  });
+  const GeoLocationButton(
+      {super.key,
+      required this.updateText,
+      required this.color,
+      required this.onLocationSelected});
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.location_on, color: color),
       onPressed: () async {
-        String? coordinates = await getCoordinates();
-        updateText(
-          coordinates,
-          coordinates != null
-              ? DisplayTextState.valid
-              : DisplayTextState.geolocationError,
-        );
+        Map<String, dynamic>? coordinates = await getCoordinates();
+        if (coordinates != null) {
+          onLocationSelected({
+            'latitude': coordinates['latitude'].toString(),
+            'longitude': coordinates['longitude'].toString(),
+            'name': null,
+            'country': null,
+            'admin1': null
+          });
+        } else {
+          updateText(
+            null,
+            DisplayTextState.geolocationError,
+          );
+        }
       },
     );
   }
 
-  Future<String?> getCoordinates() async {
+  Future<Map<String, dynamic>?> getCoordinates() async {
     final gpsService = GpsService();
 
     if (!await gpsService.isLocationServiceEnabled()) {
@@ -38,7 +47,10 @@ class GeoLocationButton extends StatelessWidget {
     if (permission == PermissionStatus.granted) {
       LocationData? locationData = await gpsService.getCurrentLocation();
       if (locationData != null) {
-        return '${locationData.latitude},${locationData.longitude}';
+        return {
+          'latitude': locationData.latitude,
+          'longitude': locationData.longitude
+        };
       }
     }
     return null;

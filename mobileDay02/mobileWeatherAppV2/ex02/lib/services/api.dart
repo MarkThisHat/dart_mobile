@@ -39,7 +39,7 @@ Future<Map<String, dynamic>?> fetchWeather(
   final uri = Uri.parse(baseUrl).replace(queryParameters: queryParams);
 
   final response = await http.get(uri);
-  print(response.body);
+
   if (response.statusCode == 200) {
     return json.decode(response.body);
   }
