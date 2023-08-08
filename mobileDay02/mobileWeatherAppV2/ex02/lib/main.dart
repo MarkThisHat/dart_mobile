@@ -90,22 +90,7 @@ class _MainPageState extends State<MainPage>
     super.dispose();
   }
 
-  Future<void> updateText(String? newValue, DisplayTextState newState) async {
-    WeatherLocation location;
-
-    if (newValue != null && newValue.split(',').length > 2) {
-      location = convertToWeatherLocation(newValue.split(','));
-      if (location.dblLat != null && location.dblLon != null) {
-        Map<String, dynamic>? weatherData =
-            await fetchWeather(location.dblLat!, location.dblLon!);
-        if (weatherData == null) {
-          newState = DisplayTextState.apiError;
-        } else {
-          displayText = parseWeatherData(location, weatherData);
-        }
-      }
-      print('pog $displayText');
-    }
+  void updateText(String? newValue, DisplayTextState newState) {
     setState(() {
       displayText = newValue;
       displayState = newState;
@@ -116,14 +101,32 @@ class _MainPageState extends State<MainPage>
     if (location != null &&
         location.containsKey('latitude') &&
         location.containsKey('longitude')) {
-      String params =
-          "vsf ${location['latitude']},${location['longitude']},${location['name']},${location['country']},${location['admin1']}";
-      updateText(params, DisplayTextState.valid);
+      WeatherLocation weatherLocation = convertToWeatherLocation([
+        location['latitude'].toString(),
+        location['longitude'].toString(),
+        location['name'],
+        location['country'],
+        location['admin1']
+      ]);
+      await fetchAndUpdateWeather(weatherLocation);
     } else {
       updateText('', DisplayTextState.submissionError);
     }
     setState(() {
       searchResults = [];
     });
+  }
+
+  Future<void> fetchAndUpdateWeather(WeatherLocation location) async {
+    if (location.dblLat != null && location.dblLon != null) {
+      Map<String, dynamic>? weatherData =
+          await fetchWeather(location.dblLat!, location.dblLon!);
+      if (weatherData == null) {
+        updateText('', DisplayTextState.apiError);
+      } else {
+        displayText = parseWeatherData(location, weatherData);
+        updateText(displayText, DisplayTextState.valid);
+      }
+    }
   }
 }

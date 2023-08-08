@@ -97,15 +97,8 @@ class SearchFieldState extends State<SearchField> {
 
   void _handleSubmission(String value) {
     searchLocationByName(value).then((locations) {
-      if (locations != null &&
-          locations.isNotEmpty &&
-          locations[0].containsKey('latitude') &&
-          locations[0].containsKey('longitude')) {
-        _locations = locations;
-        widget.onLocationSelected(_locations[0]);
-        widget.updateText(
-            "${_locations[0]['latitude']},${_locations[0]['longitude']},${_locations[0]['name']},${_locations[0]['country']},${_locations[0]['admin1']}",
-            DisplayTextState.valid);
+      if (locations != null && locations.isNotEmpty) {
+        widget.onLocationSelected(locations[0]);
       } else {
         widget.onLocationSelected(null);
         widget.updateText(value, DisplayTextState.submissionError);
