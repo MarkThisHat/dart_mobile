@@ -69,6 +69,8 @@ class BodyTabBarViewState extends State<BodyTabBarView> {
         return '$label\n$displayText';
       case DisplayTextState.geolocationError:
         return 'Geolocation is not available. Please enable it in your App settings.';
+      case DisplayTextState.apiError:
+        return 'Could not fetch weather information online';
       case DisplayTextState.submissionError:
         return 'Couldn\'t locate $displayText.';
       default:

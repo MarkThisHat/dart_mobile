@@ -23,7 +23,7 @@ Future<List<Map<String, dynamic>>?> searchLocationByName(String searchTerm,
   return null;
 }
 
-Future<Map<String, dynamic>> fetchWeather(
+Future<Map<String, dynamic>?> fetchWeather(
     double latitude, double longitude) async {
   // Base URL for the API
   const baseUrl = 'https://api.open-meteo.com/v1/forecast';
@@ -48,7 +48,6 @@ Future<Map<String, dynamic>> fetchWeather(
   // Decoding the response
   if (response.statusCode == 200) {
     return json.decode(response.body);
-  } else {
-    throw Exception('Failed to fetch weather data');
   }
+  return null;
 }

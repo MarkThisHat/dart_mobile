@@ -96,9 +96,12 @@ class _MainPageState extends State<MainPage>
     if (newValue != null && newValue.split(',').length > 2) {
       location = convertToWeatherLocation(newValue.split(','));
       if (location.dblLat != null && location.dblLon != null) {
-        Map<String, dynamic> weatherData =
+        Map<String, dynamic>? weatherData =
             await fetchWeather(location.dblLat!, location.dblLon!);
-        print(weatherData);
+        if (weatherData == null) {
+          newState = DisplayTextState.apiError;
+        }
+        parseWeatherData(location, weatherData);
       }
       setState(() {
         //displayText = TODO(weatherdata);
@@ -125,26 +128,5 @@ class _MainPageState extends State<MainPage>
     setState(() {
       searchResults = [];
     });
-  }
-
-  WeatherLocation convertToWeatherLocation(List<String?> values) {
-    double? doubleLat;
-    double? doubleLon;
-
-    try {
-      doubleLat = double.parse(values[0]!);
-      doubleLon = double.parse(values[1]!);
-    } catch (_) {
-      doubleLat = null;
-      doubleLon = null;
-    }
-    return WeatherLocation(
-        latitude: values[0]!,
-        longitude: values[1]!,
-        cityName: values.length > 2 ? values[2] : null,
-        country: values.length > 3 ? values[3] : null,
-        region: values.length > 4 ? values[4] : null,
-        dblLat: doubleLat,
-        dblLon: doubleLon);
   }
 }
