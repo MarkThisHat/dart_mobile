@@ -117,18 +117,21 @@ String _getTodayInfo(Map<String, dynamic> today) {
     timeStrings.remove(nextTime);
   }
 
-  return _generateWeatherInfo(today, currentDayTimeStrings).join('\n');
+  return _generateWeatherInfo(today, currentDayTimeStrings, timeStrings)
+      .join('\n');
 }
 
 List<String> _generateWeatherInfo(
-    Map<String, dynamic> data, List<String> times) {
+    Map<String, dynamic> data, List<String> times, List<String> originalTimes) {
   List<String> infoList = [];
 
-  for (int i = 0; i < times.length; i++) {
-    DateTime time = DateTime.parse(times[i]);
-    String temperature = data['temperature_2m'][i].toString();
-    String windspeed = data['windspeed_10m'][i].toString();
-    String description = _getWeatherDescription(data['weathercode'][i]);
+  for (String timeStr in times) {
+    int originalIndex = originalTimes.indexOf(timeStr);
+    DateTime time = DateTime.parse(timeStr);
+    String temperature = data['temperature_2m'][originalIndex].toString();
+    String windspeed = data['windspeed_10m'][originalIndex].toString();
+    String description =
+        _getWeatherDescription(data['weathercode'][originalIndex]);
 
     infoList.add(
         '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}  $temperature°C  $description  $windspeed km/h');
