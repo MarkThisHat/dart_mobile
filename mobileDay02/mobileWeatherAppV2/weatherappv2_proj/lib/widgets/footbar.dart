@@ -18,7 +18,7 @@ class FootBar extends StatelessWidget {
           indicatorColor: theme.colorScheme.onPrimary,
           tabs: const [
             Tab(text: 'Currently', icon: Icon(Icons.schedule_outlined)),
-            Tab(text: 'Today', icon: Icon(Icons.calendar_today)),
+            Tab(text: 'Today', icon: Icon(Icons.today_outlined)),
             Tab(text: 'Weekly', icon: Icon(Icons.date_range)),
           ],
           labelColor: theme.colorScheme.onPrimary,

@@ -52,8 +52,8 @@ class BodyTabBarViewState extends State<BodyTabBarView> {
   Widget _buildTabContent(
       String label, String displayText, DisplayTextState textState) {
     ColorScheme scheme = Theme.of(context).colorScheme;
-    TextStyle baseStyle = TextStyle(fontSize: 22.0, color: scheme.onBackground);
-    TextStyle errorStyle = TextStyle(fontSize: 16.0, color: scheme.error);
+    TextStyle baseStyle = TextStyle(fontSize: 16.0, color: scheme.onBackground);
+    TextStyle errorStyle = TextStyle(fontSize: 20.0, color: scheme.error);
 
     String showText = _getDisplayText(label, displayText, textState);
 
