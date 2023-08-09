@@ -51,6 +51,9 @@ class LocationRow extends StatelessWidget {
 
   Text _styledText(String text, String match) {
     int matchLength = match.length;
+    if (matchLength > text.length) {
+      return Text(text);
+    }
 
     String actualMatch = text.substring(0, matchLength);
     String afterMatch =
