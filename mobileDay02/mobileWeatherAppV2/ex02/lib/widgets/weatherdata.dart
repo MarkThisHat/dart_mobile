@@ -54,29 +54,20 @@ String? parseWeatherData(
   } else {
     list[0] = 'Your city';
   }
-
   if (location.region != null) {
     list[1] = location.region!;
   } else {
     list[1] = 'Your region';
   }
-
   if (location.country != null) {
     list[2] = location.country!;
   } else {
     list[2] = 'Your country';
   }
-
   list[3] = _getCurrentInfo(weather['current_weather']);
-
   list[4] = _getTodayInfo(weather['hourly']);
-
   list[5] = _getWeeklyInfo(weather['daily']);
 
-  /*print('Location: $location');
-  print('API response: $weather');
-
-  print(list.join('\n'));*/
   return list.join('|');
 }
 
@@ -88,7 +79,7 @@ String _getCurrentInfo(Map<String, dynamic> current) {
 
   String windSpeed = current['windspeed']?.toString() ?? 'Unknown Wind Speed';
 
-  return '$temperature;$currentDesc;$windSpeed';
+  return '$temperature°C\n$currentDesc\n$windSpeed km/h';
 }
 
 String _getTodayInfo(Map<String, dynamic> today) {
@@ -105,19 +96,28 @@ String _getTodayInfo(Map<String, dynamic> today) {
           DateTime.parse(time).isAfter(currentDate))
       .toList();
 
-  List<String> infoList = [];
-
-  for (int i = 0; i < currentDayTimeStrings.length; i++) {
-    DateTime time = DateTime.parse(currentDayTimeStrings[i]);
-    String temperature = today['temperature_2m'][i].toString();
-    String windspeed = today['windspeed_10m'][i].toString();
-    String description = _getWeatherDescription(today['weathercode'][i]);
-
-    infoList.add(
-        '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')},$temperature,$description,$windspeed');
+  if (currentDayTimeStrings.isEmpty && timeStrings.isNotEmpty) {
+    currentDayTimeStrings = timeStrings.take(7).toList();
   }
 
-  return infoList.join(';');
+  return _generateWeatherInfo(today, currentDayTimeStrings).join('\n');
+}
+
+List<String> _generateWeatherInfo(
+    Map<String, dynamic> data, List<String> times) {
+  List<String> infoList = [];
+
+  for (int i = 0; i < times.length; i++) {
+    DateTime time = DateTime.parse(times[i]);
+    String temperature = data['temperature_2m'][i].toString();
+    String windspeed = data['windspeed_10m'][i].toString();
+    String description = _getWeatherDescription(data['weathercode'][i]);
+
+    infoList.add(
+        '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}  $temperature°C  $description  $windspeed km/h');
+  }
+
+  return infoList;
 }
 
 String _getWeeklyInfo(Map<String, dynamic> weekly) {
@@ -133,10 +133,10 @@ String _getWeeklyInfo(Map<String, dynamic> weekly) {
 
     String weatherDesc = _getWeatherDescription(weekly['weathercode'][i]);
 
-    weeklyInfo.add('$date,$minTemp,$maxTemp,$weatherDesc');
+    weeklyInfo.add('$date  $minTemp°C  $maxTemp°C  $weatherDesc');
   }
 
-  return weeklyInfo.join(';');
+  return weeklyInfo.join('\n');
 }
 
 String _getWeatherDescription(dynamic weatherCodeValue) {

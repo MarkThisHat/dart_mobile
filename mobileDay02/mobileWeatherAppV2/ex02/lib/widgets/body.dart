@@ -28,7 +28,7 @@ class BodyTabBarViewState extends State<BodyTabBarView> {
 
     if (showText != null &&
         textState != DisplayTextState.initial &&
-        segments.length != 6) {
+        segments.length < 5) {
       textState = DisplayTextState.parsingError;
     } else if (segments.length > 3) {
       locationInfo = _pickLocation(segments);
@@ -38,22 +38,26 @@ class BodyTabBarViewState extends State<BodyTabBarView> {
       child: TabBarView(
         controller: widget.tabController,
         children: [
-          _buildTabContent(locationInfo),
-          _buildTabContent(locationInfo),
-          _buildTabContent(locationInfo),
+          _buildTabContent(
+              locationInfo, _pickCorrectSegment(segments, 3), textState),
+          _buildTabContent(
+              locationInfo, _pickCorrectSegment(segments, 4), textState),
+          _buildTabContent(
+              locationInfo, _pickCorrectSegment(segments, 5), textState),
         ],
       ),
     );
   }
 
-  Widget _buildTabContent(String label) {
+  Widget _buildTabContent(
+      String label, String displayText, DisplayTextState textState) {
     ColorScheme scheme = Theme.of(context).colorScheme;
     TextStyle baseStyle = TextStyle(fontSize: 28.0, color: scheme.onBackground);
     TextStyle errorStyle = TextStyle(fontSize: 20.0, color: scheme.error);
-    TextStyle style = widget.displayText != null ? baseStyle : errorStyle;
+    TextStyle style =
+        textState == DisplayTextState.valid ? baseStyle : errorStyle;
 
-    String showText =
-        _getDisplayText(label, widget.displayText, widget.displayTextState);
+    String showText = _getDisplayText(label, displayText, textState);
 
     return Center(
       child: Text(
@@ -86,5 +90,19 @@ String _getDisplayText(
 }
 
 String _pickLocation(List<String> segments) {
+  if (segments.length < 2) {
+    return '';
+  } else if (segments.length == 2) {
+    return "${segments[0]}\n${segments[1]}";
+  }
   return "${segments[0]}\n${segments[1]}\n${segments[2]}";
+}
+
+String _pickCorrectSegment(List<String> segments, int i) {
+  if (segments.length < 5) {
+    return '';
+  } else if (segments.length == 5) {
+    i--;
+  }
+  return segments[i];
 }

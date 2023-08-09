@@ -110,6 +110,7 @@ class _MainPageState extends State<MainPage>
       await fetchAndUpdateWeather(weatherLocation);
     } else {
       updateText('', DisplayTextState.submissionError);
+      return;
     }
     setState(() {
       searchResults = [];
@@ -121,7 +122,9 @@ class _MainPageState extends State<MainPage>
       Map<String, dynamic>? weatherData =
           await fetchWeather(location.dblLat!, location.dblLon!);
       if (weatherData == null) {
-        updateText('', DisplayTextState.apiError);
+        if (displayState != DisplayTextState.submissionError) {
+          updateText('', DisplayTextState.apiError);
+        }
       } else {
         displayText = parseWeatherData(location, weatherData);
         updateText(displayText, DisplayTextState.valid);
