@@ -52,17 +52,17 @@ String? parseWeatherData(
   if (location.cityName != null) {
     list[0] = location.cityName!;
   } else {
-    list[0] = 'Your city';
+    list[0] = 'N/A';
   }
   if (location.region != null) {
     list[1] = location.region!;
   } else {
-    list[1] = 'Your region';
+    list[1] = 'N/A';
   }
   if (location.country != null) {
     list[2] = location.country!;
   } else {
-    list[2] = 'Your country';
+    list[2] = 'N/A';
   }
   list[3] = _getCurrentInfo(weather['current_weather']);
   list[4] = _getTodayInfo(weather['hourly']);
@@ -97,7 +97,11 @@ String _getTodayInfo(Map<String, dynamic> today) {
       .toList();
 
   if (currentDayTimeStrings.isEmpty && timeStrings.isNotEmpty) {
-    currentDayTimeStrings = timeStrings.take(7).toList();
+    currentDayTimeStrings = timeStrings.take(24).toList();
+  }
+
+  while (currentDayTimeStrings.length < 24) {
+    currentDayTimeStrings.add(currentDayTimeStrings.last);
   }
 
   return _generateWeatherInfo(today, currentDayTimeStrings).join('\n');

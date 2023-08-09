@@ -23,9 +23,9 @@ class GeoLocationButton extends StatelessWidget {
           onLocationSelected({
             'latitude': coordinates['latitude'].toString(),
             'longitude': coordinates['longitude'].toString(),
-            'name': null,
-            'country': null,
-            'admin1': null
+            'name': 'Coordinates:',
+            'country': '${coordinates['latitude']}',
+            'admin1': '${coordinates['longitude']}'
           });
         } else {
           updateText(

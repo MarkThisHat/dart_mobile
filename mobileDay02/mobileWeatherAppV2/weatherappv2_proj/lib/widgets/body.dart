@@ -52,22 +52,32 @@ class BodyTabBarViewState extends State<BodyTabBarView> {
   Widget _buildTabContent(
       String label, String displayText, DisplayTextState textState) {
     ColorScheme scheme = Theme.of(context).colorScheme;
-    TextStyle baseStyle = TextStyle(fontSize: 28.0, color: scheme.onBackground);
-    TextStyle errorStyle = TextStyle(fontSize: 20.0, color: scheme.error);
-    TextStyle style =
-        [DisplayTextState.valid, DisplayTextState.initial].contains(textState)
-            ? baseStyle
-            : errorStyle;
+    TextStyle baseStyle = TextStyle(fontSize: 22.0, color: scheme.onBackground);
+    TextStyle errorStyle = TextStyle(fontSize: 16.0, color: scheme.error);
 
     String showText = _getDisplayText(label, displayText, textState);
 
-    return Center(
-      child: Text(
-        showText,
-        style: style,
-        textAlign: TextAlign.center,
-      ),
-    );
+    if ([DisplayTextState.valid, DisplayTextState.initial]
+        .contains(textState)) {
+      return Center(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Text(
+            showText,
+            style: baseStyle,
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    } else {
+      return Center(
+        child: Text(
+          showText,
+          style: errorStyle,
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
   }
 }
 
@@ -75,9 +85,11 @@ String _getDisplayText(
     String label, String? displayText, DisplayTextState displayState) {
   switch (displayState) {
     case DisplayTextState.initial:
-      return 'Welcome to Weather App\nSearch climate by location or GPS';
+      return 'Welcome to Weather App\nSearch climate\nby location or \nGPS';
     case DisplayTextState.valid:
       return '$label\n$displayText';
+    case DisplayTextState.emptySubmission:
+      return 'Can\'t look for something on an empty search field';
     case DisplayTextState.geolocationError:
       return 'Geolocation is not available. Please enable it in your App settings.';
     case DisplayTextState.apiError:
@@ -85,9 +97,9 @@ String _getDisplayText(
     case DisplayTextState.parsingError:
       return 'Received incomplete data from API';
     case DisplayTextState.submissionError:
-      return 'Couldn\'t locate $displayText.';
+      return 'Couldn\'t locate a city named $displayText';
     default:
-      return 'An error ocurred.';
+      return 'An error ocurred';
   }
 }
 

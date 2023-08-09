@@ -10,6 +10,7 @@ typedef UpdateTextCallback = void Function(String?, DisplayTextState);
 enum DisplayTextState {
   initial,
   valid,
+  emptySubmission,
   submissionError,
   geolocationError,
   apiError,

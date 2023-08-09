@@ -99,6 +99,10 @@ class SearchFieldState extends State<SearchField> {
   }
 
   void _handleSubmission(String value) {
+    if (value.trim().isEmpty) {
+      widget.updateText(value, DisplayTextState.emptySubmission);
+      return;
+    }
     searchLocationByName(value).then((locations) {
       if (locations != null && locations.isNotEmpty) {
         widget.onLocationSelected(locations[0]);
