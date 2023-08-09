@@ -95,9 +95,9 @@ class LocationTable extends StatelessWidget {
             child: SizedBox(
               height: 48,
               child: LocationRow(
-                name: location['name'],
+                name: location['name'] ?? 'N/A',
                 region: location['admin1'] ?? 'N/A',
-                country: location['country'],
+                country: location['country'] ?? 'N/A',
                 query: query,
               ),
             ),

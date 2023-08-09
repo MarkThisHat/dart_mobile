@@ -27,7 +27,7 @@ class BodyTabBarViewState extends State<BodyTabBarView> {
         (showText ?? "").split('|').where((s) => s.isNotEmpty).toList();
 
     if (showText != null &&
-        textState != DisplayTextState.initial &&
+        textState.index > DisplayTextState.submissionError.index &&
         segments.length < 5) {
       textState = DisplayTextState.parsingError;
     } else if (segments.length > 3) {
@@ -55,7 +55,9 @@ class BodyTabBarViewState extends State<BodyTabBarView> {
     TextStyle baseStyle = TextStyle(fontSize: 28.0, color: scheme.onBackground);
     TextStyle errorStyle = TextStyle(fontSize: 20.0, color: scheme.error);
     TextStyle style =
-        textState == DisplayTextState.valid ? baseStyle : errorStyle;
+        [DisplayTextState.valid, DisplayTextState.initial].contains(textState)
+            ? baseStyle
+            : errorStyle;
 
     String showText = _getDisplayText(label, displayText, textState);
 
@@ -73,7 +75,7 @@ String _getDisplayText(
     String label, String? displayText, DisplayTextState displayState) {
   switch (displayState) {
     case DisplayTextState.initial:
-      return 'Welcome to Weather App V2';
+      return 'Welcome to Weather App\nSearch climate by location or GPS';
     case DisplayTextState.valid:
       return '$label\n$displayText';
     case DisplayTextState.geolocationError:
@@ -99,8 +101,11 @@ String _pickLocation(List<String> segments) {
 }
 
 String _pickCorrectSegment(List<String> segments, int i) {
-  if (segments.length < 5) {
+  if (segments.isEmpty) {
     return '';
+  }
+  if (segments.length < 5) {
+    return segments[0];
   } else if (segments.length == 5) {
     i--;
   }

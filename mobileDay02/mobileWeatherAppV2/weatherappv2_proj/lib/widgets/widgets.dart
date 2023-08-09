@@ -9,9 +9,9 @@ typedef UpdateTextCallback = void Function(String?, DisplayTextState);
 
 enum DisplayTextState {
   initial,
+  valid,
+  submissionError,
   geolocationError,
   apiError,
-  submissionError,
   parsingError,
-  valid,
 }

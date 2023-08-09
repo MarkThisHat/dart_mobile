@@ -32,7 +32,7 @@ class SearchFieldState extends State<SearchField> {
     super.initState();
 
     _subscription = _searchSubject
-        .debounceTime(const Duration(milliseconds: 1000))
+        .debounceTime(const Duration(milliseconds: 500))
         .distinct()
         .switchMap((query) {
       if (query.length < 2) {
