@@ -4,6 +4,7 @@ export 'footbar.dart';
 export 'bodyoverlay.dart';
 export 'weatherdata.dart';
 export '../services/api.dart';
+export '../services/gps.dart';
 
 typedef UpdateTextCallback = void Function(String?, DisplayTextState);
 

@@ -80,6 +80,8 @@ class _MainPageState extends State<MainPage>
   void initState() {
     super.initState();
     _controller = TabController(length: 3, vsync: this);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => _fetchGeoLocation());
   }
 
   @override
@@ -130,5 +132,39 @@ class _MainPageState extends State<MainPage>
         updateText(displayText, DisplayTextState.valid);
       }
     }
+  }
+
+  void _fetchGeoLocation() async {
+    Map<String, dynamic>? coordinates = await _getCoordinates();
+    if (coordinates != null) {
+      handleLocationSelection({
+        'latitude': coordinates['latitude'].toString(),
+        'longitude': coordinates['longitude'].toString(),
+        'name': 'Coordinates:',
+        'country': '${coordinates['latitude']}',
+        'admin1': '${coordinates['longitude']}'
+      });
+    } else {
+      updateText(null, DisplayTextState.geolocationError);
+    }
+  }
+
+  Future<Map<String, dynamic>?> _getCoordinates() async {
+    final gpsService = GpsService();
+
+    if (!await gpsService.isLocationServiceEnabled()) {
+      await gpsService.requestLocationService();
+    }
+    PermissionStatus permission = await gpsService.getLocationPermission();
+    if (permission == PermissionStatus.granted) {
+      LocationData? locationData = await gpsService.getCurrentLocation();
+      if (locationData != null) {
+        return {
+          'latitude': locationData.latitude,
+          'longitude': locationData.longitude
+        };
+      }
+    }
+    return null;
   }
 }
