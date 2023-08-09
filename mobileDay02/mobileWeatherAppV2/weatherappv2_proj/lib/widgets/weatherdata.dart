@@ -97,11 +97,24 @@ String _getTodayInfo(Map<String, dynamic> today) {
       .toList();
 
   if (currentDayTimeStrings.isEmpty && timeStrings.isNotEmpty) {
-    currentDayTimeStrings = timeStrings.take(24).toList();
+    String nextDay = DateTime.parse(timeStrings[0])
+        .add(const Duration(days: 1))
+        .toIso8601String()
+        .split("T")[0];
+    currentDayTimeStrings =
+        timeStrings.where((time) => time.startsWith(nextDay)).take(24).toList();
   }
 
-  while (currentDayTimeStrings.length < 24) {
-    currentDayTimeStrings.add(currentDayTimeStrings.last);
+  while (currentDayTimeStrings.length < 24 && timeStrings.isNotEmpty) {
+    String? nextTime = timeStrings.cast<String?>().firstWhere(
+        (time) => DateTime.parse(time!)
+            .isAfter(DateTime.parse(currentDayTimeStrings.last)),
+        orElse: () => null);
+
+    if (nextTime == null) break;
+
+    currentDayTimeStrings.add(nextTime);
+    timeStrings.remove(nextTime);
   }
 
   return _generateWeatherInfo(today, currentDayTimeStrings).join('\n');

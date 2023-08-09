@@ -61,7 +61,6 @@ class BodyTabBarViewState extends State<BodyTabBarView> {
         .contains(textState)) {
       return Center(
         child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
           child: Text(
             showText,
             style: baseStyle,
