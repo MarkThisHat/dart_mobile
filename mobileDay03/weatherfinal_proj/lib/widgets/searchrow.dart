@@ -66,7 +66,7 @@ class LocationRow extends StatelessWidget {
               text: actualMatch,
               style:
                   const TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0)),
-          TextSpan(text: afterMatch, style: const TextStyle(fontSize: 24.0)),
+          TextSpan(text: afterMatch, style: const TextStyle(fontSize: 22.0)),
         ],
       ),
     );

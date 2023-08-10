@@ -54,18 +54,14 @@ class _MainPageState extends State<MainPage>
       ),
       body: Stack(
         children: [
-          // Background Image
           Positioned.fill(
             child: Image.asset(
               'assets/images/backgrounds/day.png',
               fit: BoxFit.cover,
             ),
           ),
-
-          // Content
           Column(
             children: [
-              // Main content (use Expanded so it takes all the available space except the bottom bar)
               Expanded(
                 child: Stack(
                   children: [
@@ -88,8 +84,6 @@ class _MainPageState extends State<MainPage>
                   ],
                 ),
               ),
-
-              // Bottom Navigation Bar (you may need to adjust its transparency and styling)
               FootBar(controller: _controller),
             ],
           ),
