@@ -121,7 +121,7 @@ List<String> _generateWeatherInfo(
     String description = _getWeatherDescription(data['weathercode'][index]);
 
     infoList.add(
-        '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')};$description;$temperature °C;$windspeed km/h');
+        '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')};$description;$temperature;$windspeed km/h');
   }
 
   return infoList;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 Widget decoratedTabs(String showText, String tabName, BuildContext context) {
   print('Tabname $tabName contains:');
@@ -21,30 +22,10 @@ Widget _currently(String showText, BuildContext context) {
 
   return Column(
     children: [
-      Expanded(
-        flex: 2,
-        child: Container(
-          color: Colors.red.withOpacity(0.3),
-          child: Center(
-            child: isLandscape
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text('${display[0]} '),
-                      Text('${display[1]}, ${display[2]}'),
-                    ],
-                  )
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(display[0]),
-                      Text('${display[1]}, ${display[2]}'),
-                    ],
-                  ),
-          ),
-        ),
+      PresentBox(
+        showText: showText,
+        scheme: scheme,
+        isLandscape: isLandscape,
       ),
       Expanded(
         flex: 2,
@@ -98,37 +79,16 @@ Widget _today(String showText, BuildContext context) {
       MediaQuery.of(context).orientation == Orientation.landscape;
   return Column(
     children: [
-      Expanded(
-        flex: 2,
-        child: Container(
-          color: Colors.red.withOpacity(0.3),
-          child: Center(
-            child: isLandscape
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text('${display[0]} '),
-                      Text('${display[1]},${display[2]}'),
-                    ],
-                  )
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(display[0]),
-                      Text('${display[1]},${display[2]}'),
-                    ],
-                  ),
-          ),
-        ),
+      PresentBox(
+        showText: showText,
+        scheme: scheme,
+        isLandscape: isLandscape,
       ),
       Expanded(
         flex: 6,
         child: Container(
-          color: Colors.yellow.withOpacity(0.3),
-          child: Center(child: Text('Box 2')),
-        ),
+            color: Colors.yellow.withOpacity(0.3),
+            child: SingleTemperatureGraph(data: display)),
       ),
       Expanded(
         flex: 3,
@@ -155,8 +115,8 @@ Widget _buildDayBox(String boxDisplay) {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(display[0]),
-          Text(display[1]),
-          Text(display[2]),
+          Icon(_getWeatherIcon(display[1])),
+          Text('${display[2]} °C'),
           Text(display[3]),
         ],
       ),
@@ -171,30 +131,10 @@ Widget _weekly(String showText, BuildContext context) {
       MediaQuery.of(context).orientation == Orientation.landscape;
   return Column(
     children: [
-      Expanded(
-        flex: 2,
-        child: Container(
-          color: Colors.red.withOpacity(0.3),
-          child: Center(
-            child: isLandscape
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text('${display[0]} '),
-                      Text('${display[1]}, ${display[2]}'),
-                    ],
-                  )
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(display[0]),
-                      Text('${display[1]}, ${display[2]}'),
-                    ],
-                  ),
-          ),
-        ),
+      PresentBox(
+        showText: showText,
+        scheme: scheme,
+        isLandscape: isLandscape,
       ),
       Expanded(
         flex: 5,
@@ -228,13 +168,116 @@ Widget _buildWeekBox(String boxDisplay) {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(display[0]),
-          Text(display[1]),
+          Icon(_getWeatherIcon(display[1])),
           Text('${display[2]} max'),
           Text('${display[3]} min'),
         ],
       ),
     ),
   );
+}
+
+class PresentBox extends StatelessWidget {
+  final String showText;
+  final ColorScheme scheme;
+  final bool isLandscape;
+
+  PresentBox({
+    required this.showText,
+    required this.scheme,
+    required this.isLandscape,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    List<String> display = showText.split('\n');
+
+    return Expanded(
+      flex: 2,
+      child: Container(
+        color: Colors.red.withOpacity(0.3),
+        child: Center(
+          child: isLandscape
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text('${display[0]} '),
+                    Text('${display[1]}, ${display[2]}'),
+                  ],
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(display[0]),
+                    Text('${display[1]}, ${display[2]}'),
+                  ],
+                ),
+        ),
+      ),
+    );
+  }
+}
+
+class SingleTemperatureGraph extends StatelessWidget {
+  final List<String> data;
+
+  SingleTemperatureGraph({required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    final List<HourlyTemperature> temperatures = parseData(data);
+
+    return LineChart(
+      LineChartData(
+        gridData: FlGridData(show: false),
+        titlesData: FlTitlesData(show: true),
+        borderData: FlBorderData(
+            show: true,
+            border: Border.all(color: const Color(0xff37434d), width: 1)),
+        minX: 0,
+        maxX: 23,
+        minY: temperatures
+            .map((e) => e.temperature)
+            .reduce((a, b) => a < b ? a : b),
+        maxY: temperatures
+            .map((e) => e.temperature)
+            .reduce((a, b) => a > b ? a : b),
+        lineBarsData: [
+          LineChartBarData(
+            spots: temperatures
+                .asMap()
+                .map((index, entry) => MapEntry(
+                    index, FlSpot(index.toDouble(), entry.temperature)))
+                .values
+                .toList(),
+            isCurved: true,
+            color: Colors.blue,
+            barWidth: 4,
+            isStrokeCapRound: true,
+            belowBarData: BarAreaData(show: false),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class HourlyTemperature {
+  final String hour;
+  final double temperature;
+
+  HourlyTemperature(this.hour, this.temperature);
+}
+
+List<HourlyTemperature> parseData(List<String> data) {
+  return data.skip(3).map((entry) {
+    final components = entry.split(';');
+    final hour = components[0];
+    final temperature = double.tryParse(components[2]) ?? 0;
+    return HourlyTemperature(hour, temperature);
+  }).toList();
 }
 
 IconData _getWeatherIcon(String weatherDescription) {
