@@ -38,27 +38,26 @@ class BodyTabBarViewState extends State<BodyTabBarView> {
       child: TabBarView(
         controller: widget.tabController,
         children: [
-          _buildTabContent(
-              locationInfo, _pickCorrectSegment(segments, 3), textState),
-          _buildTabContent(
-              locationInfo, _pickCorrectSegment(segments, 4), textState),
-          _buildTabContent(
-              locationInfo, _pickCorrectSegment(segments, 5), textState),
+          _buildTabContent('Current', locationInfo,
+              _pickCorrectSegment(segments, 3), textState),
+          _buildTabContent('Today', locationInfo,
+              _pickCorrectSegment(segments, 4), textState),
+          _buildTabContent('Weekly', locationInfo,
+              _pickCorrectSegment(segments, 5), textState),
         ],
       ),
     );
   }
 
-  Widget _buildTabContent(
-      String label, String displayText, DisplayTextState textState) {
+  Widget _buildTabContent(String tabName, String label, String displayText,
+      DisplayTextState textState) {
     ColorScheme scheme = Theme.of(context).colorScheme;
     TextStyle baseStyle = TextStyle(fontSize: 16.0, color: scheme.onBackground);
     TextStyle errorStyle = TextStyle(fontSize: 20.0, color: scheme.error);
 
     String showText = _getDisplayText(label, displayText, textState);
 
-    if ([DisplayTextState.valid, DisplayTextState.initial]
-        .contains(textState)) {
+    if (textState == DisplayTextState.initial) {
       return Center(
         child: SingleChildScrollView(
           child: Text(
@@ -68,6 +67,8 @@ class BodyTabBarViewState extends State<BodyTabBarView> {
           ),
         ),
       );
+    } else if (textState == DisplayTextState.valid) {
+      return decoratedTabs(showText, tabName, scheme);
     } else {
       return Center(
         child: Text(

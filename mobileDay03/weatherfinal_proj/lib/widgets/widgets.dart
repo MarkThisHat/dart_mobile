@@ -1,7 +1,8 @@
 export 'topbar.dart';
 export 'body.dart';
-export 'footbar.dart';
 export 'bodyoverlay.dart';
+export 'bodytablayout.dart';
+export 'footbar.dart';
 export 'weatherdata.dart';
 export '../services/api.dart';
 export '../services/gps.dart';
