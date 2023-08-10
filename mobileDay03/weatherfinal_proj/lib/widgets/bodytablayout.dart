@@ -32,7 +32,7 @@ Widget _currently(String showText, BuildContext context) {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Text('${display[0]} '),
-                      Text('${display[1]},${display[2]}'),
+                      Text('${display[1]}, ${display[2]}'),
                     ],
                   )
                 : Column(
@@ -40,7 +40,7 @@ Widget _currently(String showText, BuildContext context) {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Text(display[0]),
-                      Text('${display[1]},${display[2]}'),
+                      Text('${display[1]}, ${display[2]}'),
                     ],
                   ),
           ),
@@ -50,7 +50,7 @@ Widget _currently(String showText, BuildContext context) {
         flex: 2,
         child: Container(
           color: Colors.blue.withOpacity(0.3),
-          child: Center(child: Text('${display[3]} °C')),
+          child: Center(child: Text(display[3])),
         ),
       ),
       Expanded(
@@ -92,13 +92,35 @@ Widget _currently(String showText, BuildContext context) {
 }
 
 Widget _today(String showText, BuildContext context) {
+  List<String> display = showText.split('\n');
+  ColorScheme scheme = Theme.of(context).colorScheme;
+  bool isLandscape =
+      MediaQuery.of(context).orientation == Orientation.landscape;
   return Column(
     children: [
       Expanded(
         flex: 2,
         child: Container(
           color: Colors.red.withOpacity(0.3),
-          child: Center(child: Text('Box 1')),
+          child: Center(
+            child: isLandscape
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text('${display[0]} '),
+                      Text('${display[1]},${display[2]}'),
+                    ],
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(display[0]),
+                      Text('${display[1]},${display[2]}'),
+                    ],
+                  ),
+          ),
         ),
       ),
       Expanded(
@@ -113,7 +135,8 @@ Widget _today(String showText, BuildContext context) {
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: List.generate(24, (index) => _buildBox(index)),
+            children:
+                List.generate(24, (index) => _buildDayBox(display[index + 3])),
           ),
         ),
       )
@@ -121,14 +144,56 @@ Widget _today(String showText, BuildContext context) {
   );
 }
 
+Widget _buildDayBox(String boxDisplay) {
+  List<String> display = boxDisplay.split(';');
+  return Container(
+    width: 150,
+    color: Colors.green.withOpacity(0.3),
+    margin: EdgeInsets.symmetric(horizontal: 4.0),
+    child: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(display[0]),
+          Text(display[1]),
+          Text(display[2]),
+          Text(display[3]),
+        ],
+      ),
+    ),
+  );
+}
+
 Widget _weekly(String showText, BuildContext context) {
+  List<String> display = showText.split('\n');
+  ColorScheme scheme = Theme.of(context).colorScheme;
+  bool isLandscape =
+      MediaQuery.of(context).orientation == Orientation.landscape;
   return Column(
     children: [
       Expanded(
         flex: 2,
         child: Container(
           color: Colors.red.withOpacity(0.3),
-          child: Center(child: Text('Box 1')),
+          child: Center(
+            child: isLandscape
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text('${display[0]} '),
+                      Text('${display[1]}, ${display[2]}'),
+                    ],
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(display[0]),
+                      Text('${display[1]}, ${display[2]}'),
+                    ],
+                  ),
+          ),
         ),
       ),
       Expanded(
@@ -143,7 +208,8 @@ Widget _weekly(String showText, BuildContext context) {
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: List.generate(7, (index) => _buildBox(index)),
+            children:
+                List.generate(7, (index) => _buildWeekBox(display[index + 3])),
           ),
         ),
       )
@@ -151,12 +217,23 @@ Widget _weekly(String showText, BuildContext context) {
   );
 }
 
-Widget _buildBox(int index) {
+Widget _buildWeekBox(String boxDisplay) {
+  List<String> display = boxDisplay.split(';');
   return Container(
     width: 150,
     color: Colors.green.withOpacity(0.3),
     margin: EdgeInsets.symmetric(horizontal: 4.0),
-    child: Center(child: Text('Box 3 - ${index + 1}')),
+    child: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(display[0]),
+          Text(display[1]),
+          Text('${display[2]} max'),
+          Text('${display[3]} min'),
+        ],
+      ),
+    ),
   );
 }
 

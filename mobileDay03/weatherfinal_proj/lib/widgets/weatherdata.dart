@@ -79,7 +79,7 @@ String _getCurrentInfo(Map<String, dynamic> current) {
 
   String windSpeed = current['windspeed']?.toString() ?? 'Unknown Wind Speed';
 
-  return '$temperature\n$currentDesc\n$windSpeed';
+  return '$temperature °C\n$currentDesc\n$windSpeed km/h';
 }
 
 String _getTodayInfo(Map<String, dynamic> today) {
@@ -121,7 +121,7 @@ List<String> _generateWeatherInfo(
     String description = _getWeatherDescription(data['weathercode'][index]);
 
     infoList.add(
-        '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}  $temperature°C  $description  $windspeed km/h');
+        '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')};$description;$temperature °C;$windspeed km/h');
   }
 
   return infoList;
@@ -139,8 +139,8 @@ String _getWeeklyInfo(Map<String, dynamic> weekly) {
         weekly['temperature_2m_min'][i]?.toString() ?? 'Unknown Min Temp';
 
     String weatherDesc = _getWeatherDescription(weekly['weathercode'][i]);
-
-    weeklyInfo.add('$date  $minTemp°C  $maxTemp°C  $weatherDesc');
+    List<String> parts = date.split('-');
+    weeklyInfo.add('${parts[2]}/${parts[1]};$weatherDesc;$maxTemp;$minTemp');
   }
 
   return weeklyInfo.join('\n');
