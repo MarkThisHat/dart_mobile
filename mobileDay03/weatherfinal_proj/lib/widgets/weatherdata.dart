@@ -79,7 +79,7 @@ String _getCurrentInfo(Map<String, dynamic> current) {
 
   String windSpeed = current['windspeed']?.toString() ?? 'Unknown Wind Speed';
 
-  return '$temperature°C\n$currentDesc\n$windSpeed km/h';
+  return '$temperature\n$currentDesc\n$windSpeed';
 }
 
 String _getTodayInfo(Map<String, dynamic> today) {

@@ -1,54 +1,97 @@
 import 'package:flutter/material.dart';
 
-Widget decoratedTabs(String showText, String tabName, ColorScheme scheme) {
+Widget decoratedTabs(String showText, String tabName, BuildContext context) {
   print('Tabname $tabName contains:');
   print('\n');
   print(showText);
   if (tabName == 'Weekly') {
-    return _weekly(showText, scheme);
+    return _weekly(showText, context);
   } else if (tabName == 'Today') {
-    return _today(showText, scheme);
+    return _today(showText, context);
   } else {
-    return _currently(showText, scheme);
+    return _currently(showText, context);
   }
 }
 
-Widget _currently(String showText, ColorScheme scheme) {
+Widget _currently(String showText, BuildContext context) {
+  List<String> display = showText.split('\n');
+  ColorScheme scheme = Theme.of(context).colorScheme;
+  bool isLandscape =
+      MediaQuery.of(context).orientation == Orientation.landscape;
+
   return Column(
     children: [
       Expanded(
         flex: 2,
         child: Container(
           color: Colors.red.withOpacity(0.3),
-          child: Center(child: Text('Box 1')),
+          child: Center(
+            child: isLandscape
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text('${display[0]} '),
+                      Text('${display[1]},${display[2]}'),
+                    ],
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(display[0]),
+                      Text('${display[1]},${display[2]}'),
+                    ],
+                  ),
+          ),
         ),
       ),
       Expanded(
         flex: 2,
         child: Container(
           color: Colors.blue.withOpacity(0.3),
-          child: Center(child: Text('Box 2')),
+          child: Center(child: Text('${display[3]} °C')),
         ),
       ),
       Expanded(
         flex: 3,
         child: Container(
           color: Colors.yellow.withOpacity(0.3),
-          child: Center(child: Text('Box 2')),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(display[4]),
+                Icon(_getWeatherIcon(display[4])),
+              ],
+            ),
+          ),
         ),
       ),
       Expanded(
         flex: 1,
         child: Container(
           color: Colors.purple.withOpacity(0.3),
-          child: Center(child: Text('Box 2')),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(Icons.wind_power), // Here's your sunny icon
+                SizedBox(
+                    width:
+                        10), // Adds a small space between the icon and the text
+                Text('${display[5]}'),
+              ],
+            ),
+          ),
         ),
       ),
     ],
   );
 }
 
-Widget _today(String showText, ColorScheme scheme) {
+Widget _today(String showText, BuildContext context) {
   return Column(
     children: [
       Expanded(
@@ -78,7 +121,7 @@ Widget _today(String showText, ColorScheme scheme) {
   );
 }
 
-Widget _weekly(String showText, ColorScheme scheme) {
+Widget _weekly(String showText, BuildContext context) {
   return Column(
     children: [
       Expanded(
@@ -116,38 +159,37 @@ Widget _buildBox(int index) {
     child: Center(child: Text('Box 3 - ${index + 1}')),
   );
 }
-/*
+
 IconData _getWeatherIcon(String weatherDescription) {
   const Map<String, IconData> weatherIcons = {
-    'Clear sky' : Icons.,
-    'Mainly clear' : Icons.,
-    'Partly cloudy' : Icons.,
-    'Overcast' : Icons.,
-    'Fog' : Icons.,
-    'Depositing rime fog' : Icons.,
-    'Drizzle: Light' : Icons.,
-    'Drizzle: Moderate' : Icons.,
-    'Drizzle: Dense intensity' : Icons.,
-    'Freezing Drizzle: Light' : Icons.,
-    'Freezing Drizzle: Dense intensity' : Icons.,
-    'Rain: Slight' : Icons.,
-    'Rain: Moderate' : Icons.,
-    'Rain: Heavy intensity' : Icons.,
-    'Freezing Rain: Light' : Icons.,
-    'Freezing Rain: Heavy intensity' : Icons.,
-    'Snow fall: Slight' : Icons.,
-    'Snow fall: Moderate' : Icons.,
-    'Snow fall: Heavy intensity' : Icons.,
-    'Snow grains' : Icons.,
-    'Rain showers: Slight' : Icons.,
-    'Rain showers: Moderate' : Icons.,
-    'Rain showers: Violent' : Icons.,
-    'Snow showers slight' : Icons.,
-    'Snow showers heavy' : Icons.,
-    'Thunderstorm: Slight or moderate' : Icons.,
-    'Thunderstorm with slight hail' : Icons.,
-    'Thunderstorm with heavy hail' : Icons.,
+    'Clear sky': Icons.wb_sunny,
+    'Mainly clear': Icons.wb_sunny,
+    'Partly cloudy': Icons.wb_sunny,
+    'Overcast': Icons.wb_sunny,
+    'Fog': Icons.wb_sunny,
+    'Depositing rime fog': Icons.wb_sunny,
+    'Drizzle: Light': Icons.wb_sunny,
+    'Drizzle: Moderate': Icons.wb_sunny,
+    'Drizzle: Dense intensity': Icons.wb_sunny,
+    'Freezing Drizzle: Light': Icons.wb_sunny,
+    'Freezing Drizzle: Dense intensity': Icons.wb_sunny,
+    'Rain: Slight': Icons.wb_sunny,
+    'Rain: Moderate': Icons.wb_sunny,
+    'Rain: Heavy intensity': Icons.wb_sunny,
+    'Freezing Rain: Light': Icons.wb_sunny,
+    'Freezing Rain: Heavy intensity': Icons.wb_sunny,
+    'Snow fall: Slight': Icons.wb_sunny,
+    'Snow fall: Moderate': Icons.wb_sunny,
+    'Snow fall: Heavy intensity': Icons.wb_sunny,
+    'Snow grains': Icons.wb_sunny,
+    'Rain showers: Slight': Icons.wb_sunny,
+    'Rain showers: Moderate': Icons.wb_sunny,
+    'Rain showers: Violent': Icons.wb_sunny,
+    'Snow showers slight': Icons.wb_sunny,
+    'Snow showers heavy': Icons.wb_sunny,
+    'Thunderstorm: Slight or moderate': Icons.wb_sunny,
+    'Thunderstorm with slight hail': Icons.wb_sunny,
+    'Thunderstorm with heavy hail': Icons.wb_sunny,
   };
   return weatherIcons[weatherDescription] ?? Icons.error_outline;
 }
-*/

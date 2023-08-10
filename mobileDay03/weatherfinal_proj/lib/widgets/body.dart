@@ -68,7 +68,7 @@ class BodyTabBarViewState extends State<BodyTabBarView> {
         ),
       );
     } else if (textState == DisplayTextState.valid) {
-      return decoratedTabs(showText, tabName, scheme);
+      return decoratedTabs(showText, tabName, context);
     } else {
       return Center(
         child: Text(
