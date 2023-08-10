@@ -34,7 +34,7 @@ class BodyTabBarViewState extends State<BodyTabBarView> {
       locationInfo = _pickLocation(segments);
     }
     return Container(
-      color: colorScheme.background,
+      color: colorScheme.background.withOpacity(0.5),
       child: TabBarView(
         controller: widget.tabController,
         children: [

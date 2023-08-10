@@ -11,8 +11,9 @@ class FootBar extends StatelessWidget {
 
     return Material(
       elevation: 5.0,
+      color: Colors.transparent,
       child: Container(
-        color: theme.colorScheme.primary,
+        color: theme.colorScheme.primary.withOpacity(0.75),
         child: TabBar(
           controller: controller,
           indicatorColor: theme.colorScheme.onPrimary,

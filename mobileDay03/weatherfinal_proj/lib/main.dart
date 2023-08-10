@@ -54,25 +54,47 @@ class _MainPageState extends State<MainPage>
       ),
       body: Stack(
         children: [
-          BodyTabBarView(
-            tabController: _controller,
-            displayText: displayText,
-            displayTextState: displayState,
-          ),
-          if (searchResults.isNotEmpty)
-            Positioned(
-              top: 0,
-              left: 48,
-              right: 48,
-              child: ListViewOverlay(
-                searchResults: searchResults,
-                currentSearchTerm: searchController.text,
-                onItemTap: handleLocationSelection,
-              ),
+          // Background Image
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/backgrounds/day.png',
+              fit: BoxFit.cover,
             ),
+          ),
+
+          // Content
+          Column(
+            children: [
+              // Main content (use Expanded so it takes all the available space except the bottom bar)
+              Expanded(
+                child: Stack(
+                  children: [
+                    BodyTabBarView(
+                      tabController: _controller,
+                      displayText: displayText,
+                      displayTextState: displayState,
+                    ),
+                    if (searchResults.isNotEmpty)
+                      Positioned(
+                        top: 0,
+                        left: 48,
+                        right: 48,
+                        child: ListViewOverlay(
+                          searchResults: searchResults,
+                          currentSearchTerm: searchController.text,
+                          onItemTap: handleLocationSelection,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+
+              // Bottom Navigation Bar (you may need to adjust its transparency and styling)
+              FootBar(controller: _controller),
+            ],
+          ),
         ],
       ),
-      bottomNavigationBar: FootBar(controller: _controller),
     );
   }
 

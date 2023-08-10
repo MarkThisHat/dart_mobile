@@ -86,10 +86,10 @@ String _getTodayInfo(Map<String, dynamic> today) {
   DateTime currentDate = DateTime.now();
   String currentDay =
       '${currentDate.year}-${currentDate.month.toString().padLeft(2, '0')}-${currentDate.day.toString().padLeft(2, '0')}';
-
+  print(currentDay);
   List<String> timeStrings =
       (today['time'] as List<dynamic>).map((time) => time.toString()).toList();
-
+  print(timeStrings);
   List<String> currentDayTimeStrings = timeStrings
       .where((time) =>
           time.startsWith(currentDay) &&
@@ -127,6 +127,9 @@ List<String> _generateWeatherInfo(
 
   for (String timeStr in times) {
     int originalIndex = originalTimes.indexOf(timeStr);
+    if (originalIndex == -1) {
+      continue;
+    }
     DateTime time = DateTime.parse(timeStr);
     String temperature = data['temperature_2m'][originalIndex].toString();
     String windspeed = data['windspeed_10m'][originalIndex].toString();
