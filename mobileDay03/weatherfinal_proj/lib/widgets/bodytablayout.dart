@@ -140,7 +140,7 @@ Widget _weekly(String showText, BuildContext context) {
         flex: 5,
         child: Container(
           color: Colors.yellow.withOpacity(0.3),
-          child: Center(child: Text('Box 2')),
+          child: Center(child: WeeklyGraph(data: parseWeeklyData(display))),
         ),
       ),
       Expanded(
@@ -277,6 +277,77 @@ List<HourlyTemperature> parseData(List<String> data) {
     final hour = components[0];
     final temperature = double.tryParse(components[2]) ?? 0;
     return HourlyTemperature(hour, temperature);
+  }).toList();
+}
+
+class WeeklyGraph extends StatelessWidget {
+  final List<WeeklyData> data;
+
+  WeeklyGraph({required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return LineChart(
+      LineChartData(
+        gridData: FlGridData(show: false),
+        titlesData: FlTitlesData(show: false),
+        borderData: FlBorderData(
+          show: true,
+          border: Border.all(
+            color: const Color(0xff37434d),
+            width: 1,
+          ),
+        ),
+        minX: 0,
+        maxX: 6,
+        minY: 0, // Consider setting based on the data range
+        maxY: 50, // Consider setting based on the data range
+        lineBarsData: [
+          LineChartBarData(
+            spots: data
+                .asMap()
+                .map((index, entry) =>
+                    MapEntry(index, FlSpot(index.toDouble(), entry.maxTemp)))
+                .values
+                .toList(),
+            isCurved: true,
+            color: Colors.blue,
+            dotData: FlDotData(show: false),
+            belowBarData: BarAreaData(show: false),
+          ),
+          LineChartBarData(
+            spots: data
+                .asMap()
+                .map((index, entry) =>
+                    MapEntry(index, FlSpot(index.toDouble(), entry.minTemp)))
+                .values
+                .toList(),
+            isCurved: true,
+            color: Colors.green,
+            dotData: FlDotData(show: false),
+            belowBarData: BarAreaData(show: false),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class WeeklyData {
+  final String date;
+  final double maxTemp;
+  final double minTemp;
+
+  WeeklyData(this.date, this.maxTemp, this.minTemp);
+}
+
+List<WeeklyData> parseWeeklyData(List<String> data) {
+  return data.skip(3).map((entry) {
+    final components = entry.split(';');
+    final date = components[0];
+    final maxTemp = double.tryParse(components[2]) ?? 0;
+    final minTemp = double.tryParse(components[3]) ?? 0;
+    return WeeklyData(date, maxTemp, minTemp);
   }).toList();
 }
 
