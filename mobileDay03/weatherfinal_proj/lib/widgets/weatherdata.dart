@@ -84,57 +84,41 @@ String _getCurrentInfo(Map<String, dynamic> current) {
 
 String _getTodayInfo(Map<String, dynamic> today) {
   DateTime currentDate = DateTime.now();
-  String currentDay =
-      '${currentDate.year}-${currentDate.month.toString().padLeft(2, '0')}-${currentDate.day.toString().padLeft(2, '0')}';
-  print(currentDay);
   List<String> timeStrings =
       (today['time'] as List<dynamic>).map((time) => time.toString()).toList();
-  print(timeStrings);
-  List<String> currentDayTimeStrings = timeStrings
-      .where((time) =>
-          time.startsWith(currentDay) &&
-          DateTime.parse(time).isAfter(currentDate))
-      .toList();
 
-  if (currentDayTimeStrings.isEmpty && timeStrings.isNotEmpty) {
-    String nextDay = DateTime.parse(timeStrings[0])
-        .add(const Duration(days: 1))
-        .toIso8601String()
-        .split("T")[0];
-    currentDayTimeStrings =
-        timeStrings.where((time) => time.startsWith(nextDay)).take(24).toList();
+  int startIndex = _findCurrentOrNextTimeSlot(currentDate, timeStrings);
+  int endIndex = startIndex + 24;
+
+  List<String> relevantTimeStrings = timeStrings.sublist(startIndex, endIndex);
+
+  return _generateWeatherInfo(today, relevantTimeStrings).join('\n');
+}
+
+int _findCurrentOrNextTimeSlot(DateTime currentDate, List<String> timeStrings) {
+  for (int i = 0; i < timeStrings.length; i++) {
+    if (DateTime.parse(timeStrings[i]).isAfter(currentDate)) {
+      return i;
+    }
   }
-
-  while (currentDayTimeStrings.length < 24 && timeStrings.isNotEmpty) {
-    String? nextTime = timeStrings.cast<String?>().firstWhere(
-        (time) => DateTime.parse(time!)
-            .isAfter(DateTime.parse(currentDayTimeStrings.last)),
-        orElse: () => null);
-
-    if (nextTime == null) break;
-
-    currentDayTimeStrings.add(nextTime);
-    timeStrings.remove(nextTime);
-  }
-
-  return _generateWeatherInfo(today, currentDayTimeStrings, timeStrings)
-      .join('\n');
+  return 0;
 }
 
 List<String> _generateWeatherInfo(
-    Map<String, dynamic> data, List<String> times, List<String> originalTimes) {
+    Map<String, dynamic> data, List<String> times) {
   List<String> infoList = [];
 
   for (String timeStr in times) {
-    int originalIndex = originalTimes.indexOf(timeStr);
-    if (originalIndex == -1) {
+    DateTime time = DateTime.parse(timeStr);
+    int index = data['time'].indexOf(timeStr);
+
+    if (index == -1) {
       continue;
     }
-    DateTime time = DateTime.parse(timeStr);
-    String temperature = data['temperature_2m'][originalIndex].toString();
-    String windspeed = data['windspeed_10m'][originalIndex].toString();
-    String description =
-        _getWeatherDescription(data['weathercode'][originalIndex]);
+
+    String temperature = data['temperature_2m'][index].toString();
+    String windspeed = data['windspeed_10m'][index].toString();
+    String description = _getWeatherDescription(data['weathercode'][index]);
 
     infoList.add(
         '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}  $temperature°C  $description  $windspeed km/h');
