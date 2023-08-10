@@ -58,7 +58,7 @@ Widget _currently(String showText, BuildContext context) {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(Icons.wind_power), // Here's your sunny icon
+                Icon(Icons.wind_power_outlined),
                 SizedBox(
                     width:
                         10), // Adds a small space between the icon and the text
@@ -353,34 +353,34 @@ List<WeeklyData> parseWeeklyData(List<String> data) {
 
 IconData _getWeatherIcon(String weatherDescription) {
   const Map<String, IconData> weatherIcons = {
-    'Clear sky': Icons.wb_sunny,
-    'Mainly clear': Icons.wb_sunny,
-    'Partly cloudy': Icons.wb_sunny,
-    'Overcast': Icons.wb_sunny,
-    'Fog': Icons.wb_sunny,
-    'Depositing rime fog': Icons.wb_sunny,
-    'Drizzle: Light': Icons.wb_sunny,
-    'Drizzle: Moderate': Icons.wb_sunny,
-    'Drizzle: Dense intensity': Icons.wb_sunny,
-    'Freezing Drizzle: Light': Icons.wb_sunny,
-    'Freezing Drizzle: Dense intensity': Icons.wb_sunny,
-    'Rain: Slight': Icons.wb_sunny,
-    'Rain: Moderate': Icons.wb_sunny,
-    'Rain: Heavy intensity': Icons.wb_sunny,
-    'Freezing Rain: Light': Icons.wb_sunny,
-    'Freezing Rain: Heavy intensity': Icons.wb_sunny,
-    'Snow fall: Slight': Icons.wb_sunny,
-    'Snow fall: Moderate': Icons.wb_sunny,
-    'Snow fall: Heavy intensity': Icons.wb_sunny,
-    'Snow grains': Icons.wb_sunny,
-    'Rain showers: Slight': Icons.wb_sunny,
-    'Rain showers: Moderate': Icons.wb_sunny,
-    'Rain showers: Violent': Icons.wb_sunny,
-    'Snow showers slight': Icons.wb_sunny,
-    'Snow showers heavy': Icons.wb_sunny,
-    'Thunderstorm: Slight or moderate': Icons.wb_sunny,
-    'Thunderstorm with slight hail': Icons.wb_sunny,
-    'Thunderstorm with heavy hail': Icons.wb_sunny,
+    'Clear sky': Icons.wb_sunny_rounded,
+    'Mainly clear': Icons.wb_sunny_outlined,
+    'Partly cloudy': Icons.wb_cloudy_outlined,
+    'Overcast': Icons.wb_cloudy_sharp,
+    'Fog': Icons.foggy,
+    'Depositing rime fog': Icons.foggy,
+    'Drizzle: Light': Icons.water_damage_outlined,
+    'Drizzle: Moderate': Icons.water_damage_rounded,
+    'Drizzle: Dense intensity': Icons.water_damage_sharp,
+    'Freezing Drizzle: Light': Icons.ac_unit,
+    'Freezing Drizzle: Dense intensity': Icons.ac_unit_rounded,
+    'Rain: Slight': Icons.water_drop_outlined,
+    'Rain: Moderate': Icons.water_drop_rounded,
+    'Rain: Heavy intensity': Icons.water,
+    'Freezing Rain: Light': Icons.waterfall_chart_outlined,
+    'Freezing Rain: Heavy intensity': Icons.waterfall_chart,
+    'Snow fall: Slight': Icons.snowing,
+    'Snow fall: Moderate': Icons.snowing,
+    'Snow fall: Heavy intensity': Icons.severe_cold_outlined,
+    'Snow grains': Icons.snowing,
+    'Rain showers: Slight': Icons.umbrella_outlined,
+    'Rain showers: Moderate': Icons.umbrella_rounded,
+    'Rain showers: Violent': Icons.umbrella_sharp,
+    'Snow showers slight': Icons.snowshoeing_outlined,
+    'Snow showers heavy': Icons.snowshoeing_sharp,
+    'Thunderstorm: Slight or moderate': Icons.thunderstorm_outlined,
+    'Thunderstorm with slight hail': Icons.thunderstorm_rounded,
+    'Thunderstorm with heavy hail': Icons.thunderstorm_sharp,
   };
-  return weatherIcons[weatherDescription] ?? Icons.error_outline;
+  return weatherIcons[weatherDescription] ?? Icons.question_mark_outlined;
 }
