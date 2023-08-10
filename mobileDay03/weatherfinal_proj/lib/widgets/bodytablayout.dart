@@ -88,7 +88,10 @@ Widget _today(String showText, BuildContext context) {
         flex: 6,
         child: Container(
             color: Colors.yellow.withOpacity(0.3),
-            child: SingleTemperatureGraph(data: display)),
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: SingleTemperatureGraph(data: display),
+            )),
       ),
       Expanded(
         flex: 3,
@@ -140,7 +143,11 @@ Widget _weekly(String showText, BuildContext context) {
         flex: 5,
         child: Container(
           color: Colors.yellow.withOpacity(0.3),
-          child: Center(child: WeeklyGraph(data: parseWeeklyData(display))),
+          child: Center(
+              child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: WeeklyGraph(data: parseWeeklyData(display)),
+          )),
         ),
       ),
       Expanded(
@@ -229,21 +236,64 @@ class SingleTemperatureGraph extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<HourlyTemperature> temperatures = parseData(data);
 
+    double minX = 0;
+    double maxX = temperatures.length - 1.0;
+    double minY =
+        temperatures.map((e) => e.temperature).reduce((a, b) => a < b ? a : b);
+    double maxY =
+        temperatures.map((e) => e.temperature).reduce((a, b) => a > b ? a : b);
+
     return LineChart(
       LineChartData(
-        gridData: FlGridData(show: false),
-        titlesData: FlTitlesData(show: true),
+        gridData: FlGridData(show: true),
+        titlesData: FlTitlesData(
+          show: true,
+          bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 22,
+              interval: 5,
+              getTitlesWidget: (value, meta) {
+                if (value.toInt() >= 0 && value.toInt() < temperatures.length) {
+                  return Text(temperatures[value.toInt()].hour.toString());
+                }
+                return Text('');
+              },
+            ),
+          ),
+          leftTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 48,
+              interval: (maxY - minY) / 5,
+              getTitlesWidget: (value, meta) {
+                if (value < minY || value > maxY) {
+                  return Text('');
+                }
+                return Text('${value.toStringAsFixed(1)}°C');
+              },
+            ),
+          ),
+          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        ),
         borderData: FlBorderData(
-            show: true,
-            border: Border.all(color: const Color(0xff37434d), width: 1)),
-        minX: 0,
-        maxX: 23,
-        minY: temperatures
-            .map((e) => e.temperature)
-            .reduce((a, b) => a < b ? a : b),
-        maxY: temperatures
-            .map((e) => e.temperature)
-            .reduce((a, b) => a > b ? a : b),
+          show: true,
+          border: Border(
+            bottom: BorderSide(
+              color: const Color(0xff37434d),
+              width: 1,
+            ),
+            left: BorderSide(
+              color: const Color(0xff37434d),
+              width: 1,
+            ),
+          ),
+        ),
+        minX: minX - 1,
+        maxX: maxX + 1,
+        minY: minY - 1,
+        maxY: maxY + 1,
         lineBarsData: [
           LineChartBarData(
             spots: temperatures
@@ -287,21 +337,66 @@ class WeeklyGraph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double minX = 0;
+    double maxX = data.length - 1.0;
+    double minY = min(
+        data.map((e) => e.minTemp).reduce((a, b) => a < b ? a : b),
+        data.map((e) => e.maxTemp).reduce((a, b) => a < b ? a : b));
+    double maxY = max(
+        data.map((e) => e.minTemp).reduce((a, b) => a > b ? a : b),
+        data.map((e) => e.maxTemp).reduce((a, b) => a > b ? a : b));
+
     return LineChart(
       LineChartData(
-        gridData: FlGridData(show: false),
-        titlesData: FlTitlesData(show: false),
+        gridData: FlGridData(show: true),
+        titlesData: FlTitlesData(
+          show: true,
+          bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 22,
+              interval: 1,
+              getTitlesWidget: (value, meta) {
+                if (value.toInt() >= 0 && value.toInt() < data.length) {
+                  return Text(data[value.toInt()].date);
+                }
+                return Text('');
+              },
+            ),
+          ),
+          leftTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 48,
+              interval: (maxY - minY) / 4,
+              getTitlesWidget: (value, meta) {
+                if (value < minY - 0.5 || value > maxY + 2) {
+                  return Text('');
+                }
+                return Text('${value.toStringAsFixed(1)}°C');
+              },
+            ),
+          ),
+          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        ),
         borderData: FlBorderData(
           show: true,
-          border: Border.all(
-            color: const Color(0xff37434d),
-            width: 1,
+          border: Border(
+            bottom: BorderSide(
+              color: const Color(0xff37434d),
+              width: 1,
+            ),
+            left: BorderSide(
+              color: const Color(0xff37434d),
+              width: 1,
+            ),
           ),
         ),
-        minX: 0,
-        maxX: 6,
-        minY: 0, // Consider setting based on the data range
-        maxY: 50, // Consider setting based on the data range
+        minX: minX,
+        maxX: maxX,
+        minY: minY - 1,
+        maxY: maxY + 3,
         lineBarsData: [
           LineChartBarData(
             spots: data
@@ -312,7 +407,7 @@ class WeeklyGraph extends StatelessWidget {
                 .toList(),
             isCurved: true,
             color: Colors.blue,
-            dotData: FlDotData(show: false),
+            dotData: FlDotData(show: true),
             belowBarData: BarAreaData(show: false),
           ),
           LineChartBarData(
@@ -324,7 +419,7 @@ class WeeklyGraph extends StatelessWidget {
                 .toList(),
             isCurved: true,
             color: Colors.green,
-            dotData: FlDotData(show: false),
+            dotData: FlDotData(show: true),
             belowBarData: BarAreaData(show: false),
           ),
         ],
@@ -383,4 +478,20 @@ IconData _getWeatherIcon(String weatherDescription) {
     'Thunderstorm with heavy hail': Icons.thunderstorm_sharp,
   };
   return weatherIcons[weatherDescription] ?? Icons.question_mark_outlined;
+}
+
+double min(double a, double b) {
+  if (a < b) {
+    return (a);
+  } else {
+    return (b);
+  }
+}
+
+double max(double a, double b) {
+  if (a > b) {
+    return (a);
+  } else {
+    return (b);
+  }
 }
