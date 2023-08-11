@@ -98,20 +98,18 @@ Widget _currently(String showText, BuildContext context) {
       ),
       Expanded(
         flex: 1,
-        child: Container(
-          child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(Icons.wind_power_outlined, color: scheme.primary),
-                const SizedBox(width: 10),
-                PrimaryText(
-                    text: '${display[5]} ',
-                    fontSize: 24,
-                    color: scheme.primary.withOpacity(0.8),
-                    shadow: scheme.onBackground.withOpacity(0.4)),
-              ],
-            ),
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(Icons.wind_power_outlined, color: scheme.primary),
+              const SizedBox(width: 10),
+              PrimaryText(
+                  text: '${display[5]} ',
+                  fontSize: 24,
+                  color: scheme.primary.withOpacity(0.8),
+                  shadow: scheme.onBackground.withOpacity(0.4)),
+            ],
           ),
         ),
       ),
@@ -358,7 +356,8 @@ class PresentBox extends StatelessWidget {
   final ColorScheme scheme;
   final bool isLandscape;
 
-  PresentBox({
+  const PresentBox({
+    super.key,
     required this.showText,
     required this.scheme,
     required this.isLandscape,
@@ -370,46 +369,44 @@ class PresentBox extends StatelessWidget {
 
     return Expanded(
       flex: 2,
-      child: Container(
-        child: Center(
-          child: isLandscape
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    PrimaryText(
-                      text: '${display[0]} ',
-                      fontSize: 24,
-                      color: scheme.onBackground,
-                      shadow: scheme.primary.withAlpha(100),
-                    ),
-                    PrimaryText(
-                      text: '${display[1]}, ${display[2]}',
-                      fontSize: 22,
-                      color: scheme.onPrimaryContainer.withOpacity(0.9),
-                      shadow: scheme.primary.withAlpha(100),
-                    ),
-                  ],
-                )
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    PrimaryText(
-                      text: '${display[0]} ',
-                      fontSize: 24,
-                      color: scheme.onBackground,
-                      shadow: scheme.primary.withAlpha(100),
-                    ),
-                    PrimaryText(
-                      text: '${display[1]}, ${display[2]}',
-                      fontSize: 22,
-                      color: scheme.onPrimaryContainer.withOpacity(0.83),
-                      shadow: scheme.primary.withAlpha(100),
-                    ),
-                  ],
-                ),
-        ),
+      child: Center(
+        child: isLandscape
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  PrimaryText(
+                    text: '${display[0]} ',
+                    fontSize: 24,
+                    color: scheme.onBackground,
+                    shadow: scheme.primary.withAlpha(100),
+                  ),
+                  PrimaryText(
+                    text: '${display[1]}, ${display[2]}',
+                    fontSize: 22,
+                    color: scheme.onPrimaryContainer.withOpacity(0.9),
+                    shadow: scheme.primary.withAlpha(100),
+                  ),
+                ],
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  PrimaryText(
+                    text: '${display[0]} ',
+                    fontSize: 24,
+                    color: scheme.onBackground,
+                    shadow: scheme.primary.withAlpha(100),
+                  ),
+                  PrimaryText(
+                    text: '${display[1]}, ${display[2]}',
+                    fontSize: 22,
+                    color: scheme.onPrimaryContainer.withOpacity(0.83),
+                    shadow: scheme.primary.withAlpha(100),
+                  ),
+                ],
+              ),
       ),
     );
   }
@@ -421,8 +418,9 @@ class PrimaryText extends StatelessWidget {
   final Color color;
   final Color shadow;
 
-  PrimaryText(
-      {required this.text,
+  const PrimaryText(
+      {super.key,
+      required this.text,
       required this.fontSize,
       required this.color,
       required this.shadow});
@@ -454,7 +452,7 @@ class PrimaryText extends StatelessWidget {
 class SingleTemperatureGraph extends StatelessWidget {
   final List<String> data;
 
-  SingleTemperatureGraph({required this.data});
+  const SingleTemperatureGraph({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -559,7 +557,7 @@ List<HourlyTemperature> parseData(List<String> data) {
 class WeeklyGraph extends StatelessWidget {
   final List<WeeklyData> data;
 
-  WeeklyGraph({required this.data});
+  const WeeklyGraph({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
