@@ -55,28 +55,29 @@ Widget _currently(String showText, BuildContext context) {
                   ),
                 ],
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    display[4],
-                    style: TextStyle(
-                      fontSize: 24.0,
-                      color: scheme.onBackground,
-                      fontWeight: FontWeight.bold,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 1.0,
-                          color: scheme.onPrimary,
-                          offset: const Offset(2.0, 2.0),
-                        ),
-                      ],
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      display[4],
+                      style: TextStyle(
+                        fontSize: 24.0,
+                        color: scheme.onBackground,
+                        fontWeight: FontWeight.bold,
+                        shadows: [
+                          Shadow(
+                            blurRadius: 1.0,
+                            color: scheme.onPrimary,
+                            offset: const Offset(2.0, 2.0),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: Container(
+                    Container(
                         padding: const EdgeInsets.all(8.0),
+                        margin: const EdgeInsets.only(top: 16.0, bottom: 16.0),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           boxShadow: [
@@ -88,9 +89,9 @@ Widget _currently(String showText, BuildContext context) {
                           ],
                         ),
                         child: _getWeatherIcon(display[4], 80)),
-                  ),
-                  const SizedBox(height: 16.0),
-                ],
+                    const SizedBox(height: 16.0),
+                  ],
+                ),
               ),
             ),
           ),
@@ -108,7 +109,7 @@ Widget _currently(String showText, BuildContext context) {
                   text: '${display[5]} ',
                   fontSize: 24,
                   color: scheme.primary.withOpacity(0.8),
-                  shadow: scheme.onBackground.withOpacity(0.4)),
+                  shadow: scheme.onPrimary.withOpacity(0.7)),
             ],
           ),
         ),
@@ -143,7 +144,7 @@ Widget _today(String showText, BuildContext context) {
             Expanded(
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(32, 0, 32, 16),
+                  padding: const EdgeInsets.fromLTRB(8, 0, 32, 16),
                   child: SingleTemperatureGraph(data: display),
                 ),
               ),
@@ -226,7 +227,7 @@ Widget _buildDayBox(String boxDisplay, ColorScheme scheme) {
                       text: '${display[3]} ',
                       fontSize: 14,
                       color: scheme.primary.withOpacity(0.8),
-                      shadow: scheme.onBackground.withOpacity(0.4)),
+                      shadow: scheme.onPrimary.withOpacity(0.7))
                 ],
               ),
             ],
@@ -263,7 +264,7 @@ Widget _weekly(String showText, BuildContext context) {
             Expanded(
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(32, 0, 32, 16),
+                  padding: const EdgeInsets.fromLTRB(8, 0, 32, 16),
                   child: WeeklyGraph(data: parseWeeklyData(display)),
                 ),
               ),
@@ -369,44 +370,48 @@ class PresentBox extends StatelessWidget {
 
     return Expanded(
       flex: 2,
-      child: Center(
-        child: isLandscape
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  PrimaryText(
-                    text: '${display[0]} ',
-                    fontSize: 24,
-                    color: scheme.onBackground,
-                    shadow: scheme.primary.withAlpha(100),
-                  ),
-                  PrimaryText(
-                    text: '${display[1]}, ${display[2]}',
-                    fontSize: 22,
-                    color: scheme.onPrimaryContainer.withOpacity(0.9),
-                    shadow: scheme.primary.withAlpha(100),
-                  ),
-                ],
-              )
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  PrimaryText(
-                    text: '${display[0]} ',
-                    fontSize: 24,
-                    color: scheme.onBackground,
-                    shadow: scheme.primary.withAlpha(100),
-                  ),
-                  PrimaryText(
-                    text: '${display[1]}, ${display[2]}',
-                    fontSize: 22,
-                    color: scheme.onPrimaryContainer.withOpacity(0.83),
-                    shadow: scheme.primary.withAlpha(100),
-                  ),
-                ],
-              ),
+      child: SingleChildScrollView(
+        child: Center(
+          child: isLandscape
+              ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    PrimaryText(
+                      text: '${display[0]} ',
+                      fontSize: 24,
+                      color: scheme.onBackground,
+                      shadow: scheme.primary.withAlpha(100),
+                    ),
+                    PrimaryText(
+                      text: '${display[1]}, ${display[2]}',
+                      fontSize: 22,
+                      color: scheme.onPrimaryContainer.withOpacity(0.9),
+                      shadow: scheme.primary.withAlpha(100),
+                    ),
+                  ],
+                )
+              : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    PrimaryText(
+                      text: '${display[0]} ',
+                      fontSize: 24,
+                      color: scheme.onBackground,
+                      shadow: scheme.primary.withAlpha(100),
+                    ),
+                    PrimaryText(
+                      text: '${display[1]}, ${display[2]}',
+                      fontSize: 22,
+                      color: scheme.onPrimaryContainer.withOpacity(0.83),
+                      shadow: scheme.primary.withAlpha(100),
+                    ),
+                  ],
+                ),
+        ),
       ),
     );
   }
@@ -486,7 +491,7 @@ class SingleTemperatureGraph extends StatelessWidget {
           leftTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
-              reservedSize: 48,
+              reservedSize: 56,
               interval: (maxY - minY) / 5,
               getTitlesWidget: (value, meta) {
                 if (value < minY || value > maxY) {
@@ -591,7 +596,7 @@ class WeeklyGraph extends StatelessWidget {
           leftTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
-              reservedSize: 48,
+              reservedSize: 56,
               interval: (maxY - minY) / 4,
               getTitlesWidget: (value, meta) {
                 if (value < minY - 0.5 || value > maxY + 2) {
