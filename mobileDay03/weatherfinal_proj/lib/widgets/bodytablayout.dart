@@ -46,7 +46,7 @@ Widget _currently(String showText, BuildContext context) {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(display[4]),
-                Icon(_getWeatherIcon(display[4])),
+                _getWeatherIcon(display[4]),
               ],
             ),
           ),
@@ -120,7 +120,7 @@ Widget _buildDayBox(String boxDisplay) {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(display[0]),
-          Icon(_getWeatherIcon(display[1])),
+          _getWeatherIcon(display[1]),
           Text('${display[2]} °C'),
           Text(display[3]),
         ],
@@ -177,7 +177,7 @@ Widget _buildWeekBox(String boxDisplay) {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(display[0]),
-          Icon(_getWeatherIcon(display[1])),
+          _getWeatherIcon(display[1]),
           Text('${display[2]} max'),
           Text('${display[3]} min'),
         ],
@@ -503,38 +503,61 @@ List<WeeklyData> parseWeeklyData(List<String> data) {
   }).toList();
 }
 
-IconData _getWeatherIcon(String weatherDescription) {
-  const Map<String, IconData> weatherIcons = {
-    'Clear sky': Icons.wb_sunny_rounded,
-    'Mainly clear': Icons.wb_sunny_outlined,
-    'Partly cloudy': Icons.wb_cloudy_outlined,
-    'Overcast': Icons.wb_cloudy_sharp,
-    'Fog': Icons.foggy,
-    'Depositing rime fog': Icons.foggy,
-    'Drizzle: Light': Icons.water_damage_outlined,
-    'Drizzle: Moderate': Icons.water_damage_rounded,
-    'Drizzle: Dense intensity': Icons.water_damage_sharp,
-    'Freezing Drizzle: Light': Icons.ac_unit,
-    'Freezing Drizzle: Dense intensity': Icons.ac_unit_rounded,
-    'Rain: Slight': Icons.water_drop_outlined,
-    'Rain: Moderate': Icons.water_drop_rounded,
-    'Rain: Heavy intensity': Icons.water,
-    'Freezing Rain: Light': Icons.waterfall_chart_outlined,
-    'Freezing Rain: Heavy intensity': Icons.waterfall_chart,
-    'Snow fall: Slight': Icons.snowing,
-    'Snow fall: Moderate': Icons.snowing,
-    'Snow fall: Heavy intensity': Icons.severe_cold_outlined,
-    'Snow grains': Icons.snowing,
-    'Rain showers: Slight': Icons.umbrella_outlined,
-    'Rain showers: Moderate': Icons.umbrella_rounded,
-    'Rain showers: Violent': Icons.umbrella_sharp,
-    'Snow showers slight': Icons.snowshoeing_outlined,
-    'Snow showers heavy': Icons.snowshoeing_sharp,
-    'Thunderstorm: Slight or moderate': Icons.thunderstorm_outlined,
-    'Thunderstorm with slight hail': Icons.thunderstorm_rounded,
-    'Thunderstorm with heavy hail': Icons.thunderstorm_sharp,
+class WeatherInfo {
+  final IconData iconData;
+  final Color color;
+
+  WeatherInfo(this.iconData, this.color);
+}
+
+WeatherInfo _getWeatherInfo(String weatherDescription) {
+  Map<String, WeatherInfo> weatherData = {
+    'Clear sky': WeatherInfo(Icons.wb_sunny_rounded, Colors.yellow),
+    'Mainly clear': WeatherInfo(Icons.wb_sunny_outlined, Colors.yellow),
+    'Partly cloudy': WeatherInfo(Icons.wb_cloudy_outlined, Colors.yellow),
+    'Overcast': WeatherInfo(Icons.wb_cloudy_sharp, Colors.yellow),
+    'Fog': WeatherInfo(Icons.foggy, Colors.yellow),
+    'Depositing rime fog': WeatherInfo(Icons.foggy, Colors.yellow),
+    'Drizzle: Light': WeatherInfo(Icons.water_damage_outlined, Colors.yellow),
+    'Drizzle: Moderate': WeatherInfo(Icons.water_damage_rounded, Colors.yellow),
+    'Drizzle: Dense intensity':
+        WeatherInfo(Icons.water_damage_sharp, Colors.yellow),
+    'Freezing Drizzle: Light': WeatherInfo(Icons.ac_unit, Colors.yellow),
+    'Freezing Drizzle: Dense intensity':
+        WeatherInfo(Icons.ac_unit_rounded, Colors.yellow),
+    'Rain: Slight': WeatherInfo(Icons.water_drop_outlined, Colors.yellow),
+    'Rain: Moderate': WeatherInfo(Icons.water_drop_rounded, Colors.yellow),
+    'Rain: Heavy intensity': WeatherInfo(Icons.water, Colors.yellow),
+    'Freezing Rain: Light':
+        WeatherInfo(Icons.waterfall_chart_outlined, Colors.yellow),
+    'Freezing Rain: Heavy intensity':
+        WeatherInfo(Icons.waterfall_chart, Colors.yellow),
+    'Snow fall: Slight': WeatherInfo(Icons.snowing, Colors.yellow),
+    'Snow fall: Moderate': WeatherInfo(Icons.snowing, Colors.yellow),
+    'Snow fall: Heavy intensity':
+        WeatherInfo(Icons.severe_cold_outlined, Colors.yellow),
+    'Snow grains': WeatherInfo(Icons.snowing, Colors.yellow),
+    'Rain showers: Slight': WeatherInfo(Icons.umbrella_outlined, Colors.yellow),
+    'Rain showers: Moderate':
+        WeatherInfo(Icons.umbrella_rounded, Colors.yellow),
+    'Rain showers: Violent': WeatherInfo(Icons.umbrella_sharp, Colors.yellow),
+    'Snow showers slight':
+        WeatherInfo(Icons.snowshoeing_outlined, Colors.yellow),
+    'Snow showers heavy': WeatherInfo(Icons.snowshoeing_sharp, Colors.yellow),
+    'Thunderstorm: Slight or moderate':
+        WeatherInfo(Icons.thunderstorm_outlined, Colors.yellow),
+    'Thunderstorm with slight hail':
+        WeatherInfo(Icons.thunderstorm_rounded, Colors.yellow),
+    'Thunderstorm with heavy hail':
+        WeatherInfo(Icons.thunderstorm_sharp, Colors.yellow),
   };
-  return weatherIcons[weatherDescription] ?? Icons.question_mark_outlined;
+  return weatherData[weatherDescription] ??
+      WeatherInfo(Icons.question_mark_outlined, Colors.black);
+}
+
+Icon _getWeatherIcon(String weatherDescription) {
+  WeatherInfo info = _getWeatherInfo(weatherDescription);
+  return Icon(info.iconData, color: info.color);
 }
 
 double min(double a, double b) {
@@ -552,3 +575,35 @@ double max(double a, double b) {
     return (b);
   }
 }
+
+
+/*
+'Clear sky'
+'Mainly clear'
+'Partly cloudy'
+'Overcast'
+'Fog'
+'Depositing rime fog'
+'Drizzle: Light'
+'Drizzle: Moderate'
+'Drizzle: Dense intensity'
+'Freezing Drizzle: Light'
+'Freezing Drizzle: Dense intensity'
+'Rain: Slight'
+'Rain: Moderate'
+'Rain: Heavy intensity'
+'Freezing Rain: Light'
+'Freezing Rain: Heavy intensity'
+'Snow fall: Slight'
+'Snow fall: Moderate'
+'Snow fall: Heavy intensity'
+'Snow grains'
+'Rain showers: Slight'
+'Rain showers: Moderate'
+'Rain showers: Violent'
+'Snow showers slight'
+'Snow showers heavy'
+'Thunderstorm: Slight or moderate'
+'Thunderstorm with slight hail'
+'Thunderstorm with heavy hail'
+*/
