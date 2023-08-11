@@ -29,9 +29,11 @@ Widget _currently(String showText, BuildContext context) {
       ),
       Expanded(
         flex: 2,
-        child: Container(
-          color: Colors.blue.withOpacity(0.3),
-          child: Center(child: Text(display[3])),
+        child: PrimaryText(
+          text: '${display[3]} ',
+          fontSize: 56,
+          color: scheme.onPrimary.withAlpha(220),
+          shadow: scheme.primary,
         ),
       ),
       Expanded(
@@ -202,25 +204,80 @@ class PresentBox extends StatelessWidget {
     return Expanded(
       flex: 2,
       child: Container(
-        color: Colors.red.withOpacity(0.3),
         child: Center(
           child: isLandscape
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Text('${display[0]} '),
-                    Text('${display[1]}, ${display[2]}'),
+                    PrimaryText(
+                      text: '${display[0]} ',
+                      fontSize: 24,
+                      color: scheme.onBackground,
+                      shadow: scheme.primary.withAlpha(100),
+                    ),
+                    PrimaryText(
+                      text: '${display[1]}, ${display[2]}',
+                      fontSize: 22,
+                      color: scheme.onPrimaryContainer.withOpacity(0.83),
+                      shadow: scheme.primary.withAlpha(100),
+                    ),
                   ],
                 )
               : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Text(display[0]),
-                    Text('${display[1]}, ${display[2]}'),
+                    PrimaryText(
+                      text: '${display[0]} ',
+                      fontSize: 24,
+                      color: scheme.onBackground,
+                      shadow: scheme.primary.withAlpha(100),
+                    ),
+                    PrimaryText(
+                      text: '${display[1]}, ${display[2]}',
+                      fontSize: 22,
+                      color: scheme.onPrimaryContainer.withOpacity(0.83),
+                      shadow: scheme.primary.withAlpha(100),
+                    ),
                   ],
                 ),
+        ),
+      ),
+    );
+  }
+}
+
+class PrimaryText extends StatelessWidget {
+  final String text;
+  final double fontSize;
+  final Color color;
+  final Color shadow;
+
+  PrimaryText(
+      {required this.text,
+      required this.fontSize,
+      required this.color,
+      required this.shadow});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: fontSize,
+          color: color,
+          fontWeight: FontWeight.bold,
+          shadows: [
+            Shadow(
+              blurRadius: 4.0,
+              color: shadow,
+              offset: Offset(2.0, 2.0),
+            ),
+          ],
         ),
       ),
     );
