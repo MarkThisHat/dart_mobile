@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 Widget decoratedTabs(String showText, String tabName, BuildContext context) {
-  print('Tabname $tabName contains:');
-  print('\n');
-  print(showText);
   if (tabName == 'Weekly') {
     return _weekly(showText, context);
   } else if (tabName == 'Today') {
@@ -30,7 +27,7 @@ Widget _currently(String showText, BuildContext context) {
       Expanded(
         flex: 2,
         child: PrimaryText(
-          text: '${display[3]} ',
+          text: display[3],
           fontSize: 56,
           color: scheme.onPrimary.withAlpha(222),
           shadow: scheme.primary,
@@ -54,7 +51,7 @@ Widget _currently(String showText, BuildContext context) {
                     color: scheme.primary.withOpacity(0.2).withAlpha(25),
                     spreadRadius: 1,
                     blurRadius: 7,
-                    offset: Offset(3, 3),
+                    offset: const Offset(3, 3),
                   ),
                 ],
               ),
@@ -72,27 +69,27 @@ Widget _currently(String showText, BuildContext context) {
                         Shadow(
                           blurRadius: 1.0,
                           color: scheme.onPrimary,
-                          offset: Offset(2.0, 2.0),
+                          offset: const Offset(2.0, 2.0),
                         ),
                       ],
                     ),
                   ),
                   Expanded(
                     child: Container(
-                        padding: EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8.0),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
                               color: scheme.primary.withOpacity(0.28),
                               blurRadius: 12, // Blur spread
-                              offset: Offset(2, 1),
+                              offset: const Offset(2, 1),
                             ),
                           ],
                         ),
                         child: _getWeatherIcon(display[4], 80)),
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                 ],
               ),
             ),
@@ -107,7 +104,7 @@ Widget _currently(String showText, BuildContext context) {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Icon(Icons.wind_power_outlined, color: scheme.primary),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 PrimaryText(
                     text: '${display[5]} ',
                     fontSize: 24,
@@ -136,12 +133,25 @@ Widget _today(String showText, BuildContext context) {
       ),
       Expanded(
         flex: 6,
-        child: Container(
-            color: Colors.yellow.withOpacity(0.3),
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: SingleTemperatureGraph(data: display),
-            )),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 32, 8, 2),
+              child: Text(
+                'Today\'s temperatures',
+                style: TextStyle(fontSize: 16, color: scheme.onBackground),
+              ),
+            ),
+            Expanded(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(32, 0, 32, 16),
+                  child: SingleTemperatureGraph(data: display),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
       Expanded(
         flex: 3,
@@ -175,7 +185,7 @@ Widget _buildDayBox(String boxDisplay, ColorScheme scheme) {
             color: scheme.primary.withOpacity(0.2).withAlpha(25),
             spreadRadius: 1,
             blurRadius: 7,
-            offset: Offset(3, 3),
+            offset: const Offset(3, 3),
           ),
         ],
       ),
@@ -191,14 +201,14 @@ Widget _buildDayBox(String boxDisplay, ColorScheme scheme) {
                 shadow: scheme.background,
               ),
               Container(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
                         color: scheme.primary.withOpacity(0.28),
                         blurRadius: 12,
-                        offset: Offset(2, 1),
+                        offset: const Offset(2, 1),
                       ),
                     ],
                   ),
@@ -213,7 +223,7 @@ Widget _buildDayBox(String boxDisplay, ColorScheme scheme) {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.wind_power_outlined, color: scheme.primary),
-                  SizedBox(width: 4),
+                  const SizedBox(width: 4),
                   PrimaryText(
                       text: '${display[3]} ',
                       fontSize: 14,
@@ -243,13 +253,24 @@ Widget _weekly(String showText, BuildContext context) {
       ),
       Expanded(
         flex: 5,
-        child: Container(
-          color: Colors.yellow.withOpacity(0.3),
-          child: Center(
-              child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: WeeklyGraph(data: parseWeeklyData(display)),
-          )),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 32, 8, 2),
+              child: Text(
+                'Weekly temperatures',
+                style: TextStyle(fontSize: 16, color: scheme.onBackground),
+              ),
+            ),
+            Expanded(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(32, 0, 32, 16),
+                  child: WeeklyGraph(data: parseWeeklyData(display)),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
       Expanded(
@@ -284,7 +305,7 @@ Widget _buildWeekBox(String boxDisplay, ColorScheme scheme) {
             color: scheme.primary.withOpacity(0.2).withAlpha(25),
             spreadRadius: 1,
             blurRadius: 7,
-            offset: Offset(3, 3),
+            offset: const Offset(3, 3),
           ),
         ],
       ),
@@ -300,14 +321,14 @@ Widget _buildWeekBox(String boxDisplay, ColorScheme scheme) {
                 shadow: scheme.primary,
               ),
               Container(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
                         color: scheme.primary.withOpacity(0.28),
                         blurRadius: 12,
-                        offset: Offset(2, 1),
+                        offset: const Offset(2, 1),
                       ),
                     ],
                   ),
@@ -421,7 +442,7 @@ class PrimaryText extends StatelessWidget {
             Shadow(
               blurRadius: 2.0,
               color: shadow,
-              offset: Offset(2.0, 2.0),
+              offset: const Offset(2.0, 2.0),
             ),
           ],
         ),
@@ -448,7 +469,7 @@ class SingleTemperatureGraph extends StatelessWidget {
 
     return LineChart(
       LineChartData(
-        gridData: FlGridData(show: true),
+        gridData: const FlGridData(show: true),
         titlesData: FlTitlesData(
           show: true,
           bottomTitles: AxisTitles(
@@ -460,7 +481,7 @@ class SingleTemperatureGraph extends StatelessWidget {
                 if (value.toInt() >= 0 && value.toInt() < temperatures.length) {
                   return Text(temperatures[value.toInt()].hour.toString());
                 }
-                return Text('');
+                return const Text('');
               },
             ),
           ),
@@ -471,24 +492,26 @@ class SingleTemperatureGraph extends StatelessWidget {
               interval: (maxY - minY) / 5,
               getTitlesWidget: (value, meta) {
                 if (value < minY || value > maxY) {
-                  return Text('');
+                  return const Text('');
                 }
                 return Text('${value.toStringAsFixed(1)}°C');
               },
             ),
           ),
-          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
         ),
         borderData: FlBorderData(
           show: true,
-          border: Border(
+          border: const Border(
             bottom: BorderSide(
-              color: const Color(0xff37434d),
+              color: Color(0xff37434d),
               width: 1,
             ),
             left: BorderSide(
-              color: const Color(0xff37434d),
+              color: Color(0xff37434d),
               width: 1,
             ),
           ),
@@ -506,7 +529,7 @@ class SingleTemperatureGraph extends StatelessWidget {
                 .values
                 .toList(),
             isCurved: true,
-            color: Colors.blue,
+            color: Theme.of(context).colorScheme.primary,
             barWidth: 4,
             isStrokeCapRound: true,
             belowBarData: BarAreaData(show: false),
@@ -551,7 +574,7 @@ class WeeklyGraph extends StatelessWidget {
 
     return LineChart(
       LineChartData(
-        gridData: FlGridData(show: true),
+        gridData: const FlGridData(show: true),
         titlesData: FlTitlesData(
           show: true,
           bottomTitles: AxisTitles(
@@ -563,7 +586,7 @@ class WeeklyGraph extends StatelessWidget {
                 if (value.toInt() >= 0 && value.toInt() < data.length) {
                   return Text(data[value.toInt()].date);
                 }
-                return Text('');
+                return const Text('');
               },
             ),
           ),
@@ -574,24 +597,26 @@ class WeeklyGraph extends StatelessWidget {
               interval: (maxY - minY) / 4,
               getTitlesWidget: (value, meta) {
                 if (value < minY - 0.5 || value > maxY + 2) {
-                  return Text('');
+                  return const Text('');
                 }
                 return Text('${value.toStringAsFixed(1)}°C');
               },
             ),
           ),
-          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
         ),
         borderData: FlBorderData(
           show: true,
-          border: Border(
+          border: const Border(
             bottom: BorderSide(
-              color: const Color(0xff37434d),
+              color: Color(0xff37434d),
               width: 1,
             ),
             left: BorderSide(
-              color: const Color(0xff37434d),
+              color: Color(0xff37434d),
               width: 1,
             ),
           ),
@@ -609,8 +634,8 @@ class WeeklyGraph extends StatelessWidget {
                 .values
                 .toList(),
             isCurved: true,
-            color: Colors.blue,
-            dotData: FlDotData(show: true),
+            color: Colors.deepOrange,
+            dotData: const FlDotData(show: true),
             belowBarData: BarAreaData(show: false),
           ),
           LineChartBarData(
@@ -621,8 +646,8 @@ class WeeklyGraph extends StatelessWidget {
                 .values
                 .toList(),
             isCurved: true,
-            color: Colors.green,
-            dotData: FlDotData(show: true),
+            color: Colors.lightBlue,
+            dotData: const FlDotData(show: true),
             belowBarData: BarAreaData(show: false),
           ),
         ],
@@ -658,52 +683,57 @@ class WeatherInfo {
 
 WeatherInfo _getWeatherInfo(String weatherDescription) {
   Map<String, WeatherInfo> weatherData = {
-    'Clear sky': WeatherInfo(Icons.wb_sunny_rounded, Color(0xfff9d71c)),
-    'Mainly clear': WeatherInfo(Icons.wb_sunny_outlined, Color(0xfff9d71c)),
-    'Partly cloudy': WeatherInfo(Icons.wb_cloudy_outlined, Color(0xff2d353f)),
-    'Overcast': WeatherInfo(Icons.wb_cloudy_sharp, Color(0xff2d353f)),
-    'Fog': WeatherInfo(Icons.foggy, Color(0xff7a8f93)),
-    'Depositing rime fog': WeatherInfo(Icons.foggy, Color(0xfff9d71c)),
+    'Clear sky': WeatherInfo(Icons.wb_sunny_rounded, const Color(0xfff9d71c)),
+    'Mainly clear':
+        WeatherInfo(Icons.wb_sunny_outlined, const Color(0xfff9d71c)),
+    'Partly cloudy':
+        WeatherInfo(Icons.wb_cloudy_outlined, const Color(0xff2d353f)),
+    'Overcast': WeatherInfo(Icons.wb_cloudy_sharp, const Color(0xff2d353f)),
+    'Fog': WeatherInfo(Icons.foggy, const Color(0xff7a8f93)),
+    'Depositing rime fog': WeatherInfo(Icons.foggy, const Color(0xfff9d71c)),
     'Drizzle: Light':
-        WeatherInfo(Icons.water_damage_outlined, Color(0xff10eaf6)),
+        WeatherInfo(Icons.water_damage_outlined, const Color(0xff10eaf6)),
     'Drizzle: Moderate':
-        WeatherInfo(Icons.water_damage_rounded, Color(0xff1017f4)),
+        WeatherInfo(Icons.water_damage_rounded, const Color(0xff1017f4)),
     'Drizzle: Dense intensity':
-        WeatherInfo(Icons.water_damage_sharp, Color(0xff200b72)),
-    'Freezing Drizzle: Light': WeatherInfo(Icons.ac_unit, Color(0xff10eaf6)),
+        WeatherInfo(Icons.water_damage_sharp, const Color(0xff200b72)),
+    'Freezing Drizzle: Light':
+        WeatherInfo(Icons.ac_unit, const Color(0xff10eaf6)),
     'Freezing Drizzle: Dense intensity':
-        WeatherInfo(Icons.ac_unit_rounded, Color(0xff200b72)),
-    'Rain: Slight': WeatherInfo(Icons.water_drop_outlined, Color(0xff10eaf6)),
-    'Rain: Moderate': WeatherInfo(Icons.water_drop_rounded, Color(0xff1017f4)),
-    'Rain: Heavy intensity': WeatherInfo(Icons.water, Color(0xff200b72)),
+        WeatherInfo(Icons.ac_unit_rounded, const Color(0xff200b72)),
+    'Rain: Slight':
+        WeatherInfo(Icons.water_drop_outlined, const Color(0xff10eaf6)),
+    'Rain: Moderate':
+        WeatherInfo(Icons.water_drop_rounded, const Color(0xff1017f4)),
+    'Rain: Heavy intensity': WeatherInfo(Icons.water, const Color(0xff200b72)),
     'Freezing Rain: Light':
-        WeatherInfo(Icons.waterfall_chart_outlined, Color(0xff10eaf6)),
+        WeatherInfo(Icons.waterfall_chart_outlined, const Color(0xff10eaf6)),
     'Freezing Rain: Heavy intensity':
-        WeatherInfo(Icons.waterfall_chart, Color(0xff200b72)),
-    'Snow fall: Slight': WeatherInfo(Icons.snowing, Color(0xff10eaf6)),
-    'Snow fall: Moderate': WeatherInfo(Icons.snowing, Color(0xff1017f4)),
+        WeatherInfo(Icons.waterfall_chart, const Color(0xff200b72)),
+    'Snow fall: Slight': WeatherInfo(Icons.snowing, const Color(0xff10eaf6)),
+    'Snow fall: Moderate': WeatherInfo(Icons.snowing, const Color(0xff1017f4)),
     'Snow fall: Heavy intensity':
-        WeatherInfo(Icons.severe_cold_outlined, Color(0xff200b72)),
-    'Snow grains': WeatherInfo(Icons.snowing, Color(0xff1017f4)),
+        WeatherInfo(Icons.severe_cold_outlined, const Color(0xff200b72)),
+    'Snow grains': WeatherInfo(Icons.snowing, const Color(0xff1017f4)),
     'Rain showers: Slight':
-        WeatherInfo(Icons.umbrella_outlined, Color(0xff10eaf6)),
+        WeatherInfo(Icons.umbrella_outlined, const Color(0xff10eaf6)),
     'Rain showers: Moderate':
-        WeatherInfo(Icons.umbrella_rounded, Color(0xff1017f4)),
+        WeatherInfo(Icons.umbrella_rounded, const Color(0xff1017f4)),
     'Rain showers: Violent':
-        WeatherInfo(Icons.umbrella_sharp, Color(0xff200b72)),
+        WeatherInfo(Icons.umbrella_sharp, const Color(0xff200b72)),
     'Snow showers slight':
-        WeatherInfo(Icons.snowshoeing_outlined, Color(0xff10eaf6)),
+        WeatherInfo(Icons.snowshoeing_outlined, const Color(0xff10eaf6)),
     'Snow showers heavy':
-        WeatherInfo(Icons.snowshoeing_sharp, Color(0xff200b72)),
+        WeatherInfo(Icons.snowshoeing_sharp, const Color(0xff200b72)),
     'Thunderstorm: Slight or moderate':
-        WeatherInfo(Icons.thunderstorm_outlined, Color(0xff10eaf6)),
+        WeatherInfo(Icons.thunderstorm_outlined, const Color(0xff10eaf6)),
     'Thunderstorm with slight hail':
-        WeatherInfo(Icons.thunderstorm_rounded, Color(0xff1017f4)),
+        WeatherInfo(Icons.thunderstorm_rounded, const Color(0xff1017f4)),
     'Thunderstorm with heavy hail':
-        WeatherInfo(Icons.thunderstorm_sharp, Color(0xff200b72)),
+        WeatherInfo(Icons.thunderstorm_sharp, const Color(0xff200b72)),
   };
   return weatherData[weatherDescription] ??
-      WeatherInfo(Icons.question_mark_outlined, Color(0xfff92f0b));
+      WeatherInfo(Icons.question_mark_outlined, const Color(0xfff92f0b));
 }
 
 Icon _getWeatherIcon(String weatherDescription, double size) {
