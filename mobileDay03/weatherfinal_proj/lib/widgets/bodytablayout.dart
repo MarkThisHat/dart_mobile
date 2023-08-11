@@ -180,47 +180,49 @@ Widget _buildDayBox(String boxDisplay, ColorScheme scheme) {
         ],
       ),
       child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            PrimaryText(
-              text: '${display[0]} ',
-              fontSize: 14,
-              color: scheme.onBackground.withAlpha(222),
-              shadow: scheme.background,
-            ),
-            Container(
-                padding: EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: scheme.primary.withOpacity(0.28),
-                      blurRadius: 12,
-                      offset: Offset(2, 1),
-                    ),
-                  ],
-                ),
-                child: _getWeatherIcon(display[1], 36)),
-            PrimaryText(
-              text: '${display[2]} °C',
-              fontSize: 16,
-              color: scheme.onPrimary.withAlpha(222),
-              shadow: scheme.primary,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.wind_power_outlined, color: scheme.primary),
-                SizedBox(width: 4),
-                PrimaryText(
-                    text: '${display[3]} ',
-                    fontSize: 14,
-                    color: scheme.primary.withOpacity(0.8),
-                    shadow: scheme.onBackground.withOpacity(0.4)),
-              ],
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              PrimaryText(
+                text: '${display[0]} ',
+                fontSize: 14,
+                color: scheme.onBackground.withAlpha(222),
+                shadow: scheme.background,
+              ),
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: scheme.primary.withOpacity(0.28),
+                        blurRadius: 12,
+                        offset: Offset(2, 1),
+                      ),
+                    ],
+                  ),
+                  child: _getWeatherIcon(display[1], 36)),
+              PrimaryText(
+                text: '${display[2]} °C',
+                fontSize: 16,
+                color: scheme.onPrimary.withAlpha(222),
+                shadow: scheme.primary,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.wind_power_outlined, color: scheme.primary),
+                  SizedBox(width: 4),
+                  PrimaryText(
+                      text: '${display[3]} ',
+                      fontSize: 14,
+                      color: scheme.primary.withOpacity(0.8),
+                      shadow: scheme.onBackground.withOpacity(0.4)),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     ),
@@ -255,8 +257,8 @@ Widget _weekly(String showText, BuildContext context) {
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children:
-                List.generate(7, (index) => _buildWeekBox(display[index + 3])),
+            children: List.generate(
+                7, (index) => _buildWeekBox(display[index + 3], scheme)),
           ),
         ),
       )
@@ -264,21 +266,67 @@ Widget _weekly(String showText, BuildContext context) {
   );
 }
 
-Widget _buildWeekBox(String boxDisplay) {
+Widget _buildWeekBox(String boxDisplay, ColorScheme scheme) {
   List<String> display = boxDisplay.split(';');
-  return Container(
-    width: 150,
-    color: Colors.green.withOpacity(0.3),
-    margin: EdgeInsets.symmetric(horizontal: 4.0),
-    child: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(display[0]),
-          _getWeatherIcon(display[1], 8),
-          Text('${display[2]} max'),
-          Text('${display[3]} min'),
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 6),
+    child: Container(
+      width: 150,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: scheme.primaryContainer.withOpacity(0.3).withAlpha(25),
+        border: Border.all(
+            color: scheme.onPrimaryContainer.withOpacity(0.4),
+            width: 2,
+            style: BorderStyle.solid),
+        boxShadow: [
+          BoxShadow(
+            color: scheme.primary.withOpacity(0.2).withAlpha(25),
+            spreadRadius: 1,
+            blurRadius: 7,
+            offset: Offset(3, 3),
+          ),
         ],
+      ),
+      child: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              PrimaryText(
+                text: '${display[0]} ',
+                fontSize: 14,
+                color: scheme.onPrimary.withAlpha(222),
+                shadow: scheme.primary,
+              ),
+              Container(
+                  padding: EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: scheme.primary.withOpacity(0.28),
+                        blurRadius: 12,
+                        offset: Offset(2, 1),
+                      ),
+                    ],
+                  ),
+                  child: _getWeatherIcon(display[1], 36)),
+              PrimaryText(
+                text: '${display[2]} °C max',
+                fontSize: 16,
+                color: scheme.onBackground.withAlpha(170),
+                shadow: Colors.deepOrange.withOpacity(0.7),
+              ),
+              PrimaryText(
+                text: '${display[2]} °C min',
+                fontSize: 16,
+                color: scheme.onBackground.withAlpha(170),
+                shadow: Colors.lightBlue.withOpacity(0.7),
+              ),
+            ],
+          ),
+        ),
       ),
     ),
   );
