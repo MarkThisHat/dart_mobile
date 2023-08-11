@@ -53,14 +53,13 @@ Widget _currently(String showText, BuildContext context) {
                   BoxShadow(
                     color: scheme.primary.withOpacity(0.2).withAlpha(25),
                     spreadRadius: 1,
-                    blurRadius: 5,
-                    offset: Offset(3, 3), // position of shadow
+                    blurRadius: 7,
+                    offset: Offset(3, 3),
                   ),
                 ],
               ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment
-                    .start, // Align the children at the start/top
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Text(
@@ -85,7 +84,7 @@ Widget _currently(String showText, BuildContext context) {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: scheme.primary.withOpacity(0.2),
+                              color: scheme.primary.withOpacity(0.28),
                               blurRadius: 12, // Blur spread
                               offset: Offset(2, 1),
                             ),
@@ -108,9 +107,7 @@ Widget _currently(String showText, BuildContext context) {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Icon(Icons.wind_power_outlined, color: scheme.primary),
-                SizedBox(
-                    width:
-                        10), // Adds a small space between the icon and the text
+                SizedBox(width: 10),
                 PrimaryText(
                     text: '${display[5]} ',
                     fontSize: 24,
@@ -151,8 +148,8 @@ Widget _today(String showText, BuildContext context) {
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children:
-                List.generate(24, (index) => _buildDayBox(display[index + 3])),
+            children: List.generate(
+                24, (index) => _buildDayBox(display[index + 3], scheme)),
           ),
         ),
       )
@@ -160,21 +157,71 @@ Widget _today(String showText, BuildContext context) {
   );
 }
 
-Widget _buildDayBox(String boxDisplay) {
+Widget _buildDayBox(String boxDisplay, ColorScheme scheme) {
   List<String> display = boxDisplay.split(';');
-  return Container(
-    width: 150,
-    color: Colors.green.withOpacity(0.3),
-    margin: EdgeInsets.symmetric(horizontal: 4.0),
-    child: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(display[0]),
-          _getWeatherIcon(display[1], 8),
-          Text('${display[2]} °C'),
-          Text(display[3]),
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 6),
+    child: Container(
+      width: 150,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: scheme.primaryContainer.withOpacity(0.3).withAlpha(25),
+        border: Border.all(
+            color: scheme.onPrimaryContainer.withOpacity(0.4),
+            width: 2,
+            style: BorderStyle.solid),
+        boxShadow: [
+          BoxShadow(
+            color: scheme.primary.withOpacity(0.2).withAlpha(25),
+            spreadRadius: 1,
+            blurRadius: 7,
+            offset: Offset(3, 3),
+          ),
         ],
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            PrimaryText(
+              text: '${display[0]} ',
+              fontSize: 14,
+              color: scheme.onBackground.withAlpha(222),
+              shadow: scheme.background,
+            ),
+            Container(
+                padding: EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: scheme.primary.withOpacity(0.28),
+                      blurRadius: 12,
+                      offset: Offset(2, 1),
+                    ),
+                  ],
+                ),
+                child: _getWeatherIcon(display[1], 36)),
+            PrimaryText(
+              text: '${display[2]} °C',
+              fontSize: 16,
+              color: scheme.onPrimary.withAlpha(222),
+              shadow: scheme.primary,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.wind_power_outlined, color: scheme.primary),
+                SizedBox(width: 4),
+                PrimaryText(
+                    text: '${display[3]} ',
+                    fontSize: 14,
+                    color: scheme.primary.withOpacity(0.8),
+                    shadow: scheme.onBackground.withOpacity(0.4)),
+              ],
+            ),
+          ],
+        ),
       ),
     ),
   );
@@ -635,36 +682,3 @@ double max(double a, double b) {
     return (b);
   }
 }
-
-
-/*
-_getWeatherIcon(_getWeatherIcon('Clear sky'),
-_getWeatherIcon('Mainly clear'),
-_getWeatherIcon('Partly cloudy'),
-_getWeatherIcon('Overcast'),
-_getWeatherIcon('Fog'),
-_getWeatherIcon('Depositing rime fog'),
-_getWeatherIcon('Drizzle: Light'),
-_getWeatherIcon('Drizzle: Moderate'),
-_getWeatherIcon('Drizzle: Dense intensity'),
-_getWeatherIcon('Freezing Drizzle: Light'),
-_getWeatherIcon('Freezing Drizzle: Dense intensity'),
-_getWeatherIcon('Rain: Slight'),
-_getWeatherIcon('Rain: Moderate'),
-_getWeatherIcon('Rain: Heavy intensity'),
-_getWeatherIcon('Freezing Rain: Light'),
-_getWeatherIcon('Freezing Rain: Heavy intensity'),
-_getWeatherIcon('Snow fall: Slight'),
-_getWeatherIcon('Snow fall: Moderate'),
-_getWeatherIcon('Snow fall: Heavy intensity'),
-_getWeatherIcon('Snow grains'),
-_getWeatherIcon('Rain showers: Slight'),
-_getWeatherIcon('Rain showers: Moderate'),
-_getWeatherIcon('Rain showers: Violent'),
-_getWeatherIcon('Snow showers slight'),
-_getWeatherIcon('Snow showers heavy'),
-_getWeatherIcon('Thunderstorm: Slight or moderate'),
-_getWeatherIcon('Thunderstorm with slight hail'),
-_getWeatherIcon('Thunderstorm with heavy hail'),
-_getWeatherIcon('pog'),
-*/
