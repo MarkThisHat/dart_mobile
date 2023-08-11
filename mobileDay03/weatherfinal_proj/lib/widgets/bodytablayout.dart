@@ -32,22 +32,70 @@ Widget _currently(String showText, BuildContext context) {
         child: PrimaryText(
           text: '${display[3]} ',
           fontSize: 56,
-          color: scheme.onPrimary.withAlpha(220),
+          color: scheme.onPrimary.withAlpha(222),
           shadow: scheme.primary,
         ),
       ),
       Expanded(
         flex: 3,
-        child: Container(
-          color: Colors.yellow.withOpacity(0.3),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(display[4]),
-                _getWeatherIcon(display[4]),
-              ],
+        child: Center(
+          child: AspectRatio(
+            aspectRatio: 1,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: scheme.primaryContainer.withOpacity(0.3).withAlpha(25),
+                border: Border.all(
+                    color: scheme.onPrimaryContainer.withOpacity(0.4),
+                    width: 2,
+                    style: BorderStyle.solid),
+                boxShadow: [
+                  BoxShadow(
+                    color: scheme.primary.withOpacity(0.2).withAlpha(25),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: Offset(3, 3), // position of shadow
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment
+                    .start, // Align the children at the start/top
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    display[4],
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      color: scheme.onBackground,
+                      fontWeight: FontWeight.bold,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 1.0,
+                          color: scheme.onPrimary,
+                          offset: Offset(2.0, 2.0),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                        padding: EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: scheme.primary.withOpacity(0.2),
+                              blurRadius: 12, // Blur spread
+                              offset: Offset(2, 1),
+                            ),
+                          ],
+                        ),
+                        child: _getWeatherIcon(display[4], 80)),
+                  ),
+                  SizedBox(height: 16.0),
+                ],
+              ),
             ),
           ),
         ),
@@ -55,16 +103,19 @@ Widget _currently(String showText, BuildContext context) {
       Expanded(
         flex: 1,
         child: Container(
-          color: Colors.purple.withOpacity(0.3),
           child: Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(Icons.wind_power_outlined),
+                Icon(Icons.wind_power_outlined, color: scheme.primary),
                 SizedBox(
                     width:
                         10), // Adds a small space between the icon and the text
-                Text('${display[5]}'),
+                PrimaryText(
+                    text: '${display[5]} ',
+                    fontSize: 24,
+                    color: scheme.primary.withOpacity(0.8),
+                    shadow: scheme.onBackground.withOpacity(0.4)),
               ],
             ),
           ),
@@ -120,7 +171,7 @@ Widget _buildDayBox(String boxDisplay) {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(display[0]),
-          _getWeatherIcon(display[1]),
+          _getWeatherIcon(display[1], 8),
           Text('${display[2]} °C'),
           Text(display[3]),
         ],
@@ -177,7 +228,7 @@ Widget _buildWeekBox(String boxDisplay) {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(display[0]),
-          _getWeatherIcon(display[1]),
+          _getWeatherIcon(display[1], 8),
           Text('${display[2]} max'),
           Text('${display[3]} min'),
         ],
@@ -219,7 +270,7 @@ class PresentBox extends StatelessWidget {
                     PrimaryText(
                       text: '${display[1]}, ${display[2]}',
                       fontSize: 22,
-                      color: scheme.onPrimaryContainer.withOpacity(0.83),
+                      color: scheme.onPrimaryContainer.withOpacity(0.9),
                       shadow: scheme.primary.withAlpha(100),
                     ),
                   ],
@@ -273,7 +324,7 @@ class PrimaryText extends StatelessWidget {
           fontWeight: FontWeight.bold,
           shadows: [
             Shadow(
-              blurRadius: 4.0,
+              blurRadius: 2.0,
               color: shadow,
               offset: Offset(2.0, 2.0),
             ),
@@ -512,52 +563,61 @@ class WeatherInfo {
 
 WeatherInfo _getWeatherInfo(String weatherDescription) {
   Map<String, WeatherInfo> weatherData = {
-    'Clear sky': WeatherInfo(Icons.wb_sunny_rounded, Colors.yellow),
-    'Mainly clear': WeatherInfo(Icons.wb_sunny_outlined, Colors.yellow),
-    'Partly cloudy': WeatherInfo(Icons.wb_cloudy_outlined, Colors.yellow),
-    'Overcast': WeatherInfo(Icons.wb_cloudy_sharp, Colors.yellow),
-    'Fog': WeatherInfo(Icons.foggy, Colors.yellow),
-    'Depositing rime fog': WeatherInfo(Icons.foggy, Colors.yellow),
-    'Drizzle: Light': WeatherInfo(Icons.water_damage_outlined, Colors.yellow),
-    'Drizzle: Moderate': WeatherInfo(Icons.water_damage_rounded, Colors.yellow),
+    'Clear sky': WeatherInfo(Icons.wb_sunny_rounded, Color(0xfff9d71c)),
+    'Mainly clear': WeatherInfo(Icons.wb_sunny_outlined, Color(0xfff9d71c)),
+    'Partly cloudy': WeatherInfo(Icons.wb_cloudy_outlined, Color(0xff2d353f)),
+    'Overcast': WeatherInfo(Icons.wb_cloudy_sharp, Color(0xff2d353f)),
+    'Fog': WeatherInfo(Icons.foggy, Color(0xff7a8f93)),
+    'Depositing rime fog': WeatherInfo(Icons.foggy, Color(0xfff9d71c)),
+    'Drizzle: Light':
+        WeatherInfo(Icons.water_damage_outlined, Color(0xff10eaf6)),
+    'Drizzle: Moderate':
+        WeatherInfo(Icons.water_damage_rounded, Color(0xff1017f4)),
     'Drizzle: Dense intensity':
-        WeatherInfo(Icons.water_damage_sharp, Colors.yellow),
-    'Freezing Drizzle: Light': WeatherInfo(Icons.ac_unit, Colors.yellow),
+        WeatherInfo(Icons.water_damage_sharp, Color(0xff200b72)),
+    'Freezing Drizzle: Light': WeatherInfo(Icons.ac_unit, Color(0xff10eaf6)),
     'Freezing Drizzle: Dense intensity':
-        WeatherInfo(Icons.ac_unit_rounded, Colors.yellow),
-    'Rain: Slight': WeatherInfo(Icons.water_drop_outlined, Colors.yellow),
-    'Rain: Moderate': WeatherInfo(Icons.water_drop_rounded, Colors.yellow),
-    'Rain: Heavy intensity': WeatherInfo(Icons.water, Colors.yellow),
+        WeatherInfo(Icons.ac_unit_rounded, Color(0xff200b72)),
+    'Rain: Slight': WeatherInfo(Icons.water_drop_outlined, Color(0xff10eaf6)),
+    'Rain: Moderate': WeatherInfo(Icons.water_drop_rounded, Color(0xff1017f4)),
+    'Rain: Heavy intensity': WeatherInfo(Icons.water, Color(0xff200b72)),
     'Freezing Rain: Light':
-        WeatherInfo(Icons.waterfall_chart_outlined, Colors.yellow),
+        WeatherInfo(Icons.waterfall_chart_outlined, Color(0xff10eaf6)),
     'Freezing Rain: Heavy intensity':
-        WeatherInfo(Icons.waterfall_chart, Colors.yellow),
-    'Snow fall: Slight': WeatherInfo(Icons.snowing, Colors.yellow),
-    'Snow fall: Moderate': WeatherInfo(Icons.snowing, Colors.yellow),
+        WeatherInfo(Icons.waterfall_chart, Color(0xff200b72)),
+    'Snow fall: Slight': WeatherInfo(Icons.snowing, Color(0xff10eaf6)),
+    'Snow fall: Moderate': WeatherInfo(Icons.snowing, Color(0xff1017f4)),
     'Snow fall: Heavy intensity':
-        WeatherInfo(Icons.severe_cold_outlined, Colors.yellow),
-    'Snow grains': WeatherInfo(Icons.snowing, Colors.yellow),
-    'Rain showers: Slight': WeatherInfo(Icons.umbrella_outlined, Colors.yellow),
+        WeatherInfo(Icons.severe_cold_outlined, Color(0xff200b72)),
+    'Snow grains': WeatherInfo(Icons.snowing, Color(0xff1017f4)),
+    'Rain showers: Slight':
+        WeatherInfo(Icons.umbrella_outlined, Color(0xff10eaf6)),
     'Rain showers: Moderate':
-        WeatherInfo(Icons.umbrella_rounded, Colors.yellow),
-    'Rain showers: Violent': WeatherInfo(Icons.umbrella_sharp, Colors.yellow),
+        WeatherInfo(Icons.umbrella_rounded, Color(0xff1017f4)),
+    'Rain showers: Violent':
+        WeatherInfo(Icons.umbrella_sharp, Color(0xff200b72)),
     'Snow showers slight':
-        WeatherInfo(Icons.snowshoeing_outlined, Colors.yellow),
-    'Snow showers heavy': WeatherInfo(Icons.snowshoeing_sharp, Colors.yellow),
+        WeatherInfo(Icons.snowshoeing_outlined, Color(0xff10eaf6)),
+    'Snow showers heavy':
+        WeatherInfo(Icons.snowshoeing_sharp, Color(0xff200b72)),
     'Thunderstorm: Slight or moderate':
-        WeatherInfo(Icons.thunderstorm_outlined, Colors.yellow),
+        WeatherInfo(Icons.thunderstorm_outlined, Color(0xff10eaf6)),
     'Thunderstorm with slight hail':
-        WeatherInfo(Icons.thunderstorm_rounded, Colors.yellow),
+        WeatherInfo(Icons.thunderstorm_rounded, Color(0xff1017f4)),
     'Thunderstorm with heavy hail':
-        WeatherInfo(Icons.thunderstorm_sharp, Colors.yellow),
+        WeatherInfo(Icons.thunderstorm_sharp, Color(0xff200b72)),
   };
   return weatherData[weatherDescription] ??
-      WeatherInfo(Icons.question_mark_outlined, Colors.black);
+      WeatherInfo(Icons.question_mark_outlined, Color(0xfff92f0b));
 }
 
-Icon _getWeatherIcon(String weatherDescription) {
+Icon _getWeatherIcon(String weatherDescription, double size) {
   WeatherInfo info = _getWeatherInfo(weatherDescription);
-  return Icon(info.iconData, color: info.color);
+  return Icon(
+    info.iconData,
+    color: info.color,
+    size: size,
+  );
 }
 
 double min(double a, double b) {
@@ -578,32 +638,33 @@ double max(double a, double b) {
 
 
 /*
-'Clear sky'
-'Mainly clear'
-'Partly cloudy'
-'Overcast'
-'Fog'
-'Depositing rime fog'
-'Drizzle: Light'
-'Drizzle: Moderate'
-'Drizzle: Dense intensity'
-'Freezing Drizzle: Light'
-'Freezing Drizzle: Dense intensity'
-'Rain: Slight'
-'Rain: Moderate'
-'Rain: Heavy intensity'
-'Freezing Rain: Light'
-'Freezing Rain: Heavy intensity'
-'Snow fall: Slight'
-'Snow fall: Moderate'
-'Snow fall: Heavy intensity'
-'Snow grains'
-'Rain showers: Slight'
-'Rain showers: Moderate'
-'Rain showers: Violent'
-'Snow showers slight'
-'Snow showers heavy'
-'Thunderstorm: Slight or moderate'
-'Thunderstorm with slight hail'
-'Thunderstorm with heavy hail'
+_getWeatherIcon(_getWeatherIcon('Clear sky'),
+_getWeatherIcon('Mainly clear'),
+_getWeatherIcon('Partly cloudy'),
+_getWeatherIcon('Overcast'),
+_getWeatherIcon('Fog'),
+_getWeatherIcon('Depositing rime fog'),
+_getWeatherIcon('Drizzle: Light'),
+_getWeatherIcon('Drizzle: Moderate'),
+_getWeatherIcon('Drizzle: Dense intensity'),
+_getWeatherIcon('Freezing Drizzle: Light'),
+_getWeatherIcon('Freezing Drizzle: Dense intensity'),
+_getWeatherIcon('Rain: Slight'),
+_getWeatherIcon('Rain: Moderate'),
+_getWeatherIcon('Rain: Heavy intensity'),
+_getWeatherIcon('Freezing Rain: Light'),
+_getWeatherIcon('Freezing Rain: Heavy intensity'),
+_getWeatherIcon('Snow fall: Slight'),
+_getWeatherIcon('Snow fall: Moderate'),
+_getWeatherIcon('Snow fall: Heavy intensity'),
+_getWeatherIcon('Snow grains'),
+_getWeatherIcon('Rain showers: Slight'),
+_getWeatherIcon('Rain showers: Moderate'),
+_getWeatherIcon('Rain showers: Violent'),
+_getWeatherIcon('Snow showers slight'),
+_getWeatherIcon('Snow showers heavy'),
+_getWeatherIcon('Thunderstorm: Slight or moderate'),
+_getWeatherIcon('Thunderstorm with slight hail'),
+_getWeatherIcon('Thunderstorm with heavy hail'),
+_getWeatherIcon('pog'),
 */
