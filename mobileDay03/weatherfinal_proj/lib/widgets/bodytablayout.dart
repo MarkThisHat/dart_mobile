@@ -75,6 +75,7 @@ Widget _currently(String showText, BuildContext context) {
                         ],
                       ),
                     ),
+                    const SizedBox(height: 16.0),
                     Container(
                         padding: const EdgeInsets.all(8.0),
                         margin: const EdgeInsets.only(top: 16.0, bottom: 16.0),
@@ -83,7 +84,7 @@ Widget _currently(String showText, BuildContext context) {
                           boxShadow: [
                             BoxShadow(
                               color: scheme.primary.withOpacity(0.28),
-                              blurRadius: 12, // Blur spread
+                              blurRadius: 12,
                               offset: const Offset(2, 1),
                             ),
                           ],

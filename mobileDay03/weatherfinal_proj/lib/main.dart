@@ -12,7 +12,7 @@ class WeatherApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Day 02 exercises',
+      title: 'Day 03 exercises',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
         useMaterial3: true,
@@ -55,9 +55,12 @@ class _MainPageState extends State<MainPage>
       body: Stack(
         children: [
           Positioned.fill(
-            child: Image.asset(
-              'assets/images/backgrounds/day.png',
-              fit: BoxFit.cover,
+            child: Opacity(
+              opacity: 0.64,
+              child: Image.asset(
+                'assets/images/backgrounds/day.png',
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           Column(
